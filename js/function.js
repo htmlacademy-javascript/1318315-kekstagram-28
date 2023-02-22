@@ -24,28 +24,27 @@ isPalidrom('Лёша на полке клопа нашёл ');
 
 //  ВТОРОЙ ВАРИАНТ
 
-// const isPalidromTwo = (string) => {
-//   const newString = string.replace(/ /g,'').toLowerCase();
-//   const reverse = newString.split().reverse().join();
+const isPalidromTwo = (string) => {
+  const newString = string.replace(/ /g,'').toLowerCase();
+  const reverse = newString.split().reverse().join();
+  return newString === reverse;
+};
 
-//   return newString === reverse;
-// };
-
-// isPalidromTwo('Лёша на полке клопа нашёл ');
+isPalidromTwo('Лёша на полке клопа нашёл ');
 
 
 //  ФУНКЦИЯ 3
 
-// Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа. Если в строке нет ни одной цифры, функция должна вернуть NaN:
+// имяФункции('а я томат');   // NaN - не придумывается как получить NaN
 
-// имяФункции('а я томат');           // NaN - не могу придумать как получить NaN
-
-// имяФункции(1.5);  // 15 - не могу придумать как убрать точку
+// имяФункции(1.5);  // 15 - не получается убрать точку
 
 const getNumber = (text) => typeof text === 'number' ? Math.abs(text) : Math.abs(text.match(/[0-9]/gi).join(''));
 
+getNumber(-215);
 
-// РАСПИСАНЫЙ ПО-ЭТАПНЫЙ ВАРИАНТ
+// РАСПИСАНЫЙ ПО-ЭТАПНЫЙ ВАРИАНТ ЭТОЙ ЖЕ ФУНКЦИИ
+// ОСТАВВИЛА ДЛЯ СЕБЯ, ЕСЛИ НАДО БУДЕТ ПРАВИТЬ
 
 // const getNumber = (text) => {
 //   if (typeof text === 'number') {
@@ -55,28 +54,33 @@ const getNumber = (text) => typeof text === 'number' ? Math.abs(text) : Math.abs
 //   return Math.abs(newText);
 // };
 
-getNumber(-215);
-
 
 // ФУНКЦИЯ 4
 
-// Функция, которая принимает три параметра: исходную строку, минимальную длину и строку с добавочными символами — и возвращает исходную строку, дополненную указанными символами до заданной длины. Символы добавляются в начало строки. Если исходная строка превышает заданную длину, она не должна обрезаться. Если «добивка» слишком длинная, она обрезается с конца.
-
-// Эта функция нам пригодится для формирования адресов файлов. Примеры её использования:
-
-// Добавочный символ использован один раз
-// имяФункции('1', 2, '0');      // '01'
-
-// Добавочный символ использован три раза
-// имяФункции('1', 4, '0');      // '0001'
-
-// Добавочные символы обрезаны с конца
-// имяФункции('q', 4, 'werty');  // 'werq'
-
 // Добавочные символы использованы полтора раза
-// имяФункции('q', 4, 'we');     // 'wweq'
+// имяФункции('q', 4, 'we');     // 'wweq' - в этом случае не соответствует
 
-// Добавочные символы не использованы, исходная строка не изменена
-// имяФункции('qwerty', 4, '0'); // 'qwerty'
+const makeNewString = (string, maxLength, symbol) => {
+  const difference = maxLength - string.length;
 
-// Попробуйте не использовать при этом функцию padStart() =)
+  let newString = ''.concat(string);
+  let newSymbol = symbol;
+  if (string.length >= maxLength) {
+    newString = string;
+    return newString;
+  } else if (symbol.length >= difference) {
+    newSymbol = symbol.substr(0, difference);
+    newString = newSymbol.concat(string);
+    return newString;
+  }
+  // symbol.length < difference
+  newSymbol = symbol;
+  for (let i = 0; i <= difference - 2; i++) {
+    newSymbol = symbol.concat(newSymbol);
+  }
+  newString = newSymbol.concat(string);
+
+  return newString;
+};
+
+makeNewString('qwerty', 4, '0');
