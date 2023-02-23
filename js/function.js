@@ -37,22 +37,26 @@ isPalidromTwo('Лёша на полке клопа нашёл ');
 
 // имяФункции('а я томат');   // NaN - не придумывается как получить NaN
 
-// имяФункции(1.5);  // 15 - не получается убрать точку
+// СОКРАЩЕННЫЙ ВАРИАНТ
+// const getNumber = (text) => typeof text === 'number' ? Math.abs(text) : Math.abs(text.match(/[0-9]/gi).join(''));
 
-const getNumber = (text) => typeof text === 'number' ? Math.abs(text) : Math.abs(text.match(/[0-9]/gi).join(''));
-
-getNumber(-215);
+// getNumber(-215);
 
 // РАСПИСАНЫЙ ПО-ЭТАПНЫЙ ВАРИАНТ ЭТОЙ ЖЕ ФУНКЦИИ
 // ОСТАВВИЛА ДЛЯ СЕБЯ, ЕСЛИ НАДО БУДЕТ ПРАВИТЬ
 
-// const getNumber = (text) => {
-//   if (typeof text === 'number') {
-//     return Math.abs(text);
-//   }
-//   const newText = text.match(/[0-9]/gi).join('');
-//   return Math.abs(newText);
-// };
+const getNumber = (text) => {
+  if (typeof text === 'number') {
+    return String(text).match(/[0-9]/gi).join('');
+  }
+  const newText = text.match(/[0-9]/gi).join('');
+  if (typeof newText === 'number') {
+    return Math.abs(newText);
+  }
+  return NaN;
+};
+// getNumber('а я томат');
+console.log(getNumber('а я томат'));
 
 
 // ФУНКЦИЯ 4
