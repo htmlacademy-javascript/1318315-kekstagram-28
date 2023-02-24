@@ -35,33 +35,14 @@ isPalidromTwo('Лёша на полке клопа нашёл ');
 
 //  ФУНКЦИЯ 3
 
-// имяФункции('а я томат');   // NaN - не придумывается как получить NaN
+const getNumber = (text) => text.toString().match(/\d+/gi) ? Math.abs(text.toString().match(/\d+/gi).join('')) : NaN;
 
-// СОКРАЩЕННЫЙ ВАРИАНТ
-// const getNumber = (text) => typeof text === 'number' ? Math.abs(text) : Math.abs(text.match(/[0-9]/gi).join(''));
-
-// getNumber(-215);
-
-// РАСПИСАНЫЙ ПО-ЭТАПНЫЙ ВАРИАНТ ЭТОЙ ЖЕ ФУНКЦИИ
-// ОСТАВВИЛА ДЛЯ СЕБЯ, ЕСЛИ НАДО БУДЕТ ПРАВИТЬ
-
-const getNumber = (text) => {
-  if (typeof text === 'number') {
-    return String(text).match(/[0-9]/gi).join('');
-  }
-  const newText = text.match(/[0-9]/gi).join('');
-  if (typeof newText === 'number') {
-    return Math.abs(newText);
-  }
-  return NaN;
-};
-// getNumber('а я томат');
-console.log(getNumber('а я томат'));
+getNumber('а я томат');
+// console.log(getNumber(-1.5));
 
 
 // ФУНКЦИЯ 4
 
-// Добавочные символы использованы полтора раза
 // имяФункции('q', 4, 'we');     // 'wweq' - в этом случае не соответствует
 
 const makeNewString = (string, maxLength, symbol) => {
