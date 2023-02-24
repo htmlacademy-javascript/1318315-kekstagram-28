@@ -42,29 +42,21 @@ getNumber('а я томат');
 
 // ФУНКЦИЯ 4
 
-// имяФункции('q', 4, 'we');     // 'wweq' - в этом случае не соответствует
-
 const makeNewString = (string, maxLength, symbol) => {
   const difference = maxLength - string.length;
 
   let newString = ''.concat(string);
   let newSymbol = symbol;
+
   if (string.length >= maxLength) {
-    newString = string;
-    return newString;
+    return string;
   } else if (symbol.length >= difference) {
     newSymbol = symbol.substr(0, difference);
     newString = newSymbol.concat(string);
     return newString;
   }
-  // symbol.length < difference
-  newSymbol = symbol;
-  for (let i = 0; i <= difference - 2; i++) {
-    newSymbol = symbol.concat(newSymbol);
-  }
+  newSymbol = symbol.slice(0, difference % symbol.length) + symbol.repeat(difference / symbol.length);
   newString = newSymbol.concat(string);
-
   return newString;
 };
-
-makeNewString('qwerty', 4, '0');
+makeNewString('q', 4, 'we');
