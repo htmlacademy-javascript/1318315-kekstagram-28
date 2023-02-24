@@ -35,10 +35,9 @@ isPalidromTwo('Лёша на полке клопа нашёл ');
 
 //  ФУНКЦИЯ 3
 
-const getNumber = (text) => text.toString().match(/\d+/gi) ? Math.abs(text.toString().match(/\d+/gi).join('')) : NaN;
+const getNumber = (text) => String(text).match(/[0-9]+/gi) ? Math.abs(String(text).match(/[0-9]+/gi).join('')) : NaN;
 
 getNumber('а я томат');
-// console.log(getNumber(-1.5));
 
 
 // ФУНКЦИЯ 4
