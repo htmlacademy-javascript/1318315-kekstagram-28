@@ -109,4 +109,4 @@ const createArrayPhotos = () => {
   return photosArray;
 };
 
-createArrayPhotos();
+export {createArrayPhotos};
