@@ -12,7 +12,7 @@ const createPicture = (photo) => {
   picture.querySelector('.picture__img').src = photo.url;
   picture.querySelector('.picture__likes').textContent = photo.likes;
   picture.querySelector('.picture__comments').textContent = photo.comments.length;
-
+  picture.querySelector('.picture__img').alt = photo.description;
   return picture;
 };
 
