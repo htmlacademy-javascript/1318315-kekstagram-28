@@ -31,4 +31,6 @@ const createArrayPicture = (objects) => {
 
 const dataPhotosArray = createArrayPhotos();
 
-createArrayPicture(dataPhotosArray);
+createArrayPicture(dataPhotosArray); // отрисовывает на странице сайта картинки (фото с описанием). Если вместо dataPhotosArray передать аргументом createArrayPhotos(), то отрисовка изображений на странице не происходит! createArrayPicture(createArrayPhotos()); - не работает. Нужно вызов функции запиать а переменную const dataPhotosArray = createArrayPhotos();
+
+export {dataPhotosArray}; // это нужно для проверки отрисовки полноэкранного фото
