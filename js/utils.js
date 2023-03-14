@@ -5,4 +5,4 @@ const getRandomNumber = (min, max) => {
   return 'Ошибка при введении чисел';
 };
 
-export { getRandomNumber };
+export {getRandomNumber};

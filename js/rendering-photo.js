@@ -6,6 +6,8 @@ const templatePicture = templateFragment.querySelector('.picture');
 
 const picturesArray = document.querySelector('.pictures');
 
+let photoId = 1; // Это id нужно для открытия полноэкранного изображения
+
 // Создание одной картинки (фото + описание)
 const createPicture = (photo) => {
   const picture = templatePicture.cloneNode(true);
@@ -13,6 +15,14 @@ const createPicture = (photo) => {
   picture.querySelector('.picture__likes').textContent = photo.likes;
   picture.querySelector('.picture__comments').textContent = photo.comments.length;
   picture.querySelector('.picture__img').alt = photo.description;
+  picture.querySelector('.picture__img').id = photo.id;
+
+  // templatePicture.id = picture.querySelector('.picture__img').id;
+  // Этот вариант нумерует templatePicture.id с 0, и не открывается первая картинка!!!
+
+  templatePicture.id = photoId++; // Это id нужно для открытия полноэкранного изображения
+  // Этот вариант также нумерует templatePicture.id с 0, и не открывается первая картинка!!!
+
   return picture;
 };
 

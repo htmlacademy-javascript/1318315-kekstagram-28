@@ -1,10 +1,7 @@
 import {createArrayPhotos} from './pattern-photo.js';
-import {createArrayPicture} from './rendering-photo.js'
-import {fullsizePhoto, body, drawFullsizePhoto} from './fullsize-photo.js';
+import {createArrayPicture} from './rendering-photo.js';
+import {drawFullsizePhoto} from './fullsize-photo.js';
 
-const close = fullsizePhoto.querySelector('#picture-cancel');
-
-// Открытие полноэкранного фото
 const dataPhotosArray = createArrayPhotos(); // Данные по каждому изображению (фото + описание)
 
 const sectionPictures = createArrayPicture(dataPhotosArray); // Отрисованный в DOM массив изображений
@@ -14,29 +11,17 @@ const photos = Array.from(sectionPictures.querySelectorAll('.picture')); // Пр
 
 photos.forEach((photo) => {
   photo.addEventListener('click', (evt) => {
+    // console.log('photo', photo);
+    // console.log('evt', evt);
+    // console.log('evt.currentTarget', evt.currentTarget);
+    // console.log('evt.currentTarget.id', evt.currentTarget.id);
+    // console.log('photo.id', photo.id);
+
     drawFullsizePhoto(dataPhotosArray[evt.currentTarget.id]);
+    dataPhotosArray[evt.currentTarget.id].classList.add('big-picture__img');
+
+    // console.log('photo.id', photo.id);
   });
 });
 
 
-// Закрытие полноэкранного фото
-
-const closePhoto = () => {
-  body.classList.remove('.modal-open');
-  fullsizePhoto.classList.add('hidden');
-};
-
-const toCloseFullsizePhoto = (evt) => {
-  evt.preventDefault();
-  closePhoto();
-};
-
-const toEscFullScreen = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closePhoto();
-  }
-};
-
-close.addEventListener('click', toCloseFullsizePhoto);
-document.addEventListener('keydown', toEscFullScreen);
