@@ -1,4 +1,4 @@
-import {dataPhotosArray} from './rendering-photo.js'; // это нужно для проверки отрисовки полноэкранного фото
+// import {dataPhotosArray} from './rendering-photo.js'; // это нужно для проверки отрисовки полноэкранного фото
 
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
@@ -63,6 +63,6 @@ const drawFullsizePhoto = (photo) => {
   body.classList.add('.modal-open');
 };
 
-drawFullsizePhoto(dataPhotosArray[8]); // это нужно для проверки отрисовки полноэкранного фото
+// drawFullsizePhoto(dataPhotosArray[8]); // это нужно для проверки отрисовки полноэкранного фото
 
-export {fullsizePhoto, body};
+export {fullsizePhoto, body, drawFullsizePhoto};
