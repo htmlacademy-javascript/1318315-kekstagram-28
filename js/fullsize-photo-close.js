@@ -5,7 +5,6 @@ const close = fullsizePhoto.querySelector('#picture-cancel');
 const closePhoto = () => {
   body.classList.remove('.modal-open');
   fullsizePhoto.classList.add('hidden');
-  fullsizePhoto.querySelector('.big-picture__img img').classList.remove('big-picture__img');
 };
 
 const toCloseFullsizePhoto = (evt) => {

@@ -1,12 +1,10 @@
-// import {dataPhotosArray} from './rendering-photo.js'; // это нужно для проверки отрисовки полноэкранного фото
-
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 
 const fullsizePhoto = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 
-// Функция по отрисовке/подстановке одного комментария (object приходит из файла pattern-photo.js из функции createComment.js)
+// Функция по отрисовке/подстановке одного комментария
 const drawComment = (object) => {
   const newComment = document.createElement('li');
   newComment.classList.add('social__comment');
@@ -62,7 +60,5 @@ const drawFullsizePhoto = (photo) => {
 
   body.classList.add('.modal-open');
 };
-
-// drawFullsizePhoto(dataPhotosArray[8]); // это нужно для проверки отрисовки полноэкранного фото
 
 export {fullsizePhoto, body, drawFullsizePhoto};
