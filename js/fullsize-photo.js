@@ -3,6 +3,10 @@ const IMG_HEIGHT = 35;
 
 const fullsizePhoto = document.querySelector('.big-picture');
 const body = document.querySelector('body');
+const arrayComments = fullsizePhoto.querySelector('.social__comments');
+const loadingComments = fullsizePhoto.querySelector('.comments-loader');
+
+let number = 0;
 
 // Функция по отрисовке/подстановке одного комментария
 const drawComment = (object) => {
@@ -25,14 +29,52 @@ const drawComment = (object) => {
   return newComment;
 };
 
-// Функция по отрисовке/подстановке массива комментариев для одного изображения
-const drawArrayComments = (comments) => {
-  const arrayComments = fullsizePhoto.querySelector('.social__comments');
-  arrayComments.textContent = '';
-
+//Функция по отрисовке части комментариев
+const creatingPartComments = (comments) => {
+  const documentFragment = document.createDocumentFragment();
   for (let i = 0; i < comments.length; i++) {
     const newComment = drawComment(comments[i]);
-    arrayComments.appendChild(newComment);
+    documentFragment.appendChild(newComment);
+  }
+  return documentFragment;
+};
+
+// Функция по отрисовке/подстановке массива комментариев для одного изображения
+const drawArrayComments = (comments) => {
+  arrayComments.textContent = '';
+
+  const firstComments = comments.slice(number, number += 5);
+
+  arrayComments.appendChild(creatingPartComments(firstComments));
+  // console.log('arrayComments', arrayComments);
+
+  fullsizePhoto.querySelector('.current-comments-count').textContent = number;
+
+  // Нажатие на кнопку "Загрузить еще"
+  loadingComments.addEventListener('click', () => {
+    if (number < comments.length) {
+      console.log('number = ', number);
+
+      const nextComments = comments.slice(number, number += 5);
+      console.log('number', number);
+
+      arrayComments.appendChild(creatingPartComments(nextComments));
+      console.log('arrayComments', arrayComments);
+    }
+    fullsizePhoto.querySelector('.current-comments-count').textContent = number;
+  });
+
+  if (number < 5) {
+    console.log('number = ', number);
+
+    const littleComments = comments.slice(number, comments.length);
+
+    arrayComments.appendChild(creatingPartComments(littleComments));
+    console.log('arrayComments', arrayComments);
+
+    fullsizePhoto.querySelector('.current-comments-count').textContent = comments.length; // не срабатывает
+
+    loadingComments.classList.add('hidden'); // не срабатывает
   }
 
   return arrayComments;
@@ -55,8 +97,8 @@ const drawFullsizePhoto = (photo) => {
   fullsizePhoto.querySelector('.social__comments').replaceWith(arrayComments);
 
   // Временно скроем блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader
-  fullsizePhoto.querySelector('.social__comment-count').classList.add('hidden');
-  fullsizePhoto.querySelector('.comments-loader').classList.add('hidden');
+  // fullsizePhoto.querySelector('.social__comment-count').classList.add('hidden');
+  // fullsizePhoto.querySelector('.comments-loader').classList.add('hidden');
 
   body.classList.add('.modal-open');
 };
