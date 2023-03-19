@@ -4,9 +4,9 @@ const IMG_HEIGHT = 35;
 const fullsizePhoto = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 const arrayComments = fullsizePhoto.querySelector('.social__comments');
+const countComments = fullsizePhoto.querySelector('.current-comments-count');
 const loadingComments = fullsizePhoto.querySelector('.comments-loader');
 
-let number = 0;
 
 // Функция по отрисовке/подстановке одного комментария
 const drawComment = (object) => {
@@ -42,40 +42,60 @@ const creatingPartComments = (comments) => {
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
 const drawArrayComments = (comments) => {
   arrayComments.textContent = '';
+  let number = 0;
+
+  if (comments.length < 5) {
+    // console.log('number (comments.length<5) = ', number);
+
+    const littleComments = comments.slice(number, comments.length);
+
+    arrayComments.appendChild(creatingPartComments(littleComments));
+    // console.log('arrayComments (comments.length<5)', arrayComments);
+
+    number = comments.length;
+    countComments.textContent = number;
+    // console.log('countComments (comments.length<5)', countComments);
+
+    loadingComments.classList.add('hidden'); // не срабатывает
+    // console.log('loadingComments (comments.length<5)', loadingComments);
+  }
 
   const firstComments = comments.slice(number, number += 5);
 
   arrayComments.appendChild(creatingPartComments(firstComments));
   // console.log('arrayComments', arrayComments);
 
-  fullsizePhoto.querySelector('.current-comments-count').textContent = number;
+  countComments.textContent = number;
+  // console.log('countComments - first', countComments);
 
   // Нажатие на кнопку "Загрузить еще"
   loadingComments.addEventListener('click', () => {
     if (number < comments.length) {
-      console.log('number = ', number);
+      // console.log('number - show more = ', number);
 
       const nextComments = comments.slice(number, number += 5);
-      console.log('number', number);
+      // console.log('number - show more 2 =', number);
 
       arrayComments.appendChild(creatingPartComments(nextComments));
-      console.log('arrayComments', arrayComments);
-    }
-    fullsizePhoto.querySelector('.current-comments-count').textContent = number;
-  });
+      // console.log('arrayComments - show more ', arrayComments);
 
-  if (number < 5) {
-    console.log('number = ', number);
+      countComments.textContent = number;
+      // console.log('countComments- show more ', countComments);
+    }
+    // console.log('number (number >= comments.length) = ', number);
 
     const littleComments = comments.slice(number, comments.length);
 
     arrayComments.appendChild(creatingPartComments(littleComments));
-    console.log('arrayComments', arrayComments);
+    // console.log('arrayComments (number >= comments.length)', arrayComments);
 
-    fullsizePhoto.querySelector('.current-comments-count').textContent = comments.length; // не срабатывает
+    number = comments.length;
+    countComments.textContent = number;
+    // console.log('countComments (number >= comments.length)', countComments);
 
-    loadingComments.classList.add('hidden'); // не срабатывает
-  }
+    loadingComments.classList.add('hidden');
+    // console.log('loadingComments (number >= comments.length)', loadingComments);
+  });
 
   return arrayComments;
 };
@@ -93,7 +113,7 @@ const drawFullsizePhoto = (photo) => {
 
   fullsizePhoto.querySelector('.comments-count').textContent = photo.comments.length;
 
-  const arrayComments = drawArrayComments(photo.comments);
+  drawArrayComments(photo.comments);
   fullsizePhoto.querySelector('.social__comments').replaceWith(arrayComments);
 
   // Временно скроем блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader
@@ -103,4 +123,4 @@ const drawFullsizePhoto = (photo) => {
   body.classList.add('.modal-open');
 };
 
-export {fullsizePhoto, body, drawFullsizePhoto};
+export {fullsizePhoto, body, arrayComments, countComments, loadingComments, drawFullsizePhoto};
