@@ -58,7 +58,7 @@ const drawArrayComments = (comments) => {
     slicePartComments(comments, number, maxNumber);
     countComments.textContent = maxNumber;
     loadingComments.classList.add('hidden');
-    console.log('Сработало условие maxNumber <= n');
+    console.log('Сработало условие if');
   } else {
     slicePartComments(comments, number, (number + n));
     number = number + n;
@@ -67,21 +67,23 @@ const drawArrayComments = (comments) => {
   }
 
   // Нажатие на кнопку "Загрузить еще"
-  loadingComments.addEventListener('click', () => {
+  const showMoreComments = () => {
     // number = Number(countComments.textContent);
     console.log('maxNumber - n', maxNumber - n);
     if ((maxNumber - number) <= n) {
       slicePartComments(comments, number, maxNumber);
       countComments.textContent = maxNumber;
       loadingComments.classList.add('hidden');
-      console.log('Сработал click (maxNumber - number) <= n');
+      console.log('Сработал click if');
     } else {
       slicePartComments(comments, number, (number + n));
       number = number + n;
       countComments.textContent = number;
       console.log('Сработал click else');
     }
-  });
+  };
+
+  loadingComments.addEventListener('click', showMoreComments);
 
   return arrayComments;
 };
