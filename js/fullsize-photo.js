@@ -39,62 +39,48 @@ const creatingPartComments = (comments) => {
   return documentFragment;
 };
 
+const slicePartComments = (comments, start, end) => {
+  console.log('min', start);
+  console.log('max', end);
+  const partComments = comments.slice(start, end);
+  arrayComments.appendChild(creatingPartComments(partComments));
+
+};
+
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
 const drawArrayComments = (comments) => {
   arrayComments.textContent = '';
   let number = 0;
+  const n = 5;
+  const maxNumber = comments.length;
 
-  if (comments.length < 5) {
-    // console.log('number (comments.length<5) = ', number);
-
-    const littleComments = comments.slice(number, comments.length);
-
-    arrayComments.appendChild(creatingPartComments(littleComments));
-    // console.log('arrayComments (comments.length<5)', arrayComments);
-
-    number = comments.length;
+  if (maxNumber <= n) {
+    slicePartComments(comments, number, maxNumber);
+    countComments.textContent = maxNumber;
+    loadingComments.classList.add('hidden');
+    console.log('Сработало условие maxNumber <= n');
+  } else {
+    slicePartComments(comments, number, (number + n));
+    number = number + n;
     countComments.textContent = number;
-    // console.log('countComments (comments.length<5)', countComments);
-
-    loadingComments.classList.add('hidden'); // не срабатывает
-    // console.log('loadingComments (comments.length<5)', loadingComments);
+    console.log('Сработало условие else');
   }
-
-  const firstComments = comments.slice(number, number += 5);
-
-  arrayComments.appendChild(creatingPartComments(firstComments));
-  // console.log('arrayComments', arrayComments);
-
-  countComments.textContent = number;
-  // console.log('countComments - first', countComments);
 
   // Нажатие на кнопку "Загрузить еще"
   loadingComments.addEventListener('click', () => {
-    if (number < comments.length) {
-      // console.log('number - show more = ', number);
-
-      const nextComments = comments.slice(number, number += 5);
-      // console.log('number - show more 2 =', number);
-
-      arrayComments.appendChild(creatingPartComments(nextComments));
-      // console.log('arrayComments - show more ', arrayComments);
-
+    // number = Number(countComments.textContent);
+    console.log('maxNumber - n', maxNumber - n);
+    if ((maxNumber - number) <= n) {
+      slicePartComments(comments, number, maxNumber);
+      countComments.textContent = maxNumber;
+      loadingComments.classList.add('hidden');
+      console.log('Сработал click (maxNumber - number) <= n');
+    } else {
+      slicePartComments(comments, number, (number + n));
+      number = number + n;
       countComments.textContent = number;
-      // console.log('countComments- show more ', countComments);
+      console.log('Сработал click else');
     }
-    // console.log('number (number >= comments.length) = ', number);
-
-    const littleComments = comments.slice(number, comments.length);
-
-    arrayComments.appendChild(creatingPartComments(littleComments));
-    // console.log('arrayComments (number >= comments.length)', arrayComments);
-
-    number = comments.length;
-    countComments.textContent = number;
-    // console.log('countComments (number >= comments.length)', countComments);
-
-    loadingComments.classList.add('hidden');
-    // console.log('loadingComments (number >= comments.length)', loadingComments);
   });
 
   return arrayComments;
@@ -115,10 +101,6 @@ const drawFullsizePhoto = (photo) => {
 
   drawArrayComments(photo.comments);
   fullsizePhoto.querySelector('.social__comments').replaceWith(arrayComments);
-
-  // Временно скроем блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader
-  // fullsizePhoto.querySelector('.social__comment-count').classList.add('hidden');
-  // fullsizePhoto.querySelector('.comments-loader').classList.add('hidden');
 
   body.classList.add('.modal-open');
 };
