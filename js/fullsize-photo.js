@@ -51,35 +51,32 @@ const drawArrayComments = (comments) => {
   const n = 5;
   const maxNumber = comments.length;
 
-  if (maxNumber <= n) {
+  const sliceSmallPart = () => {
     slicePartComments(comments, number, maxNumber);
     countComments.textContent = maxNumber;
     loadingComments.classList.add('hidden');
-  } else {
+  };
+
+  const sliceNextPart = () => {
     slicePartComments(comments, number, (number + n));
     number = number + n;
     countComments.textContent = number;
-  }
+  };
+
+  const showFirstComments = () => (maxNumber <= n) ? sliceSmallPart() : sliceNextPart();
+  showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const showMoreComments = () => {
-    if ((maxNumber - number) <= n) {
-      slicePartComments(comments, number, maxNumber);
-      countComments.textContent = maxNumber;
-      loadingComments.classList.add('hidden');
-    } else {
-      slicePartComments(comments, number, (number + n));
-      number = number + n;
-      countComments.textContent = number;
-    }
-  };
+  const showMoreComments = () => ((maxNumber - number) <= n) ? sliceSmallPart() : sliceNextPart();
 
   loadingComments.addEventListener('click', showMoreComments);
 
+  // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
   fullsizePhoto.querySelector('#picture-cancel').onclick = function () {
     loadingComments.removeEventListener('click', showMoreComments);
   };
 
+  // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
   document.onkeydown = function (evt) {
     if (evt.code === 'Escape') {
       evt.preventDefault();
