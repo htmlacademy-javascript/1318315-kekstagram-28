@@ -40,8 +40,6 @@ const creatingPartComments = (comments) => {
 };
 
 const slicePartComments = (comments, start, end) => {
-  console.log('min', start);
-  console.log('max', end);
   const partComments = comments.slice(start, end);
   arrayComments.appendChild(creatingPartComments(partComments));
 
@@ -58,30 +56,36 @@ const drawArrayComments = (comments) => {
     slicePartComments(comments, number, maxNumber);
     countComments.textContent = maxNumber;
     loadingComments.classList.add('hidden');
-    console.log('Сработало условие maxNumber <= n');
   } else {
     slicePartComments(comments, number, (number + n));
     number = number + n;
     countComments.textContent = number;
-    console.log('Сработало условие else');
   }
 
   // Нажатие на кнопку "Загрузить еще"
-  loadingComments.addEventListener('click', () => {
-    // number = Number(countComments.textContent);
-    console.log('maxNumber - n', maxNumber - n);
+  const showMoreComments = () => {
     if ((maxNumber - number) <= n) {
       slicePartComments(comments, number, maxNumber);
       countComments.textContent = maxNumber;
       loadingComments.classList.add('hidden');
-      console.log('Сработал click (maxNumber - number) <= n');
     } else {
       slicePartComments(comments, number, (number + n));
       number = number + n;
       countComments.textContent = number;
-      console.log('Сработал click else');
     }
-  });
+  };
+
+  loadingComments.addEventListener('click', showMoreComments);
+
+  fullsizePhoto.querySelector('#picture-cancel').onclick = function () {
+    loadingComments.removeEventListener('click', showMoreComments);
+  };
+  document.onkeydown = function (evt) {
+    if (evt.code === 'Escape') {
+      evt.preventDefault();
+      loadingComments.removeEventListener('click', showMoreComments);
+    }
+  };
 
   return arrayComments;
 };
