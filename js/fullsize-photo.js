@@ -56,6 +56,7 @@ const drawArrayComments = (comments) => {
     slicePartComments(comments, number, maxNumber);
     countComments.textContent = maxNumber;
     loadingComments.classList.add('hidden');
+    console.log('Сработало условие if');
   } else {
     slicePartComments(comments, number, (number + n));
     number = number + n;
@@ -64,10 +65,13 @@ const drawArrayComments = (comments) => {
 
   // Нажатие на кнопку "Загрузить еще"
   const showMoreComments = () => {
+    // number = Number(countComments.textContent);
+    console.log('maxNumber - n', maxNumber - n);
     if ((maxNumber - number) <= n) {
       slicePartComments(comments, number, maxNumber);
       countComments.textContent = maxNumber;
       loadingComments.classList.add('hidden');
+      console.log('Сработал click if');
     } else {
       slicePartComments(comments, number, (number + n));
       number = number + n;
@@ -76,16 +80,6 @@ const drawArrayComments = (comments) => {
   };
 
   loadingComments.addEventListener('click', showMoreComments);
-
-  fullsizePhoto.querySelector('#picture-cancel').onclick = function () {
-    loadingComments.removeEventListener('click', showMoreComments);
-  };
-  document.onkeydown = function (evt) {
-    if (evt.code === 'Escape') {
-      evt.preventDefault();
-      loadingComments.removeEventListener('click', showMoreComments);
-    }
-  };
 
   return arrayComments;
 };
