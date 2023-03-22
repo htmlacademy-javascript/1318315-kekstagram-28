@@ -81,7 +81,7 @@ const createComment = () => {
 
 const createArrayComments = () => {
   const commentsArray = [];
-  const numberComments = getRandomNumber(1, 10);
+  const numberComments = getRandomNumber(1, 20);
   for (let i = 1; i <= numberComments; i++) {
     const newComment = createComment();
     commentsArray.push(newComment);
