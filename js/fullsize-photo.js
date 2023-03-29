@@ -1,3 +1,4 @@
+import {isEscKeydown} from './utils.js';
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 
@@ -78,7 +79,7 @@ const drawArrayComments = (comments) => {
 
   // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
   document.onkeydown = function (evt) {
-    if (evt.code === 'Escape') {
+    if (isEscKeydown(evt)) {
       evt.preventDefault();
       loadingComments.removeEventListener('click', showMoreComments);
     }
