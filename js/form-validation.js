@@ -1,13 +1,13 @@
 // import {form} from './form-upload-img.js';
 const form = document.querySelector('.img-upload__form');
 const hashtagsField = form.querySelector('.text__hashtags');
-console.log('hashtagsField.value', hashtagsField.value);
+// console.log('hashtagsField.value', hashtagsField.value);
 const errorMessageHashtegs = 'Должно быть минимум два символа. Максимальная длина одного #ХэшТега - 20 символов, можно написать самое большее пять #ХэшТегов. Используйте кириллицу, латиницу и цифры.';
 
 const hashtagSymbol = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/im;
 
 window.onload = function () {
-  console.log('hashtagsField.value2', hashtagsField.value);
+  // console.log('hashtagsField.value2', hashtagsField.value);
 
   const pristine = new Pristine(form, {
     classTo: 'img-upload__hashtags',
@@ -17,9 +17,9 @@ window.onload = function () {
 
   const validationHashtagField = (string) => {
     // Разбиваем строку на массив хеш-тегов
-    console.log('HashtagField value', string);
+    // console.log('HashtagField value', string);
     const hashtagArray = string.split(/\s/);
-    console.log('hashtagArray', hashtagArray);
+    // console.log('hashtagArray', hashtagArray);
 
     // Проверяем на уникальность хеш-теги, приводя их к нижнему регистру
     const isHashtegUnique = (value) => (
@@ -60,10 +60,10 @@ window.onload = function () {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      console.log('Форма прошла проверку - можно отправлять');
+      // console.log('Форма прошла проверку - можно отправлять');
       form.submit();
     } else {
-      console.log('Форма не валидна - исправь ошибки');
+      // console.log('Форма не валидна - исправь ошибки');
       evt.stopPropagation();
     }
   };
