@@ -77,7 +77,7 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
-export {hashtagsField, form};
+export {hashtagsField, commentsField, form};
 
 // Хочу прописать стиль для показа ошибки при вводе
 // form.querySelector(['input:invalid']).style.backgroundColor = 'brown';
