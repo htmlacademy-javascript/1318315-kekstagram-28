@@ -35,5 +35,3 @@ const toEscCloseForm = (evt) => {
 };
 
 document.addEventListener('keydown', toEscCloseForm);
-
-// export {form};
