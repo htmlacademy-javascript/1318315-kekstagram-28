@@ -1,6 +1,9 @@
 import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
 import {hashtagsField, commentsField, form} from './form-validation.js';
+import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
+import {toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
+import {toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
 
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
@@ -10,6 +13,9 @@ const close = form.querySelector('#upload-cancel');
 const toOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
+  toCreateEffectsPhotoEventListeners();
+  toCreateChangeSizePhotoEventListeners();
+  toResetEffects();
 };
 
 openFile.addEventListener('change', toOpenForm);
@@ -21,6 +27,7 @@ const toCloseForm = () => {
   openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
   hashtagsField.value = '';
   commentsField.value = '';
+  toDeleteCloseFormEventListeners();
 };
 
 close.addEventListener('click', toCloseForm);
@@ -35,3 +42,6 @@ const toEscCloseForm = (evt) => {
 };
 
 document.addEventListener('keydown', toEscCloseForm);
+
+export {close, toCloseForm, toEscCloseForm};
+// Записала удаление EventListener со строки 29(close.addEventListener('click', toCloseForm)) и 38(document.addEventListener('keydown', toEscCloseForm)) в файле remove-event-listener.js, а вызываю это удаление в этом файле в строке 26(toDeleteCloseFormEventListeners()).
