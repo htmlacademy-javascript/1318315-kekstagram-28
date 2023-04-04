@@ -56,30 +56,34 @@ pristine.addValidator(hashtagsField, isHashtagLength, errorMessageHashtagLength)
 pristine.addValidator(commentsField, isCommentsLength, errorMessageComments);
 
 // Вызываем проверку
-hashtagsField.addEventListener('keyup', () => {
-  pristine.validate();
-});
+const isFieldsValidate = () => pristine.validate();
 
-commentsField.addEventListener('keyup', () => {
-  pristine.validate();
-});
+const toCreateFieldsValidateEventListener = () => {
+  hashtagsField.addEventListener('keyup', isFieldsValidate);
+  commentsField.addEventListener('keyup', isFieldsValidate);
+};
+
+const toRemoveFieldsValidateEventListener = () => {
+  hashtagsField.remuveEventListener('keyup', isFieldsValidate);
+  commentsField.removeEventListener('keyup', isFieldsValidate);
+};
 
 // Отправка формы
-form.addEventListener('submit', (evt) => {
+const toSubmitForm = (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
 
   if (isValid) {
     form.submit();
+    toRemoveFieldsValidateEventListener();
   } else {
     evt.stopPropagation();
   }
-});
+};
 
-export {hashtagsField, commentsField, form};
+const toCreateFormSubmitEventListener = () => form.addEventListener('submit', toSubmitForm);
 
-// Хочу прописать стиль для показа ошибки при вводе
-// form.querySelector(['input:invalid']).style.backgroundColor = 'brown';
+export {hashtagsField, commentsField, form, toSubmitForm, toCreateFormSubmitEventListener, toCreateFieldsValidateEventListener};
 
 // Нужно поудалять Обработчики
