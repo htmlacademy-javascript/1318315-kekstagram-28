@@ -46,5 +46,5 @@ const toEscCloseForm = (evt) => {
 
 document.addEventListener('keydown', toEscCloseForm);
 
-export {close, toCloseForm, toEscCloseForm};
-// Записала удаление EventListener со строки 29(close.addEventListener('click', toCloseForm)) и 38(document.addEventListener('keydown', toEscCloseForm)) в файле remove-event-listener.js, а вызываю это удаление в этом файле в строке 26(toDeleteCloseFormEventListeners()).
+// Нужно удалить EventListener со строки 29(close.addEventListener('click', toCloseForm)) и 38(document.addEventListener('keydown', toEscCloseForm))
+// Записать их удаление в файле remove-event-listener.js, НЕЛЬЗЯ, т.к. вызываю это удаление в этом файле в строке 26 - И ТОГДА КОД РАБОТАЕТ НЕКОРРЕКТНО(toDeleteCloseFormEventListeners()).
