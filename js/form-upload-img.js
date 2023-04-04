@@ -1,6 +1,6 @@
 import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
-import {hashtagsField, commentsField, form} from './form-validation.js';
+import {hashtagsField, commentsField, form, toCreateFormSubmitEventListener, toCreateFieldsValidateEventListener} from './form-validation.js';
 import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
 import {noneUpdateOptions, toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
 import {controlValue, boxImgPreview, toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
@@ -15,6 +15,8 @@ const toOpenForm = () => {
   imageUpload.classList.remove('hidden');
   toCreateEffectsPhotoEventListeners();
   toCreateChangeSizePhotoEventListeners();
+  toCreateFieldsValidateEventListener();
+  toCreateFormSubmitEventListener();
   toResetEffects();
   noneUpdateOptions();
   controlValue.value = '100%';
