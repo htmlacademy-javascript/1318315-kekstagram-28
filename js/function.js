@@ -59,4 +59,5 @@ const makeNewString = (string, maxLength, symbol) => {
   newString = newSymbol.concat(string);
   return newString;
 };
+
 makeNewString('q', 4, 'we');

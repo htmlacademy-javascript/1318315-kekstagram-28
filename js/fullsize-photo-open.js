@@ -13,5 +13,3 @@ photos.forEach((photo) => {
     drawFullsizePhoto(dataPhotosArray[evt.currentTarget.id]);
   });
 });
-
-

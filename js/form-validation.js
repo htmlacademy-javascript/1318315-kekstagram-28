@@ -2,8 +2,8 @@ const form = document.querySelector('.img-upload__form');
 const hashtagsField = form.querySelector('.text__hashtags');
 const commentsField = form.querySelector('.text__description');
 
-const errorMessageHashtegUnique = 'Текст #ХэшТега не должен повторяться';
-const errorMessageHashtagPattern = 'Начните с #, а затем используйте кириллицу, латиницу и цифры oт 2 до 20 символов';
+const errorMessageHashtegUnique = 'Все #ХэшТеги должены быть разными';
+const errorMessageHashtagPattern = '#ХэшТега начинается с #, а затем используйте кириллицу, латиницу и цифры; Всего может быть oт 2 до 20 символов одного #ХэшТега';
 const errorMessageHashtagLength = 'Можно написать самое большее пять #ХэшТегов';
 const errorMessageComments = 'Максимальная длина комментария - 140 символов';
 
@@ -58,6 +58,7 @@ pristine.addValidator(commentsField, isCommentsLength, errorMessageComments);
 // Вызываем проверку
 const isFieldsValidate = () => pristine.validate();
 
+// Функции, которые создают и удаляют обработчики ввода данных в поля ХэшТегов и комментариев
 const toCreateFieldsValidateEventListener = () => {
   hashtagsField.addEventListener('keyup', isFieldsValidate);
   commentsField.addEventListener('keyup', isFieldsValidate);
@@ -86,4 +87,4 @@ const toCreateFormSubmitEventListener = () => form.addEventListener('submit', to
 
 export {hashtagsField, commentsField, form, toSubmitForm, toCreateFormSubmitEventListener, toCreateFieldsValidateEventListener};
 
-// Нужно поудалять Обработчики
+// Нужно удалить Обработчик на 86 строке - toCreateFormSubmitEventListener

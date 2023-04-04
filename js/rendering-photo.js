@@ -14,7 +14,7 @@ const createPicture = (photo) => {
   picture.querySelector('.picture__likes').textContent = photo.likes;
   picture.querySelector('.picture__comments').textContent = photo.comments.length;
   picture.querySelector('.picture__img').alt = photo.description;
-  picture.querySelector('.picture__img').id = photo.id;
+  picture.querySelector('.picture__img').id = photo.id; //Здесь, наверное нкжно создать "data-id", а не "id"
   return picture;
 };
 

@@ -33,6 +33,7 @@ const toEnlargePhoto = (evt) => {
   }
 };
 
+// Создаем обработчики клика по кнопкам "+"" и "-"
 const toCreateChangeSizePhotoEventListeners = () => {
   controlSmaller.addEventListener('click', toReducePhoto);
   controlBigger.addEventListener('click', toEnlargePhoto);

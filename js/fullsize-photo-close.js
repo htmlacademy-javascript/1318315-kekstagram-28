@@ -24,3 +24,5 @@ const toEscFullScreen = (evt) => {
 
 close.addEventListener('click', toCloseFullsizePhoto);
 document.addEventListener('keydown', toEscFullScreen);
+
+// Нужно удалить обработчики закрытия полноэкранного изображения
