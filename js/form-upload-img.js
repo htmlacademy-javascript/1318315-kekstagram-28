@@ -36,7 +36,7 @@ const toCloseForm = () => {
 close.addEventListener('click', toCloseForm);
 
 const toEscCloseForm = (evt) => {
-  if (isEscKeydown(evt) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не закрывается.
+  if ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не закрывается.
     evt.stopPropagation();
   } else {
     evt.preventDefault();
