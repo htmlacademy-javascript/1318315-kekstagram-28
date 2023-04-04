@@ -2,8 +2,8 @@ import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
 import {hashtagsField, commentsField, form} from './form-validation.js';
 import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
-import {toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
-import {toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
+import {noneUpdateOptions, toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
+import {controlValue, boxImgPreview, toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
 
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
@@ -16,6 +16,9 @@ const toOpenForm = () => {
   toCreateEffectsPhotoEventListeners();
   toCreateChangeSizePhotoEventListeners();
   toResetEffects();
+  noneUpdateOptions();
+  controlValue.value = '100%';
+  boxImgPreview.style.transform = 'scale(1)';
 };
 
 openFile.addEventListener('change', toOpenForm);

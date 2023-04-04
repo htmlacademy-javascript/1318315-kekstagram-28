@@ -38,6 +38,6 @@ const toCreateChangeSizePhotoEventListeners = () => {
   controlBigger.addEventListener('click', toEnlargePhoto);
 };
 
-export {controlSmaller, toReducePhoto, controlBigger, toEnlargePhoto, toCreateChangeSizePhotoEventListeners};
+export {controlValue, boxImgPreview, controlSmaller, toReducePhoto, controlBigger, toEnlargePhoto, toCreateChangeSizePhotoEventListeners};
 
 // Записала удаление EventListener со строки 28(controlSmaller.addEventListener('click', toReducePhoto)) и 39(controlBigger.addEventListener('click', toEnlargePhoto)) в файле remove-event-listener.js, а вызываю это удаление в файле form-upload-img.js в строке 26(toDeleteCloseFormEventListeners()).

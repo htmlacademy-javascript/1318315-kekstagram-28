@@ -210,6 +210,6 @@ const toResetEffects = () => {
   noneUpdateOptions();
 };
 
-export {toResetEffects, effects, selectedEffect, toCreateEffectsPhotoEventListeners};
+export {noneUpdateOptions, toResetEffects, effects, selectedEffect, toCreateEffectsPhotoEventListeners};
 
 // Записала удаление EventListener со строки 210(effects.addEventListener('change', selectedEffect)) в файле remove-event-listener.js, а вызываю это удаление в файле form-upload-img.js в строке 26(toDeleteCloseFormEventListeners()).
