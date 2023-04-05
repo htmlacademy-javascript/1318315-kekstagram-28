@@ -9,11 +9,12 @@ import {drawFullsizePhoto} from './fullsize-photo.js';
 // const sectionPictures = createArrayPicture(dataPhotosArray);
 // const sectionPictures = createArrayPicture(Object); // Object должен приходить из модуля server.js
 
-const photos = Array.from(document.querySelectorAll('.picture')); // Преобразование DOM-изображений в настоящий массив, чтобы его перебрать и навесить обработчик клика
+// Преобразование DOM-изображений в настоящий массив, чтобы его перебрать и навесить обработчик клика
+const photos = Array.from(document.querySelectorAll('.picture'));
 
 photos.forEach((photo) => {
   photo.addEventListener('click', (evt) => {
     // drawFullsizePhoto(dataPhotosArray[evt.currentTarget.id]);
-    drawFullsizePhoto(Object[evt.currentTarget.id]); // Object должен приходить из модуля server.js
+    drawFullsizePhoto(photo[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
   });
 });
