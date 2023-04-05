@@ -10,3 +10,4 @@ import './form-validation.js';
 import './form-change-size-img.js';
 import './form-effects-img.js';
 import './remove-event-listeners.js';
+import './server.js';
