@@ -9,4 +9,8 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
     console.log('miniatures', miniatures);
     const miniaturesRenderingServer = sectionPictures(miniatures);
     console.log('miniaturesRenderingServer', miniaturesRenderingServer);
+  })
+  .catch((err) => {
+    console.log(err);
+    alert('Произошла ошибка загрузки страницы с сервера');
   });
