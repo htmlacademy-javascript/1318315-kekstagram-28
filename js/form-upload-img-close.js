@@ -1,29 +1,12 @@
 import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
-import {hashtagsField, commentsField, form, toCreateFormSubmitEventListener, toCreateFieldsValidateEventListener} from './form-validation.js';
+import {hashtagsField, commentsField, form,} from './form-validation.js';
 import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
-import {noneUpdateOptions, toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
-import {controlValue, boxImgPreview, toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
 
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
 const close = form.querySelector('#upload-cancel');
 
-// Открытие формы по загрузке фотографии пользователя
-const toOpenForm = () => {
-  body.classList.add('modal-open');
-  imageUpload.classList.remove('hidden');
-  toCreateEffectsPhotoEventListeners();
-  toCreateChangeSizePhotoEventListeners();
-  toCreateFieldsValidateEventListener();
-  toCreateFormSubmitEventListener();
-  toResetEffects();
-  noneUpdateOptions();
-  controlValue.value = '100%';
-  boxImgPreview.style.transform = 'scale(1)';
-};
-
-openFile.addEventListener('change', toOpenForm);
 
 // Закрытие формы по загрузке фотографии пользователя
 const toCloseForm = () => {

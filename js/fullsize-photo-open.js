@@ -14,6 +14,7 @@ const photos = Array.from(document.querySelectorAll('.picture'));
 
 photos.forEach((photo) => {
   photo.addEventListener('click', (evt) => {
+    console.log(evt.currentTarget);
     // drawFullsizePhoto(dataPhotosArray[evt.currentTarget.id]);
     drawFullsizePhoto(photo[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
   });
