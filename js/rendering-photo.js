@@ -7,14 +7,14 @@ const picturesArray = document.querySelector('.pictures');
 let photoId = 0;
 
 // Создание одной картинки (фото + описание)
-const createPicture = (photo) => {
+const createPicture = (Object) => {
   const picture = templatePicture.cloneNode(true);
   picture.id = photoId++;
-  picture.querySelector('.picture__img').src = photo.url;
-  picture.querySelector('.picture__likes').textContent = photo.likes;
-  picture.querySelector('.picture__comments').textContent = photo.comments.length;
-  picture.querySelector('.picture__img').alt = photo.description;
-  picture.querySelector('.picture__img').id = photo.id; //Здесь, наверное нкжно создать "data-id", а не "id"
+  picture.querySelector('.picture__img').src = Object.url;
+  picture.querySelector('.picture__likes').textContent = Object.likes;
+  picture.querySelector('.picture__comments').textContent = Object.comments.length;
+  picture.querySelector('.picture__img').alt = Object.description;
+  picture.querySelector('.picture__img').id = Object.id; //Здесь, наверное нкжно создать "data-id", а не "id"
   return picture;
 };
 
@@ -32,3 +32,4 @@ const createArrayPicture = (objects) => {
 };
 
 export {createArrayPicture};
+// export {createArrayPicture} into fullsize-photo-open.js
