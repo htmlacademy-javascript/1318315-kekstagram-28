@@ -1,4 +1,5 @@
 import {fullsizePhoto, body, arrayComments, countComments, loadingComments} from './fullsize-photo.js';
+import { isEscKeydown } from './utils.js';
 
 const close = fullsizePhoto.querySelector('#picture-cancel');
 
@@ -16,7 +17,7 @@ const toCloseFullsizePhoto = (evt) => {
 };
 
 const toEscFullScreen = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscKeydown) {
     evt.preventDefault();
     closePhoto();
   }

@@ -13,3 +13,4 @@ import './form-effects-img.js';
 import './remove-event-listeners.js';
 import './server.js';
 import './popups.js';
+import './popup-close.js';

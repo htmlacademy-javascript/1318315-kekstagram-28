@@ -1,8 +1,9 @@
 import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
-import {hashtagsField, commentsField, form,} from './form-validation.js';
+import {hashtagsField, commentsField} from './form-validation.js';
 import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
 
+const form = document.querySelector('.img-upload__form');
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
 const close = form.querySelector('#upload-cancel');
@@ -30,6 +31,8 @@ const toEscCloseForm = (evt) => {
 };
 
 document.addEventListener('keydown', toEscCloseForm);
+
+export {toCloseForm};
 
 // Нужно удалить EventListener со строки 29(close.addEventListener('click', toCloseForm)) и 38(document.addEventListener('keydown', toEscCloseForm))
 // Записать их удаление в файле remove-event-listener.js, НЕЛЬЗЯ, т.к. вызываю это удаление в этом файле в строке 26 - И ТОГДА КОД РАБОТАЕТ НЕКОРРЕКТНО(toDeleteCloseFormEventListeners()).

@@ -1,6 +1,9 @@
 import {createArrayPicture} from './rendering-photo.js';
-import {drawFullsizePhoto} from './fullsize-photo.js';
-import {createPopupSuccess, createPopupError, createLoadForm} from './popups.js';
+import {showFullsizePhoto} from './fullsize-photo-open.js';
+import {createPopupSuccess, createPopupError} from './popups.js';
+import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
+import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
+import { toCloseForm } from './form-upload-img-close.js';
 
 const textErrorLoad = 'Произошла ошибка загрузки страницы с сервера';
 
@@ -11,18 +14,10 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
     sectionPictures(miniatures);
-
-    const photos = Array.from(document.querySelectorAll('.picture'));
-
-    photos.forEach((photo) => {
-      photo.addEventListener('click', (evt) => {
-        console.log(evt.currentTarget);
-        drawFullsizePhoto(photo[evt.currentTarget.dataset.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
-      });
-    });
+    showFullsizePhoto();
   })
-  .catch((err) => {
-    alert(`${textErrorLoad}`); // `${textErrorLoad}`
+  .catch(() => {
+    alert(`${textErrorLoad}`); // Как показать ошибку загрузки страницы не Алертом ??? Самой создать и стили написать ???
   });
 
 // Отправка данных формы на сервер
@@ -33,19 +28,32 @@ const submitDataFormToServer = (data) => {
       method: 'POST',
       body: data,
     })
-    .then(() => { // Форма закрывается, ее поля обнуляются // Показывается окно из template #success
-      // Скрыть "Загружаем..." showLoadForm
-      document.querySelector('.img-upload__message').remove(); // удаляем document.body.append(createLoadForm());
+    .then(() => {
+      // Скрыть "Загружаем..." document.body.append(createLoadForm());
+      document.querySelector('.img-upload__message').remove();
 
       // Показывается окно из template #success
       document.body.append(createPopupSuccess());
+      toCreateClosePopupSuccessEventListeners();
+      toCloseForm();
+
+      // Если в DOM удалили PopupSuccess, нажалие на кнопку, то нуддно удалить обработчики
+      if (!document.body.contains(document.querySelector('.success'))) {
+        toDeleteClosePopupSuccessEventListeners();
+      }
     })
     .catch(() => {
-      // Скрыть "Загружаем..." showLoadForm
-      document.querySelector('.img-upload__message').remove(); // удаляем document.body.append(createLoadForm());
+      // Скрыть "Загружаем..." document.body.append(createLoadForm());
+      document.querySelector('.img-upload__message').remove();
 
       // Показывается окно из template #error
       document.body.append(createPopupError());
+      toCreateClosePopupErrorEventListeners();
+
+      // Если в DOM удалили PopupError, нажалие на кнопку, то нуддно удалить обработчики
+      if (!document.body.contains(document.querySelector('.error'))) {
+        toDeleteClosePopupErrorEventListeners();
+      }
     });
 };
 

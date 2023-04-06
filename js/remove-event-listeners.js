@@ -1,6 +1,8 @@
 import {controlSmaller, toReducePhoto, controlBigger, toEnlargePhoto} from './form-change-size-img.js';
 import {toResetEffects, effects, selectedEffect} from './form-effects-img.js';
 import {form, toSubmitForm} from './form-validation.js';
+import {body} from './fullsize-photo.js';
+import {buttonPopupSuccess, removePopupSuccess, removeToEscPopupSuccess, buttonPopupError, removePopupError, removeToEscPopupError} from './popup-close.js';
 
 const toDeleteCloseFormEventListeners = () => {
   controlSmaller.removeEventListener('click', toReducePhoto);
@@ -10,4 +12,16 @@ const toDeleteCloseFormEventListeners = () => {
   toResetEffects();
 };
 
-export {toDeleteCloseFormEventListeners};
+const toDeleteClosePopupSuccessEventListeners = () => {
+  buttonPopupSuccess.removeEventListener('click', removePopupSuccess());
+  document.removeEventListener('keydown', removeToEscPopupSuccess());
+  body.removeEventListener('click', removePopupSuccess());
+};
+
+const toDeleteClosePopupErrorEventListeners = () => {
+  buttonPopupError.removeEventListener('click', removePopupError());
+  document.removeEventListener('keydown', removeToEscPopupError());
+  body.removeEventListener('click', removePopupError());
+};
+
+export {toDeleteCloseFormEventListeners, toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners};
