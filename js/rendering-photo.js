@@ -14,7 +14,6 @@ const createPicture = (Object) => {
   picture.querySelector('.picture__likes').textContent = Object.likes;
   picture.querySelector('.picture__comments').textContent = Object.comments.length;
   picture.querySelector('.picture__img').alt = Object.description;
-  picture.querySelector('.picture__img').dataset.id = Object.id; //Здесь, наверное нкжно создать "data-id", а не "id"
   return picture;
 };
 
@@ -24,6 +23,7 @@ const createArrayPicture = (objects) => {
 
   for (let i = 0; i < objects.length; i++) {
     const newPicture = createPicture(objects[i]);
+    newPicture.dataset.id = i; //Здесь создаю "data-id", а не "id", чтобы атрибут data-id прописывался сссылке/объекту <a><img>...</a>, а не просто одной картинке (без коментариев, лайков...) <a><img>...</a>
     fragment.appendChild(newPicture);
   }
 

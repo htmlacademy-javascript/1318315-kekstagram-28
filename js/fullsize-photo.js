@@ -59,7 +59,7 @@ const drawArrayComments = (comments) => {
   };
 
   const sliceNextPart = () => {
-    slicePartComments(comments, number, (number + n));
+    slicePartComments(comments, number, (number + N));
     number = number + N;
     countComments.textContent = number;
   };

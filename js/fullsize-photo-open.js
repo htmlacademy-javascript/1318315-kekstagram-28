@@ -15,9 +15,10 @@ const showFullsizePhoto = () => {
 
   photos.forEach((photo) => {
     photo.addEventListener('click', (evt) => {
-      console.log(evt.currentTarget);
+      console.log('evt.currentTarget', evt.currentTarget);
+      console.log('evt.currentTarget.dataset.id', evt.currentTarget.dataset.id);
       // drawFullsizePhoto(dataPhotosArray[evt.currentTarget.id]);
-      drawFullsizePhoto(photo[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
+      drawFullsizePhoto(photo[evt.currentTarget.dataset.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
     });
   });
 };
