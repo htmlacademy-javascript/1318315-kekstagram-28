@@ -1,4 +1,3 @@
-import {createLoadForm} from './popups.js';
 import {submitDataFormToServer} from './server.js';
 
 const form = document.querySelector('.img-upload__form');
@@ -80,7 +79,7 @@ const toSubmitForm = (evt) => {
 
   if (isValid) {
     // Показать темплейт "Загружаем..."
-    document.body.append(createLoadForm());
+    document.querySelector('.img-upload__message').classList.remove('hidden');
 
     // Собираем и отправляем данные формы
     const formData = new FormData(form);

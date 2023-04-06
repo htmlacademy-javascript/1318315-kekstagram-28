@@ -1,3 +1,5 @@
+const SHOW_TIME = 5000;
+
 const getRandomNumber = (min, max) => {
   if ((0 <= min) && (min < max)) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -7,4 +9,4 @@ const getRandomNumber = (min, max) => {
 
 const isEscKeydown = (evt) => evt.code === 'Escape';
 
-export {getRandomNumber, isEscKeydown};
+export {getRandomNumber, isEscKeydown, SHOW_TIME};

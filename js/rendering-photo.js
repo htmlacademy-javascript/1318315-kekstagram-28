@@ -5,6 +5,7 @@ const templatePicture = templateFragment.querySelector('.picture');
 const picturesArray = document.querySelector('.pictures');
 
 let photoId = 0;
+let dataId = 0;
 
 // Создание одной картинки (фото + описание)
 const createPicture = (Object) => {
@@ -23,7 +24,8 @@ const createArrayPicture = (objects) => {
 
   for (let i = 0; i < objects.length; i++) {
     const newPicture = createPicture(objects[i]);
-    newPicture.dataset.id = i; //Здесь создаю "data-id", а не "id", чтобы атрибут data-id прописывался сссылке/объекту <a><img>...</a>, а не просто одной картинке (без коментариев, лайков...) <a><img>...</a>
+    //Здесь создаю "data-id", а не "id", чтобы атрибут data-id прописывался сссылке/объекту <a><img>...</a>, а не просто одной картинке (без коментариев, лайков...) <a><img>...</a>
+    newPicture.dataset.id = dataId++; // = i;  КАКОЙ ВАРИАНТ ЛУЧШЕ БУДЕТ ???
     fragment.appendChild(newPicture);
   }
 

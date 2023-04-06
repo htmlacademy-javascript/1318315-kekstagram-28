@@ -1,23 +1,24 @@
 import {createArrayPicture} from './rendering-photo.js';
 import {showFullsizePhoto} from './fullsize-photo-open.js';
-import {createPopupSuccess, createPopupError} from './popups.js';
+import {showPopupErrorLoad} from './popups.js';
 import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
 import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
-import { toCloseForm } from './form-upload-img-close.js';
-
-const textErrorLoad = 'Произошла ошибка загрузки страницы с сервера';
+import {toCloseForm} from './form-upload-img-close.js';
 
 // Загрузка данных с удаленного сервера
 const sectionPictures = (Object) => createArrayPicture(Object);
 
-fetch('https://28.javascript.pages.academy/kekstagram/data')
+fetch('https://28.javascript.pages.academ/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
     sectionPictures(miniatures);
     showFullsizePhoto();
   })
   .catch(() => {
-    alert(`${textErrorLoad}`); // Как показать ошибку загрузки страницы не Алертом ??? Самой создать и стили написать ???
+    // Показ окна про ошибку загрузки страницы с миниатюрами с сервера на 5 сек.
+    document.querySelector('.load').classList.remove('hidden');
+    showPopupErrorLoad();
+    // alert(`${textErrorLoad}`); // Как показать ошибку загрузки страницы не Алертом ??? Самой создать и стили написать ???
   });
 
 // Отправка данных формы на сервер
@@ -29,28 +30,28 @@ const submitDataFormToServer = (data) => {
       body: data,
     })
     .then(() => {
-      // Скрыть "Загружаем..." document.body.append(createLoadForm());
-      document.querySelector('.img-upload__message').remove();
+      // Скрыть "Загружаем..."
+      document.querySelector('.img-upload__message').classList.add('hidden');
 
       // Показывается окно из template #success
-      document.body.append(createPopupSuccess());
+      document.querySelector('.success').classList.remove('hidden');
       toCreateClosePopupSuccessEventListeners();
-      toCloseForm();
+      toCloseForm(); // Закрытие формы
 
-      // Если в DOM удалили PopupSuccess, нажалие на кнопку, то нуддно удалить обработчики
+      // Если в DOM удалили PopupSuccess, нажалие на кнопку, то нужно удалить обработчики
       if (!document.body.contains(document.querySelector('.success'))) {
         toDeleteClosePopupSuccessEventListeners();
       }
     })
     .catch(() => {
-      // Скрыть "Загружаем..." document.body.append(createLoadForm());
-      document.querySelector('.img-upload__message').remove();
+      // Скрыть "Загружаем..."
+      document.querySelector('.img-upload__message').classList.add('hidden');
 
       // Показывается окно из template #error
-      document.body.append(createPopupError());
+      document.querySelector('.error').classList.remove('hidden');
       toCreateClosePopupErrorEventListeners();
 
-      // Если в DOM удалили PopupError, нажалие на кнопку, то нуддно удалить обработчики
+      // Если в DOM удалили PopupError, нажатие на кнопку, то нуддно удалить обработчики
       if (!document.body.contains(document.querySelector('.error'))) {
         toDeleteClosePopupErrorEventListeners();
       }
