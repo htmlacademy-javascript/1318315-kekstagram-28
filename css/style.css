@@ -1424,12 +1424,12 @@ main {
 /*
  * Экраны ошибки загрузки страницы с миниатюрами
  */
-/*
+
  .load {
    position: fixed;
-   display: flex;
+   /* display: flex; */
    justify-content: center;
-   align-items: flex-start;
+   /* align-items: flex-start; */
 
    left: 0;
    top: 0;
@@ -1445,7 +1445,7 @@ main {
    width: 600px;
    padding: 50px 20px;
    padding-top: 150px;
-   margin-top: 200px;
+   margin: 200px auto;
 
    display: flex;
    flex-direction: column;
@@ -1490,4 +1490,4 @@ main {
    -webkit-transform: translateX(-50%);
        -ms-transform: translateX(-50%);
            transform: translateX(-50%);
- } */
+ }

@@ -1,8 +1,8 @@
-import {body} from './fullsize-photo.js';
+// import {body} from './fullsize-photo.js';
 import {form, toCreateFormSubmitEventListener, toCreateFieldsValidateEventListener} from './form-validation.js';
 import {noneUpdateOptions, toCreateEffectsPhotoEventListeners, toResetEffects} from './form-effects-img.js';
 import {controlValue, boxImgPreview, toCreateChangeSizePhotoEventListeners} from './form-change-size-img.js';
-
+const body = document.querySelector('body');
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
 

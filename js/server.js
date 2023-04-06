@@ -1,24 +1,23 @@
 import {createArrayPicture} from './rendering-photo.js';
-import {showFullsizePhoto} from './fullsize-photo-open.js';
+import {showFullsizePhoto} from './fullsize-photo.js';
 import {showPopupErrorLoad} from './popups.js';
-import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
-import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
+// import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
+// import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
 import {toCloseForm} from './form-upload-img-close.js';
 
 // Загрузка данных с удаленного сервера
 const sectionPictures = (Object) => createArrayPicture(Object);
 
-fetch('https://28.javascript.pages.academ/kekstagram/data')
+fetch('https://28.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
     sectionPictures(miniatures);
-    showFullsizePhoto();
+    showFullsizePhoto(miniatures);
   })
   .catch(() => {
     // Показ окна про ошибку загрузки страницы с миниатюрами с сервера на 5 сек.
     document.querySelector('.load').classList.remove('hidden');
     showPopupErrorLoad();
-    // alert(`${textErrorLoad}`); // Как показать ошибку загрузки страницы не Алертом ??? Самой создать и стили написать ???
   });
 
 // Отправка данных формы на сервер
@@ -35,13 +34,13 @@ const submitDataFormToServer = (data) => {
 
       // Показывается окно из template #success
       document.querySelector('.success').classList.remove('hidden');
-      toCreateClosePopupSuccessEventListeners();
+      // toCreateClosePopupSuccessEventListeners();
       toCloseForm(); // Закрытие формы
 
       // Если в DOM удалили PopupSuccess, нажалие на кнопку, то нужно удалить обработчики
-      if (!document.body.contains(document.querySelector('.success'))) {
-        toDeleteClosePopupSuccessEventListeners();
-      }
+      // if (!document.body.contains(document.querySelector('.success'))) {
+      //   toDeleteClosePopupSuccessEventListeners();
+      // }
     })
     .catch(() => {
       // Скрыть "Загружаем..."
@@ -49,12 +48,12 @@ const submitDataFormToServer = (data) => {
 
       // Показывается окно из template #error
       document.querySelector('.error').classList.remove('hidden');
-      toCreateClosePopupErrorEventListeners();
+      // toCreateClosePopupErrorEventListeners();
 
       // Если в DOM удалили PopupError, нажатие на кнопку, то нуддно удалить обработчики
-      if (!document.body.contains(document.querySelector('.error'))) {
-        toDeleteClosePopupErrorEventListeners();
-      }
+      // if (!document.body.contains(document.querySelector('.error'))) {
+      //   toDeleteClosePopupErrorEventListeners();
+      // }
     });
 };
 

@@ -25,7 +25,7 @@ const createArrayPicture = (objects) => {
   for (let i = 0; i < objects.length; i++) {
     const newPicture = createPicture(objects[i]);
     //Здесь создаю "data-id", а не "id", чтобы атрибут data-id прописывался сссылке/объекту <a><img>...</a>, а не просто одной картинке (без коментариев, лайков...) <a><img>...</a>
-    newPicture.dataset.id = dataId++; // = i;  КАКОЙ ВАРИАНТ ЛУЧШЕ БУДЕТ ???
+    newPicture.dataset.id = dataId++;
     fragment.appendChild(newPicture);
   }
 

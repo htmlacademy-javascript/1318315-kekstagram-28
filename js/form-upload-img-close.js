@@ -1,13 +1,13 @@
-import {body} from './fullsize-photo.js';
+// import {body} from './fullsize-photo.js';
 import {isEscKeydown} from './utils.js';
 import {hashtagsField, commentsField} from './form-validation.js';
-import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
+// import {toDeleteCloseFormEventListeners} from './remove-event-listeners.js';
 
 const form = document.querySelector('.img-upload__form');
 const openFile = form.querySelector('#upload-file');
 const imageUpload = form.querySelector('.img-upload__overlay');
 const close = form.querySelector('#upload-cancel');
-
+const body = document.querySelector('body');
 
 // Закрытие формы по загрузке фотографии пользователя
 const toCloseForm = () => {
@@ -16,7 +16,7 @@ const toCloseForm = () => {
   openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
   hashtagsField.value = '';
   commentsField.value = '';
-  toDeleteCloseFormEventListeners();
+  // toDeleteCloseFormEventListeners();
 };
 
 close.addEventListener('click', toCloseForm);
