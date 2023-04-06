@@ -49,7 +49,7 @@ const slicePartComments = (comments, start, end) => {
 const drawArrayComments = (comments) => {
   arrayComments.textContent = '';
   let number = 0;
-  const n = 5;
+  const N = 5;
   const maxNumber = comments.length;
 
   const sliceSmallPart = () => {
@@ -60,15 +60,15 @@ const drawArrayComments = (comments) => {
 
   const sliceNextPart = () => {
     slicePartComments(comments, number, (number + n));
-    number = number + n;
+    number = number + N;
     countComments.textContent = number;
   };
 
-  const showFirstComments = () => (maxNumber <= n) ? sliceSmallPart() : sliceNextPart();
+  const showFirstComments = () => (maxNumber <= N) ? sliceSmallPart() : sliceNextPart();
   showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const showMoreComments = () => ((maxNumber - number) <= n) ? sliceSmallPart() : sliceNextPart();
+  const showMoreComments = () => ((maxNumber - number) <= N) ? sliceSmallPart() : sliceNextPart();
 
   loadingComments.addEventListener('click', showMoreComments);
 

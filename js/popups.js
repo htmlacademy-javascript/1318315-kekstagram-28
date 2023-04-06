@@ -30,10 +30,6 @@ const createPopupSuccess = () => {
   return documentFragment;
 };
 
-const showPopupSuccess = () => {
-  Alert(createPopupSuccess());
-};
-
 // Окно, которое показывается в случае ошибки отправки формы
 const createPopupError = () => {
   const documentFragment = document.createDocumentFragment();
@@ -60,10 +56,6 @@ const createPopupError = () => {
   return documentFragment;
 };
 
-const showPopupError = () => {
-  alert(createPopupError());
-};
-
 // Окно, которое показывается в процессе загрузки фанных формы на сервер
 const createLoadForm = () => {
   const documentFragment = document.createDocumentFragment();
@@ -78,8 +70,4 @@ const createLoadForm = () => {
   return documentFragment;
 };
 
-const showLoadForm = () => {
-  alert(createLoadForm());
-};
-
-export {showPopupSuccess, showPopupError, showLoadForm};
+export {createPopupSuccess, createPopupError, createLoadForm};

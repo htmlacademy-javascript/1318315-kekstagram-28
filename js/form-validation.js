@@ -1,4 +1,5 @@
-import {showPopupSuccess, showPopupError, showLoadForm} from './popups.js';
+import {createLoadForm} from './popups.js';
+import {submitDataFormToServer} from './server.js';
 
 const form = document.querySelector('.img-upload__form');
 const hashtagsField = form.querySelector('.text__hashtags');
@@ -78,25 +79,12 @@ const toSubmitForm = (evt) => {
   const isValid = pristine.validate();
 
   if (isValid) {
-    // form.submit();
-    const formData = new FormData(evt.targrt);
-    console. log('formData', formData); // FormData(0) - ПОЧЕМУ ???
-    fetch(
-      'https://28.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      }
-    ).then((onSuccess) => {
-      onSuccess(showPopupSuccess);
-      console.log('onSuccess', onSuccess);
-    })
-      // Форма закрывается, ее поля обнуляются
-      // Показывается окно из template #success
-      .catch((onError) => {
-        onError(showPopupError);
-        console.log(onError);
-      });
+    // Показать темплейт "Загружаем..."
+    document.body.append(createLoadForm());
+
+    // Собираем и отправляем данные формы
+    const formData = new FormData(form);
+    submitDataFormToServer(formData);
 
     toRemoveFieldsValidateEventListener();
   } else {
