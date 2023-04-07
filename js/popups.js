@@ -1,4 +1,4 @@
-// import {isEscKeydown} from './utils.js';
+import {isEscKeydown} from './utils.js';
 import {SHOW_TIME} from './utils.js';
 
 const textPopupErrorHead = 'Ошибка загрузки файла';
@@ -11,10 +11,10 @@ const textErrorLoad = 'Произошла ошибка загрузки стра
 const body = document.querySelector('body');
 
 // const popupError = document.querySelector('.error');
-// const buttonPopupError = document.querySelector('.error__button');
+// const buttonPopupError = popupError.querySelector('.error__button');
 // const popupSuccess = document.querySelector('.success');
-// const buttonPopupSuccess = document.querySelector('.success__button');
-
+// const buttonPopupSuccess = popupSuccess.querySelector('.success__button');
+// console.log(buttonPopupSuccess);
 
 // СОЗДАНИЕ ИНФОРМАЦИОННЫХ ОКОН, В ПРОЦЕССЕ СВЯЗИ С СЕРВЕРОМ И РЕЗУЛЬТАТ СВЯЗИ С СЕРВЕРОМ
 
@@ -24,7 +24,7 @@ const createPopupError = () => {
 
   const popup = document.createElement('section');
   popup.classList.add('error');
-  popup.classList.add('hidden');
+  // popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('error__inner');
@@ -52,7 +52,7 @@ const createPopupSuccess = () => {
 
   const popup = document.createElement('section');
   popup.classList.add('success');
-  popup.classList.add('hidden');
+  // popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('success__inner');
@@ -81,7 +81,7 @@ const createPopupLoadingForm = () => {
   const popup = document.createElement('section');
   popup.classList.add('img-upload__message');
   popup.classList.add('img-upload__message--loading');
-  popup.classList.add('hidden');
+  // popup.classList.add('hidden');
   popup.textContent = textPopupLoadForm;
 
   documentFragment.appendChild(popup);
@@ -95,7 +95,7 @@ const createPopupErrorLoad = () => {
 
   const popup = document.createElement('section');
   popup.classList.add('load');
-  popup.classList.add('hidden');
+  // popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('load__inner');
@@ -112,69 +112,59 @@ const createPopupErrorLoad = () => {
 };
 
 // Отрисовка окон в DOM
-body.append(createPopupError());
-body.append(createPopupSuccess());
-body.append(createPopupLoadingForm());
-body.append(createPopupErrorLoad());
+// body.append(createPopupError());
+// body.append(createPopupSuccess());
+// body.append(createPopupLoadingForm());
+// body.append(createPopupErrorLoad());
 
 // "Навешиваем" обработчики событий на созданные окна
-// toCreatePopupErrorEventListeners();
-// toCreatePopupSuccessEventListeners();
+toCreatePopupErrorEventListeners();
+toCreatePopupSuccessEventListeners();
 
 
 // ЗАКРЫТИЕ ИНФОРМАЦИОННЫХ ОКОН
 
 // Закрываем окно createPopupError, которое показывается при ошибке отправления данных из формы
-// const toHidePopupError = () => {
-//   popupError.classList.add('hidden');
-//   toDeletePopupErrorEventListeners();
-// };
+const toHidePopupError = () => {
+  const popupError = body.querySelector('.error');
+  body.remove(popupError);
+};
 
-// const toHideToEscPopupError = (evt) => {
-//   if (isEscKeydown) {
-//     evt.preventDefault();
-//     toHidePopupError();
-//   }
-// };
+const toHideToEscPopupError = (evt) => {
+  if (isEscKeydown(evt)) {
+    evt.preventDefault();
+    toHidePopupError();
+  }
+};
 
 // Обработчики событий окна createPopupError
-// function toCreatePopupErrorEventListeners() {
-//   buttonPopupError.addEventListener('click', toHidePopupError());
-//   document.addEventListener('keydown', toHideToEscPopupError());
-//   body.addEventListener('click', toHidePopupError());
-// }
-
-// function toDeletePopupErrorEventListeners() {
-//   buttonPopupError.removeEventListener('click', toHidePopupError());
-//   document.removeEventListener('keydown', toHideToEscPopupError());
-//   body.removeEventListener('click', toHidePopupError());
-// }
+function toCreatePopupErrorEventListeners(button) {
+  button.addEventListener('click', toHidePopupError());
+  document.addEventListener('keydown', toHideToEscPopupError());
+  document.addEventListener('click', toHidePopupError());
+} // Удалять "Обработчики событий окна createPopupError" не нужно, т.к. при удалении блока <section class="error"> из DOM навешанные обработчики также удаляются
 
 // Закрываем окно createPopupSuccess, которое показывается при успешной отправке формы
-// const toHidePopupSuccess = () => {
-//   popupSuccess.classList.add('hidden');
-//   toDeletePopupSuccessEventListeners();
-// };
+const toHidePopupSuccess = () => {
+  const popupSuccess = body.querySelector('.success');
+  body.remove(popupSuccess);
+};
 
-// const toHideToEscPopupSuccess = (evt) => {
-//   if (isEscKeydown) {
-//     evt.preventDefault();
-//     toHidePopupSuccess();
-//   }
-// };
+const toHideToEscPopupSuccess = (evt) => {
+  if (isEscKeydown(evt)) {
+    evt.preventDefault();
+    toHidePopupSuccess();
+  }
+};
 
 // Обработчики событий окна createPopupSuccess
-// function toCreatePopupSuccessEventListeners() {
-//   buttonPopupSuccess.addEventListener('click', toHidePopupSuccess());
-//   document.addEventListener('keydown', toHideToEscPopupSuccess());
-//   body.addEventListener('click', toHidePopupSuccess());
-// }
+function toCreatePopupSuccessEventListeners(button) {
+  button.addEventListener('click', toHidePopupSuccess());
+  document.addEventListener('keydown', toHideToEscPopupSuccess());
+  document.addEventListener('click', toHidePopupSuccess());
+}
+// Удалять "Обработчики событий окна createPopupSuccess" не нужно, т.к. при удалении блока <section class="success"> из DOM навешанные обработчики также удаляются
 
-// function toDeletePopupSuccessEventListeners() {
-//   buttonPopupSuccess.removeEventListener('click', toHidePopupSuccess());
-//   document.removeEventListener('keydown', toHideToEscPopupSuccess());
-//   body.removeEventListener('click', toHidePopupSuccess());
-// }
 
 //  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
 const showPopupErrorLoad = () => {
@@ -183,4 +173,4 @@ const showPopupErrorLoad = () => {
   }, SHOW_TIME);
 };
 
-export {showPopupErrorLoad};
+export {createPopupError, createPopupSuccess, createPopupLoadingForm, createPopupErrorLoad, showPopupErrorLoad, toCreatePopupErrorEventListeners, toCreatePopupSuccessEventListeners};

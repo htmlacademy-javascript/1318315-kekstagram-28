@@ -1,9 +1,9 @@
 import {createArrayPicture} from './rendering-photo.js';
 import {showFullsizePhoto} from './fullsize-photo.js';
-import {showPopupErrorLoad} from './popups.js';
-// import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
-// import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
+import {createPopupError, createPopupSuccess, createPopupErrorLoad, showPopupErrorLoad, toCreatePopupErrorEventListeners, toCreatePopupSuccessEventListeners} from './popups.js';
 import {toCloseForm} from './form-upload-img.js';
+
+const body = document.querySelector('body');
 
 // Загрузка данных с удаленного сервера
 const sectionPictures = (Object) => createArrayPicture(Object);
@@ -16,7 +16,7 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
   })
   .catch(() => {
     // Показ окна про ошибку загрузки страницы с миниатюрами с сервера на 5 сек.
-    document.querySelector('.load').classList.remove('hidden');
+    body.append(createPopupErrorLoad());
     showPopupErrorLoad();
   });
 
@@ -30,30 +30,30 @@ const submitDataFormToServer = (data) => {
     })
     .then(() => {
       // Скрыть "Загружаем..."
-      document.querySelector('.img-upload__message').classList.add('hidden');
+      const message = body.querySelector('.img-upload__message');
+      body.remove(message);
 
       // Показывается окно из template #success
-      document.querySelector('.success').classList.remove('hidden');
-      // toCreateClosePopupSuccessEventListeners();
-      toCloseForm(); // Закрытие формы
+      body.append(createPopupSuccess());
+      const button = body.querySelector('.success__button');
+      toCreatePopupSuccessEventListeners(button);
 
-      // Если в DOM удалили PopupSuccess, нажалие на кнопку, то нужно удалить обработчики
-      // if (!document.body.contains(document.querySelector('.success'))) {
-      //   toDeleteClosePopupSuccessEventListeners();
-      // }
+      // Закрываем форму
+      toCloseForm();
     })
     .catch(() => {
       // Скрыть "Загружаем..."
-      document.querySelector('.img-upload__message').classList.add('hidden');
+      const message = body.querySelector('.img-upload__message');
+      body.remove(message);
 
       // Показывается окно из template #error
-      document.querySelector('.error').classList.remove('hidden');
-      // toCreateClosePopupErrorEventListeners();
+      const popupError = createPopupError();
+      body.append(popupError);
+      console.log(popupError);
 
-      // Если в DOM удалили PopupError, нажатие на кнопку, то нуддно удалить обработчики
-      // if (!document.body.contains(document.querySelector('.error'))) {
-      //   toDeleteClosePopupErrorEventListeners();
-      // }
+      // const button = body.querySelector('.error__button');
+      // toCreatePopupErrorEventListeners(button);
+
     });
 };
 

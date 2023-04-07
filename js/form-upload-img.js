@@ -1,4 +1,5 @@
 import {isEscKeydown} from './utils.js';
+import {createPopupLoadingForm} from './popups.js';
 import {submitDataFormToServer} from './server.js';
 
 const STEP_VALUE = 25;
@@ -43,6 +44,7 @@ const commentsField = form.querySelector('.text__description');
 const toOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
+  toCreateFormCloseEventListener();
   toCreateChangeSizePhotoEventListeners();
   toCreateEffectsPhotoEventListeners();
   toResetEffects();
@@ -53,7 +55,7 @@ const toOpenForm = () => {
   toCreateFormSubmitEventListener();
 };
 
-openFile.addEventListener('change', toOpenForm);
+openFile.addEventListener('change', toOpenForm); // Этот обработчик не должен удаляться, т.к. он привязан к главной странице, и всегда должна быть возможность открыть форму для загрузки новой фотографии на сервер
 
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
@@ -69,10 +71,8 @@ const toCloseForm = () => {
   commentsField.value = '';
   toDeleteFieldsValidateEventListener();
   toDeleteFormSubmitEventListener();
-  // toDeleteCloseFormEventListeners(); // ??????????
+  toDeleteFormCloseEventListener();
 };
-
-close.addEventListener('click', toCloseForm);
 
 const toEscCloseForm = (evt) => {
   if (((hashtagsField === document.activeElement) || (commentsField === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
@@ -83,7 +83,17 @@ const toEscCloseForm = (evt) => {
   }
 };
 
-document.addEventListener('keydown', toEscCloseForm);
+// Создание обработчиков для закрытия формы
+function toCreateFormCloseEventListener() {
+  close.addEventListener('click', toCloseForm);
+  document.addEventListener('keydown', toEscCloseForm);
+}
+
+// Удаление обработчиков для закрытия формы
+function toDeleteFormCloseEventListener() {
+  close.removeEventListener('click', toCloseForm);
+  document.removeEventListener('keydown', toEscCloseForm);
+}
 
 
 // ИЗМЕНЕНИЕ МАСШТАБА/РАЗМЕРА ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
@@ -410,14 +420,13 @@ const toSubmitForm = (evt) => {
   const isValid = pristine.validate();
 
   if (isValid) {
-    // Показать темплейт "Загружаем..."
-    document.querySelector('.img-upload__message').classList.remove('hidden');
+    // Показать информационное окно ("Загружаем...")
+    body.append(createPopupLoadingForm());
 
     // Собираем и отправляем данные формы
     const formData = new FormData(form);
     submitDataFormToServer(formData);
 
-    toCloseForm();
   } else {
     evt.stopPropagation();
   }

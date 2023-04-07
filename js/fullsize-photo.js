@@ -81,7 +81,7 @@ const drawArrayComments = (comments) => {
     loadingComments.removeEventListener('click', showMoreComments);
   };
 
-  // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
+  // Удаляю обработчик клика при нажатии на Esc, чтобы удалять то что запоминает колбэк-функция
   document.onkeydown = function (evt) {
     if (isEscKeydown(evt)) {
       evt.preventDefault();
@@ -145,7 +145,7 @@ const toCloseFullsizePhoto = (evt) => {
 };
 
 const toEscFullScreen = (evt) => {
-  if (isEscKeydown) {
+  if (isEscKeydown(evt)) {
     evt.preventDefault();
     closePhoto();
   }
