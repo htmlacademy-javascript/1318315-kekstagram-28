@@ -118,63 +118,63 @@ body.append(createPopupLoadingForm());
 body.append(createPopupErrorLoad());
 
 // "Навешиваем" обработчики событий на созданные окна
-toCreatePopupErrorEventListeners();
-toCreatePopupSuccessEventListeners();
+// toCreatePopupErrorEventListeners();
+// toCreatePopupSuccessEventListeners();
 
 
 // ЗАКРЫТИЕ ИНФОРМАЦИОННЫХ ОКОН
 
 // Закрываем окно createPopupError, которое показывается при ошибке отправления данных из формы
-const toHidePopupError = () => {
-  popupError.classList.add('hidden');
-  toDeletePopupErrorEventListeners();
-};
+// const toHidePopupError = () => {
+//   popupError.classList.add('hidden');
+//   toDeletePopupErrorEventListeners();
+// };
 
-const toHideToEscPopupError = (evt) => {
-  if (isEscKeydown) {
-    evt.preventDefault();
-    toHidePopupError();
-  }
-};
+// const toHideToEscPopupError = (evt) => {
+//   if (isEscKeydown) {
+//     evt.preventDefault();
+//     toHidePopupError();
+//   }
+// };
 
 // Обработчики событий окна createPopupError
-function toCreatePopupErrorEventListeners() {
-  buttonPopupError.addEventListener('click', toHidePopupError());
-  document.addEventListener('keydown', toHideToEscPopupError());
-  body.addEventListener('click', toHidePopupError());
-}
+// function toCreatePopupErrorEventListeners() {
+//   buttonPopupError.addEventListener('click', toHidePopupError());
+//   document.addEventListener('keydown', toHideToEscPopupError());
+//   body.addEventListener('click', toHidePopupError());
+// }
 
-function toDeletePopupErrorEventListeners() {
-  buttonPopupError.removeEventListener('click', toHidePopupError());
-  document.removeEventListener('keydown', toHideToEscPopupError());
-  body.removeEventListener('click', toHidePopupError());
-}
+// function toDeletePopupErrorEventListeners() {
+//   buttonPopupError.removeEventListener('click', toHidePopupError());
+//   document.removeEventListener('keydown', toHideToEscPopupError());
+//   body.removeEventListener('click', toHidePopupError());
+// }
 
 // Закрываем окно createPopupSuccess, которое показывается при успешной отправке формы
-const toHidePopupSuccess = () => {
-  popupSuccess.classList.add('hidden');
-  toDeletePopupSuccessEventListeners();
-};
+// const toHidePopupSuccess = () => {
+//   popupSuccess.classList.add('hidden');
+//   toDeletePopupSuccessEventListeners();
+// };
 
-const toHideToEscPopupSuccess = (evt) => {
-  if (isEscKeydown) {
-    evt.preventDefault();
-    toHidePopupSuccess();
-  }
-};
+// const toHideToEscPopupSuccess = (evt) => {
+//   if (isEscKeydown) {
+//     evt.preventDefault();
+//     toHidePopupSuccess();
+//   }
+// };
 
 // Обработчики событий окна createPopupSuccess
-function toCreatePopupSuccessEventListeners() {
-  buttonPopupSuccess.addEventListener('click', toHidePopupSuccess());
-  document.addEventListener('keydown', toHideToEscPopupSuccess());
-  body.addEventListener('click', toHidePopupSuccess());
-}
+// function toCreatePopupSuccessEventListeners() {
+//   buttonPopupSuccess.addEventListener('click', toHidePopupSuccess());
+//   document.addEventListener('keydown', toHideToEscPopupSuccess());
+//   body.addEventListener('click', toHidePopupSuccess());
+// }
 
-function toDeletePopupSuccessEventListeners() {
-  buttonPopupSuccess.removeEventListener('click', toHidePopupSuccess());
-  document.removeEventListener('keydown', toHideToEscPopupSuccess());
-  body.removeEventListener('click', toHidePopupSuccess());
-}
+// function toDeletePopupSuccessEventListeners() {
+//   buttonPopupSuccess.removeEventListener('click', toHidePopupSuccess());
+//   document.removeEventListener('keydown', toHideToEscPopupSuccess());
+//   body.removeEventListener('click', toHidePopupSuccess());
+// }
 
 //  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
 const showPopupErrorLoad = () => {
