@@ -7,13 +7,25 @@ const textPopupSuccessButton = 'Круто!';
 const textPopupLoadForm = 'Загружаем...';
 const textErrorLoad = 'Произошла ошибка загрузки страницы с сервера. Проверьте соединение с интернетом и перезагрузите страницу.';
 
+const body = document.querySelector('body');
+
+// const popupError = document.querySelector('.error');
+// const buttonPopupError = document.querySelector('.error__button');
+// const popupSuccess = document.querySelector('.success');
+// const buttonPopupSuccess = document.querySelector('.success__button');
+// const popupErrorLoad = document.querySelector('.load');
+// const buttonPopupErrorLoad = document.querySelector('.load__button');
+
+
+// СОЗДАНИЕ ИНФОРМАЦИОННЫХ ОКОН, В ПРОЦЕССЕ СВЯЗИ С СЕРВЕРОМ И РЕЗУЛЬТАТ СВЯЗИ С СЕРВЕРОМ
+
 // Окно, которое показывается в случае ошибки отправки формы
 const createPopupError = () => {
   const documentFragment = document.createDocumentFragment();
 
-  const popupError = document.createElement('section');
-  popupError.classList.add('error');
-  popupError.classList.add('hidden');
+  const popup = document.createElement('section');
+  popup.classList.add('error');
+  popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('error__inner');
@@ -27,8 +39,8 @@ const createPopupError = () => {
   popupButton.setAttribute('type','button');
   popupButton.textContent = textPopupErrorButton;
 
-  documentFragment.appendChild(popupError);
-  popupError.appendChild(popupInside);
+  documentFragment.appendChild(popup);
+  popup.appendChild(popupInside);
   popupInside.appendChild(popupHead);
   popupInside.appendChild(popupButton);
 
@@ -39,9 +51,9 @@ const createPopupError = () => {
 const createPopupSuccess = () => {
   const documentFragment = document.createDocumentFragment();
 
-  const popupSuccess = document.createElement('section');
-  popupSuccess.classList.add('success');
-  popupSuccess.classList.add('hidden');
+  const popup = document.createElement('section');
+  popup.classList.add('success');
+  popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('success__inner');
@@ -55,36 +67,36 @@ const createPopupSuccess = () => {
   popupButton.setAttribute('type','button');
   popupButton.textContent = textPopupSuccessButton;
 
-  documentFragment.appendChild(popupSuccess);
-  popupSuccess.appendChild(popupInside);
+  documentFragment.appendChild(popup);
+  popup.appendChild(popupInside);
   popupInside.appendChild(popupHead);
   popupInside.appendChild(popupButton);
 
   return documentFragment;
 };
 
-// Окно (темплейт "Загружаем..."), которое показывается в процессе загрузки фанных формы на сервер
-const createLoadForm = () => {
+// Окно ("Загружаем..."), которое показывается в процессе загрузки фанных формы на сервер
+const createPopupLoadingForm = () => {
   const documentFragment = document.createDocumentFragment();
 
-  const popupLoadForm = document.createElement('section');
-  popupLoadForm.classList.add('img-upload__message');
-  popupLoadForm.classList.add('img-upload__message--loading');
-  popupLoadForm.classList.add('hidden');
-  popupLoadForm.textContent = textPopupLoadForm;
+  const popup = document.createElement('section');
+  popup.classList.add('img-upload__message');
+  popup.classList.add('img-upload__message--loading');
+  popup.classList.add('hidden');
+  popup.textContent = textPopupLoadForm;
 
-  documentFragment.appendChild(popupLoadForm);
+  documentFragment.appendChild(popup);
 
   return documentFragment;
 };
 
-const createErrorLoad = () => {
+// Окно ошибки загрузки данных с сервера
+const createPopupErrorLoad = () => {
   const documentFragment = document.createDocumentFragment();
 
-  const popupErrorLoad = document.createElement('section');
-  popupErrorLoad.classList.add('load');
-  // popupErrorLoad.classList.add('load__message--loading'); // ???
-  popupErrorLoad.classList.add('hidden');
+  const popup = document.createElement('section');
+  popup.classList.add('load');
+  popup.classList.add('hidden');
 
   const popupInside = document.createElement('div');
   popupInside.classList.add('load__inner');
@@ -93,22 +105,30 @@ const createErrorLoad = () => {
   popupText.classList.add('load__title');
   popupText.textContent = textErrorLoad;
 
-  documentFragment.appendChild(popupErrorLoad);
-  popupErrorLoad.appendChild(popupInside);
+  documentFragment.appendChild(popup);
+  popup.appendChild(popupInside);
   popupInside.appendChild(popupText);
 
   return documentFragment;
 };
 
-document.body.append(createPopupError());
-document.body.append(createPopupSuccess());
-document.body.append(createLoadForm());
-document.body.append(createErrorLoad());
+// Отрисовка окон в DOM
+body.append(createPopupError());
+body.append(createPopupSuccess());
+body.append(createPopupLoadingForm());
+body.append(createPopupErrorLoad());
 
+
+// ЗАКРЫТИЕ ИНФОРМАЦИОННЫХ ОКОН
+
+
+
+
+//  Функция, чтобы удалить отрисованное/показанное окно, спустя какое-то время, после его отрисовки/показа
 const showPopupErrorLoad = () => {
   setTimeout(() => {
     document.querySelector('.load').classList.add('hidden');
   }, SHOW_TIME);
 };
 
-export {showPopupErrorLoad};
+export {showPopupErrorLoad, body};

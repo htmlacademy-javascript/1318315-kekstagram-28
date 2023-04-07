@@ -3,15 +3,15 @@ import {isEscKeydown} from './utils.js';
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 
-const fullsizePhoto = document.querySelector('.big-picture');
 const body = document.querySelector('body');
+const fullsizePhoto = document.querySelector('.big-picture');
 const arrayComments = fullsizePhoto.querySelector('.social__comments');
 const countComments = fullsizePhoto.querySelector('.current-comments-count');
 const loadingComments = fullsizePhoto.querySelector('.comments-loader');
 const close = fullsizePhoto.querySelector('#picture-cancel');
 
 
-// Функции по подстановке в DOM-элемены значений/данных, взятых из массива
+// ФУНКЦИИ ПО ПОДСТАНОВКЕ В DOM-ЭЛЕМЕНТЫ ЗНАЧЕНИЙ/ДАННЫХ, ВЗЯТЫХ ИЗ МАССИВА
 
 // Функция по отрисовке/подстановке одного комментария
 const drawComment = (object) => {
@@ -161,5 +161,5 @@ function toDeleteCloseFullsizePhotoEvventListener() { // Удаляю обраб
   document.removeEventListener('keydown', toEscFullScreen);
 }
 
-// export {fullsizePhoto, body, arrayComments, countComments, loadingComments, showFullsizePhoto};
+
 export {showFullsizePhoto};

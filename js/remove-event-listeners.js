@@ -1,22 +1,22 @@
-import {controlSmaller, toReducePhoto, controlBigger, toEnlargePhoto} from './form-change-size-img.js';
-import {toResetEffects, effects, selectedEffect} from './form-effects-img.js';
-import {form, toSubmitForm} from './form-validation.js';
+// import {controlSmaller, toReducePhoto, controlBigger, toEnlargePhoto} from './form-change-size-img.js';
+// import {toResetEffects, effects, selectedEffect} from './form-effects-img.js';
+// import {form, toSubmitForm} from './form-validation.js';
 // import {close, toCloseFullsizePhoto, toEscFullScreen} from './fullsize-photo-close.js';
 // import {body} from './fullsize-photo.js';
 // import {buttonPopupSuccess, removePopupSuccess, removeToEscPopupSuccess, buttonPopupError, removePopupError, removeToEscPopupError, buttonPopupErrorLoad, removePopupErrorLoad, removeToEscPopupErrorLoad} from './popup-close.js';
 
-const toDeleteCloseFormEventListeners = () => {
-  controlSmaller.removeEventListener('click', toReducePhoto);
-  controlBigger.removeEventListener('click', toEnlargePhoto);
-  effects.removeEventListener('change', selectedEffect);
-  form.removeEventListener('submit', toSubmitForm);
-  toResetEffects();
-};
+// const toDeleteCloseFormEventListeners = () => {
+//   controlSmaller.removeEventListener('click', toReducePhoto);
+//   controlBigger.removeEventListener('click', toEnlargePhoto);
+//   effects.removeEventListener('change', selectedEffect);
+//   form.removeEventListener('submit', toSubmitForm);
+//   toResetEffects();
+// };
 
-const toDeleteCloseFullsizePhotoEvventListener = () => {
-  close.removeEventListener('click', toCloseFullsizePhoto);
-  document.removeEventListener('keydown', toEscFullScreen);
-};
+// const toDeleteCloseFullsizePhotoEvventListener = () => {
+//   close.removeEventListener('click', toCloseFullsizePhoto);
+//   document.removeEventListener('keydown', toEscFullScreen);
+// };
 
 // const toDeleteClosePopupSuccessEventListeners = () => {
 //   buttonPopupSuccess.removeEventListener('click', removePopupSuccess());
@@ -37,4 +37,4 @@ const toDeleteCloseFullsizePhotoEvventListener = () => {
 // };
 
 // export {toDeleteCloseFormEventListeners, toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners, toDeleteClosePopupErrorLoadEventListeners};
-export {toDeleteCloseFullsizePhotoEvventListener, toDeleteCloseFormEventListeners};
+// export {toDeleteCloseFullsizePhotoEvventListener, toDeleteCloseFormEventListeners};

@@ -3,7 +3,7 @@ import {showFullsizePhoto} from './fullsize-photo.js';
 import {showPopupErrorLoad} from './popups.js';
 // import {toCreateClosePopupSuccessEventListeners, toCreateClosePopupErrorEventListeners} from './popup-close.js';
 // import {toDeleteClosePopupSuccessEventListeners, toDeleteClosePopupErrorEventListeners} from './remove-event-listeners.js';
-import {toCloseForm} from './form-upload-img-close.js';
+import {toCloseForm} from './form-upload-img.js';
 
 // Загрузка данных с удаленного сервера
 const sectionPictures = (Object) => createArrayPicture(Object);
