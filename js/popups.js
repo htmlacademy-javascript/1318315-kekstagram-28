@@ -1,4 +1,4 @@
-import {isEscKeydown} from './utils.js';
+// import {isEscKeydown} from './utils.js';
 import {SHOW_TIME} from './utils.js';
 
 const textPopupErrorHead = 'Ошибка загрузки файла';
@@ -10,10 +10,10 @@ const textErrorLoad = 'Произошла ошибка загрузки стра
 
 const body = document.querySelector('body');
 
-const popupError = document.querySelector('.error');
-const buttonPopupError = document.querySelector('.error__button');
-const popupSuccess = document.querySelector('.success');
-const buttonPopupSuccess = document.querySelector('.success__button');
+// const popupError = document.querySelector('.error');
+// const buttonPopupError = document.querySelector('.error__button');
+// const popupSuccess = document.querySelector('.success');
+// const buttonPopupSuccess = document.querySelector('.success__button');
 
 
 // СОЗДАНИЕ ИНФОРМАЦИОННЫХ ОКОН, В ПРОЦЕССЕ СВЯЗИ С СЕРВЕРОМ И РЕЗУЛЬТАТ СВЯЗИ С СЕРВЕРОМ
