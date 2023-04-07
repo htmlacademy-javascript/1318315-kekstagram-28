@@ -34,4 +34,3 @@ const createArrayPicture = (objects) => {
 };
 
 export {createArrayPicture};
-// export {createArrayPicture} into fullsize-photo-open.js

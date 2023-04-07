@@ -1,6 +1,6 @@
 import {isEscKeydown} from './utils.js';
-import {createPopupLoadingForm} from './popups.js';
 import {submitDataFormToServer} from './server.js';
+import { createPopupLoadingForm } from './popups.js';
 
 const STEP_VALUE = 25;
 const MIN_VALUE = 25;
@@ -44,7 +44,6 @@ const commentsField = form.querySelector('.text__description');
 const toOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
-  toCreateFormCloseEventListener();
   toCreateChangeSizePhotoEventListeners();
   toCreateEffectsPhotoEventListeners();
   toResetEffects();
@@ -55,7 +54,7 @@ const toOpenForm = () => {
   toCreateFormSubmitEventListener();
 };
 
-openFile.addEventListener('change', toOpenForm); // Этот обработчик не должен удаляться, т.к. он привязан к главной странице, и всегда должна быть возможность открыть форму для загрузки новой фотографии на сервер
+openFile.addEventListener('change', toOpenForm);
 
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
@@ -71,8 +70,9 @@ const toCloseForm = () => {
   commentsField.value = '';
   toDeleteFieldsValidateEventListener();
   toDeleteFormSubmitEventListener();
-  toDeleteFormCloseEventListener();
 };
+
+close.addEventListener('click', toCloseForm);
 
 const toEscCloseForm = (evt) => {
   if (((hashtagsField === document.activeElement) || (commentsField === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
@@ -83,17 +83,7 @@ const toEscCloseForm = (evt) => {
   }
 };
 
-// Создание обработчиков для закрытия формы
-function toCreateFormCloseEventListener() {
-  close.addEventListener('click', toCloseForm);
-  document.addEventListener('keydown', toEscCloseForm);
-}
-
-// Удаление обработчиков для закрытия формы
-function toDeleteFormCloseEventListener() {
-  close.removeEventListener('click', toCloseForm);
-  document.removeEventListener('keydown', toEscCloseForm);
-}
+document.addEventListener('keydown', toEscCloseForm);
 
 
 // ИЗМЕНЕНИЕ МАСШТАБА/РАЗМЕРА ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
@@ -365,7 +355,6 @@ const isHashtegUnique = (value) => {
   }
   const hashtagArray = textToArray(value);
   return hashtagArray.length === new Set(hashtagArray.map((arrayItem) => (arrayItem.toLowerCase()))).size;
-  // return ????
 };
 
 // Проверка хеш-тега на соответствие шаблону
@@ -383,7 +372,7 @@ const isHashtagPattern = (value) => {
     }
   }
 
-  return true; // ???
+  return true;
 };
 
 // Проверяем количество введенных хеш-тегов
@@ -420,13 +409,14 @@ const toSubmitForm = (evt) => {
   const isValid = pristine.validate();
 
   if (isValid) {
-    // Показать информационное окно ("Загружаем...")
+    // Показать темплейт "Загружаем..."
     body.append(createPopupLoadingForm());
 
     // Собираем и отправляем данные формы
     const formData = new FormData(form);
     submitDataFormToServer(formData);
 
+    toCloseForm();
   } else {
     evt.stopPropagation();
   }

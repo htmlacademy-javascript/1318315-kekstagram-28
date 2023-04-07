@@ -1,6 +1,6 @@
 import {createArrayPicture} from './rendering-photo.js';
 import {showFullsizePhoto} from './fullsize-photo.js';
-import {createPopupError, createPopupSuccess, createPopupErrorLoad, showPopupErrorLoad, toCreatePopupErrorEventListeners, toCreatePopupSuccessEventListeners} from './popups.js';
+import {showPopupErrorLoad, createPopupError, createPopupSuccess, createPopupErrorLoad} from './popups.js';
 import {toCloseForm} from './form-upload-img.js';
 
 const body = document.querySelector('body');
@@ -30,30 +30,19 @@ const submitDataFormToServer = (data) => {
     })
     .then(() => {
       // Скрыть "Загружаем..."
-      const message = body.querySelector('.img-upload__message');
-      body.remove(message);
+      body.querySelector('.img-upload__message').remove();
 
       // Показывается окно из template #success
       body.append(createPopupSuccess());
-      const button = body.querySelector('.success__button');
-      toCreatePopupSuccessEventListeners(button);
 
-      // Закрываем форму
-      toCloseForm();
+      toCloseForm(); // Закрытие формы
     })
     .catch(() => {
       // Скрыть "Загружаем..."
-      const message = body.querySelector('.img-upload__message');
-      body.remove(message);
+      body.querySelector('.img-upload__message').remove();
 
       // Показывается окно из template #error
-      const popupError = createPopupError();
-      body.append(popupError);
-      console.log(popupError);
-
-      // const button = body.querySelector('.error__button');
-      // toCreatePopupErrorEventListeners(button);
-
+      body.append(createPopupError());
     });
 };
 
