@@ -1,3 +1,4 @@
+import {isEscKeydown} from './utils.js';
 import {SHOW_TIME} from './utils.js';
 
 const textPopupErrorHead = 'Ошибка загрузки файла';
@@ -9,12 +10,10 @@ const textErrorLoad = 'Произошла ошибка загрузки стра
 
 const body = document.querySelector('body');
 
-// const popupError = document.querySelector('.error');
-// const buttonPopupError = document.querySelector('.error__button');
-// const popupSuccess = document.querySelector('.success');
-// const buttonPopupSuccess = document.querySelector('.success__button');
-// const popupErrorLoad = document.querySelector('.load');
-// const buttonPopupErrorLoad = document.querySelector('.load__button');
+const popupError = document.querySelector('.error');
+const buttonPopupError = document.querySelector('.error__button');
+const popupSuccess = document.querySelector('.success');
+const buttonPopupSuccess = document.querySelector('.success__button');
 
 
 // СОЗДАНИЕ ИНФОРМАЦИОННЫХ ОКОН, В ПРОЦЕССЕ СВЯЗИ С СЕРВЕРОМ И РЕЗУЛЬТАТ СВЯЗИ С СЕРВЕРОМ
@@ -118,17 +117,70 @@ body.append(createPopupSuccess());
 body.append(createPopupLoadingForm());
 body.append(createPopupErrorLoad());
 
+// "Навешиваем" обработчики событий на созданные окна
+toCreatePopupErrorEventListeners();
+toCreatePopupSuccessEventListeners();
+
 
 // ЗАКРЫТИЕ ИНФОРМАЦИОННЫХ ОКОН
 
+// Закрываем окно createPopupError, которое показывается при ошибке отправления данных из формы
+const toHidePopupError = () => {
+  popupError.classList.add('hidden');
+  toDeletePopupErrorEventListeners();
+};
 
+const toHideToEscPopupError = (evt) => {
+  if (isEscKeydown) {
+    evt.preventDefault();
+    toHidePopupError();
+  }
+};
 
+// Обработчики событий окна createPopupError
+function toCreatePopupErrorEventListeners() {
+  buttonPopupError.addEventListener('click', toHidePopupError());
+  document.addEventListener('keydown', toHideToEscPopupError());
+  body.addEventListener('click', toHidePopupError());
+}
 
-//  Функция, чтобы удалить отрисованное/показанное окно, спустя какое-то время, после его отрисовки/показа
+function toDeletePopupErrorEventListeners() {
+  buttonPopupError.removeEventListener('click', toHidePopupError());
+  document.removeEventListener('keydown', toHideToEscPopupError());
+  body.removeEventListener('click', toHidePopupError());
+}
+
+// Закрываем окно createPopupSuccess, которое показывается при успешной отправке формы
+const toHidePopupSuccess = () => {
+  popupSuccess.classList.add('hidden');
+  toDeletePopupSuccessEventListeners();
+};
+
+const toHideToEscPopupSuccess = (evt) => {
+  if (isEscKeydown) {
+    evt.preventDefault();
+    toHidePopupSuccess();
+  }
+};
+
+// Обработчики событий окна createPopupSuccess
+function toCreatePopupSuccessEventListeners() {
+  buttonPopupSuccess.addEventListener('click', toHidePopupSuccess());
+  document.addEventListener('keydown', toHideToEscPopupSuccess());
+  body.addEventListener('click', toHidePopupSuccess());
+}
+
+function toDeletePopupSuccessEventListeners() {
+  buttonPopupSuccess.removeEventListener('click', toHidePopupSuccess());
+  document.removeEventListener('keydown', toHideToEscPopupSuccess());
+  body.removeEventListener('click', toHidePopupSuccess());
+}
+
+//  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
 const showPopupErrorLoad = () => {
   setTimeout(() => {
     document.querySelector('.load').classList.add('hidden');
   }, SHOW_TIME);
 };
 
-export {showPopupErrorLoad, body};
+export {showPopupErrorLoad};
