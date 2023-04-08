@@ -5,16 +5,16 @@ const templatePicture = templateFragment.querySelector('.picture');
 const picturesArray = document.querySelector('.pictures');
 
 let photoId = 0;
+let dataId = 0;
 
 // Создание одной картинки (фото + описание)
-const createPicture = (photo) => {
+const createPicture = (Object) => {
   const picture = templatePicture.cloneNode(true);
   picture.id = photoId++;
-  picture.querySelector('.picture__img').src = photo.url;
-  picture.querySelector('.picture__likes').textContent = photo.likes;
-  picture.querySelector('.picture__comments').textContent = photo.comments.length;
-  picture.querySelector('.picture__img').alt = photo.description;
-  picture.querySelector('.picture__img').id = photo.id;
+  picture.querySelector('.picture__img').src = Object.url;
+  picture.querySelector('.picture__likes').textContent = Object.likes;
+  picture.querySelector('.picture__comments').textContent = Object.comments.length;
+  picture.querySelector('.picture__img').alt = Object.description;
   return picture;
 };
 
@@ -24,6 +24,8 @@ const createArrayPicture = (objects) => {
 
   for (let i = 0; i < objects.length; i++) {
     const newPicture = createPicture(objects[i]);
+    //Здесь создаю "data-id", а не "id", чтобы атрибут data-id прописывался сссылке/объекту <a><img>...</a>, а не просто одной картинке (без коментариев, лайков...) <a><img>...</a>
+    newPicture.dataset.id = dataId++;
     fragment.appendChild(newPicture);
   }
 
