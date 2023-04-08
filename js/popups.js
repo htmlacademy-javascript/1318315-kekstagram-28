@@ -131,10 +131,10 @@ const createPopupErrorLoad = () => {
 };
 
 //  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
-const showPopupErrorLoad = () => {
+const showTimeoutPopupErrorLoad = () => {
   setTimeout(() => {
     body.querySelector('.error-load').remove();
   }, SHOW_TIME);
 };
 
-export {showPopupErrorLoad, createPopupError, createPopupSuccess, createPopupLoadingForm, createPopupErrorLoad};
+export {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupLoadingForm, createPopupErrorLoad};
