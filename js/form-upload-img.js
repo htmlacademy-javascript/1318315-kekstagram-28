@@ -6,6 +6,7 @@ const STEP_VALUE = 25;
 const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const STEP_STYLE_CONTROL = 0.25;
+const FILE_TYPES = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'webp', 'avif'];
 
 const errorMessageHashtegUnique = 'Все #ХэшТеги должены быть разными';
 const errorMessageHashtagPattern = '#ХэшТега начинается с #, а затем используйте кириллицу, латиницу и цифры; Всего может быть oт 2 до 20 символов одного #ХэшТега';
@@ -19,8 +20,11 @@ let defaultStyleControl = 1;
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const openFile = form.querySelector('#upload-file');
+console.log('openFile', openFile);
+
 const imageUpload = form.querySelector('.img-upload__overlay');
 const close = form.querySelector('#upload-cancel');
+
 
 const controlSmaller = document.querySelector('.scale__control--smaller');
 const controlValue = document.querySelector('.scale__control--value');
@@ -28,6 +32,7 @@ const controlBigger = document.querySelector('.scale__control--bigger');
 
 const boxImgPreview = document.querySelector('.img-upload__preview'); // div - <div><img></div>
 const imgPreview = document.querySelector('.img-upload__preview img'); // img - <div><img></div>
+console.log('imgPreview', imgPreview);
 
 const effects = document.querySelector('.effects__list');
 const slider = document.querySelector('.img-upload__effect-level');
@@ -44,6 +49,7 @@ const commentsField = form.querySelector('.text__description');
 const toOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
+  toCreateChooseFileEventListener();
   toCreateChangeSizePhotoEventListeners();
   toCreateEffectsPhotoEventListeners();
   toResetEffects();
@@ -52,10 +58,28 @@ const toOpenForm = () => {
   boxImgPreview.style.transform = 'scale(1)';
   toCreateFieldsValidateEventListener();
   toCreateFormSubmitEventListener();
+  // Создаем EventListener-ы в одном порядке ,а удаляем - в обратном!!!
 };
 
 openFile.addEventListener('change', toOpenForm);
 
+// Загрузка/подтягивание фортографии пользователя
+const toChooseFile = () => {
+  const file = openFile.files[0];
+  const fileName = file.name.toLowerCase();
+  const compareTypes = FILE_TYPES.some((item) => fileName.endWith(item));
+  if (compareTypes) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+};
+
+function toCreateChooseFileEventListener() {
+  openFile.addEventListener('change', toChooseFile);
+}
+
+function toDeleteChooseFileEventListener() {
+  openFile.removeEventListener('change', toChooseFile);
+}
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
@@ -64,12 +88,14 @@ const toCloseForm = () => {
   body.classList.remove('modal-open');
   imageUpload.classList.add('hidden');
   openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
-  toDeleteChangeSizePhotoEventListeners();
-  toDeleteEffectsPhotoEventListeners();
+  toDeleteFieldsValidateEventListener();
   hashtagsField.value = '';
   commentsField.value = '';
-  toDeleteFieldsValidateEventListener();
+  toDeleteEffectsPhotoEventListeners();
+  toDeleteChangeSizePhotoEventListeners();
+  toDeleteChooseFileEventListener();
   toDeleteFormSubmitEventListener();
+  // Создаем EventListener-ы в одном порядке ,а удаляем - в обратном!!!
 };
 
 close.addEventListener('click', toCloseForm);
