@@ -1,4 +1,5 @@
 const SHOW_TIME = 5000;
+const SHOW_MIN_TIME = 1750;
 
 const getRandomNumber = (min, max) => {
   if ((0 <= min) && (min < max)) {
@@ -9,4 +10,13 @@ const getRandomNumber = (min, max) => {
 
 const isEscKeydown = (evt) => evt.code === 'Escape'; // Нужно обязательно передавать evt !!! "if (isEscKeydown(evt)) {...", т.к. именно evt проверяет есть ли нажатая клавиша Esc
 
-export {getRandomNumber, isEscKeydown, SHOW_TIME};
+// Устранение дребезга
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomNumber, isEscKeydown, SHOW_TIME, SHOW_MIN_TIME, debounce};
