@@ -1,20 +1,16 @@
 import {createArrayPicture} from './rendering-photo.js';
-import {showFullsizePhoto} from './fullsize-photo.js';
+import {initPictures} from './fullsize-photo.js';
 import {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupErrorLoad} from './popups.js';
 import {toCloseForm} from './form-upload-img.js';
 import {showTimeoutFilters} from './filters.js';
 
 const body = document.querySelector('body');
 
-// Загрузка данных с удаленного сервера
-const sectionPictures = (Object) => createArrayPicture(Object);
-
 fetch('https://28.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
-    // console.log('then 1 - miniatures');
-    sectionPictures(miniatures);
-    showFullsizePhoto(miniatures);
+    createArrayPicture(miniatures);
+    initPictures(miniatures);
   })
   .catch(() => {
     // Показ окна про ошибку загрузки страницы с миниатюрами с сервера на 5 сек.
@@ -23,8 +19,6 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
   })
   .then(() => {
     // ЗДЕСЬ КОД ДОЛЖЕН ВЫПОЛНЯТЬСЯ ПОСЛЕДОВАТЕЛЬНО - ТОЛЬКО ПОСЛЕ ЗАВЕРШЕНИЯ ОТРИСОВКИ МИНИАТЮР НА СТРАНИЦЕ ДОЛЖЛНЫ ПОЯВИТЬСЯ КНОПКИ ФИЛЬТРОВ !!!
-
-    // console.log('then 2 - filters');
     showTimeoutFilters();
   });
 

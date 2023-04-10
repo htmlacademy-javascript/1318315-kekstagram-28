@@ -20,7 +20,7 @@ let defaultStyleControl = 1;
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const openFile = form.querySelector('#upload-file');
-console.log('openFile', openFile);
+// console.log('openFile', openFile);
 
 const imageUpload = form.querySelector('.img-upload__overlay');
 const close = form.querySelector('#upload-cancel');
@@ -32,7 +32,7 @@ const controlBigger = document.querySelector('.scale__control--bigger');
 
 const boxImgPreview = document.querySelector('.img-upload__preview'); // div - <div><img></div>
 const imgPreview = document.querySelector('.img-upload__preview img'); // img - <div><img></div>
-console.log('imgPreview', imgPreview);
+// console.log('imgPreview', imgPreview);
 
 const effects = document.querySelector('.effects__list');
 const slider = document.querySelector('.img-upload__effect-level');
@@ -61,15 +61,15 @@ const toOpenForm = () => {
   // Создаем EventListener-ы в одном порядке ,а удаляем - в обратном!!!
 };
 
-openFile.addEventListener('change', toOpenForm);
+openFile.addEventListener('click', toOpenForm);
 
 // Загрузка/подтягивание фортографии пользователя
 const toChooseFile = () => {
-  const file = openFile.files[0];
-  const fileName = file.name.toLowerCase();
-  const compareTypes = FILE_TYPES.some((item) => fileName.endWith(item));
-  if (compareTypes) {
-    imgPreview.src = URL.createObjectURL(file);
+  const file = openFile.files[0]; // Берем 1-й файл из массива файлов
+  const fileName = file.name.toLowerCase(); // Приводим имя файла в нижний регистр
+  const compareTypes = FILE_TYPES.some((item) => fileName.endsWith(item)); // Проверяем есть ли в указанном массиве расширений для file".js", то расширение файла, который выбрал пользователь
+  if (compareTypes) { // Если есть (true), то
+    imgPreview.src = URL.createObjectURL(file); // генерируем ссылку для локальной фотографии пользователя
   }
 };
 

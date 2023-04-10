@@ -112,15 +112,15 @@ const drawFullsizePhoto = (photo) => {
 };
 
 
-//Функция для отображения миниатюры, по которой кликнули, в полноэкранный вид
+// Инициализация/настройка миниатюры для отображения полноэкранного изображения (навешивание обработчика событий)
 
-const showFullsizePhoto = (data) => {
+const initPictures = (data) => {
   // Поиск массива в DOM, чтобы его перебрать и навесить обработчик клика
   const photos = document.querySelectorAll('.picture');
 
   photos.forEach((photo) => {
     photo.addEventListener('click', (evt) => {
-      drawFullsizePhoto(data[evt.currentTarget.dataset.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
+      drawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
       toCreateCloseFullsizePhotoEvventListener(); // Создаю обработчики полноэкранного фото
     });
   });
@@ -163,4 +163,4 @@ function toDeleteCloseFullsizePhotoEvventListener() {
   document.removeEventListener('keydown', toEscFullScreen);
 }
 
-export {showFullsizePhoto};
+export {initPictures};
