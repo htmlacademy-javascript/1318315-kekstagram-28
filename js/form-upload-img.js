@@ -7,7 +7,6 @@ const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const STEP_STYLE_CONTROL = 0.25;
 const FILE_TYPES = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'webp', 'avif', 'bmp', 'tif', 'tiff', 'ico'];
-const SHOW_MAX_TIME = 5250;
 
 const errorMessageHashtegUnique = 'Все #ХэшТеги должены быть разными';
 const errorMessageHashtagPattern = '#ХэшТега начинается с #, а затем используйте кириллицу, латиницу и цифры; Всего может быть oт 2 до 20 символов одного #ХэшТега';
@@ -48,7 +47,6 @@ const onOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
   toCloseFormEventListenersCreate();
-  toChooseFileEventListenerCreate();
   toChangeSizePhotoEventListenersCreate();
   toEffectsPhotoEventListenersCreate();
   toResetEffects();
@@ -60,8 +58,6 @@ const onOpenForm = () => {
   // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
-openFile.addEventListener('click', onOpenForm);
-
 // Загрузка/подтягивание фортографии пользователя
 const onChooseFile = () => {
   const file = openFile.files[0]; // Берем 1-й файл из массива файлов
@@ -69,22 +65,16 @@ const onChooseFile = () => {
   const compareTypes = FILE_TYPES.some((item) => fileName.endsWith(item)); // Проверяем есть ли в указанном массиве расширений для file".js", то расширение файла, который выбрал пользователь
   if (compareTypes) { // Если верно (true), то
     imgPreview.src = URL.createObjectURL(file); // генерируем ссылку для локальной фотографии пользователя
+    onOpenForm();
   } else {
     // Показываю окно ошибки загрузки файла пользователя, которое скрывается через время
     body.append(createPopupErrorFile());
     showTimeoutPopupErrorFile();
-    // Закрываю форму с небольшой задержкой по времени
-    showTimeoutonCloseForm();
   }
 };
 
-function toChooseFileEventListenerCreate() {
-  openFile.addEventListener('change', onChooseFile);
-}
+openFile.addEventListener('change', onChooseFile);
 
-function toChooseFileEventListenerDelete() {
-  openFile.removeEventListener('change', onChooseFile);
-}
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
@@ -98,7 +88,6 @@ const onCloseForm = () => {
   commentsField.value = '';
   toEffectsPhotoEventListenersDelete();
   toChangeSizePhotoEventListenersDelete();
-  toChooseFileEventListenerDelete();
   toFormSubmitEventListenerDelete();
   toCloseFormEventListenersDelete();
   // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
@@ -123,13 +112,6 @@ function toCloseFormEventListenersCreate() {
 function toCloseFormEventListenersDelete() {
   close.removeEventListener('click', onCloseForm);
   document.removeEventListener('keydown', onEscCloseForm);
-}
-
-// Закрытие формы с небольшой задержкой по времени
-function showTimeoutonCloseForm() {
-  setTimeout(() => {
-    onCloseForm();
-  }, SHOW_MAX_TIME);
 }
 
 
