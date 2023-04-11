@@ -59,7 +59,7 @@ const onOpenForm = () => {
 };
 
 // Загрузка/подтягивание фортографии пользователя
-const onChooseFile = () => {
+const onOpenFileToChooseFile = () => {
   const file = openFile.files[0]; // Берем 1-й файл из массива файлов
   const fileName = file.name.toLowerCase(); // Приводим имя файла в нижний регистр
   const compareTypes = FILE_TYPES.some((item) => fileName.endsWith(item)); // Проверяем есть ли в указанном массиве расширений для file".js", то расширение файла, который выбрал пользователь
@@ -73,13 +73,13 @@ const onChooseFile = () => {
   }
 };
 
-openFile.addEventListener('change', onChooseFile);
+openFile.addEventListener('change', onOpenFileToChooseFile);
 
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
 // Закрытие формы
-const onCloseForm = () => {
+const onCloseToCloseForm = () => {
   body.classList.remove('modal-open');
   imageUpload.classList.add('hidden');
   openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
@@ -93,25 +93,25 @@ const onCloseForm = () => {
   // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
-const onEscCloseForm = (evt) => {
+const onDocumentToEscCloseForm = (evt) => {
   if (((hashtagsField === document.activeElement) || (commentsField === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
     evt.stopPropagation();
   } else {
     evt.preventDefault();
-    onCloseForm();
+    onCloseToCloseForm();
   }
 };
 
 // Создание обработчиков для закрытия формы
 function toCloseFormEventListenersCreate() {
-  close.addEventListener('click', onCloseForm);
-  document.addEventListener('keydown', onEscCloseForm);
+  close.addEventListener('click', onCloseToCloseForm);
+  document.addEventListener('keydown', onDocumentToEscCloseForm);
 }
 
 // Удаление обработчиков для закрытия формы
 function toCloseFormEventListenersDelete() {
-  close.removeEventListener('click', onCloseForm);
-  document.removeEventListener('keydown', onEscCloseForm);
+  close.removeEventListener('click', onCloseToCloseForm);
+  document.removeEventListener('keydown', onDocumentToEscCloseForm);
 }
 
 
@@ -121,7 +121,7 @@ function toCloseFormEventListenersDelete() {
 controlValue.value = `${defaultValueControl}%`;
 
 // Уменьшить фото, при клике на controlSmaller
-const onReducePhoto = (evt) => {
+const onControlSmallerToReducePhoto = (evt) => {
   evt.preventDefault();
   if (defaultValueControl > MIN_VALUE) {
     controlValue.value = `${defaultValueControl -= STEP_VALUE}%`;
@@ -130,7 +130,7 @@ const onReducePhoto = (evt) => {
 };
 
 // Увеличить фото, при клике на controlBigger
-const onEnlargePhoto = (evt) => {
+const onControlBiggerToEnlargePhoto = (evt) => {
   evt.preventDefault();
   if (defaultValueControl < MAX_VALUE) {
     controlValue.value = `${defaultValueControl += STEP_VALUE}%`;
@@ -140,14 +140,14 @@ const onEnlargePhoto = (evt) => {
 
 // Создаем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersCreate() {
-  controlSmaller.addEventListener('click', onReducePhoto);
-  controlBigger.addEventListener('click', onEnlargePhoto);
+  controlSmaller.addEventListener('click', onControlSmallerToReducePhoto);
+  controlBigger.addEventListener('click', onControlBiggerToEnlargePhoto);
 }
 
 // Удаляем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersDelete() {
-  controlSmaller.removeEventListener('click', onReducePhoto);
-  controlBigger.removeEventListener('click', onEnlargePhoto);
+  controlSmaller.removeEventListener('click', onControlSmallerToReducePhoto);
+  controlBigger.removeEventListener('click', onControlBiggerToEnlargePhoto);
 }
 
 
@@ -333,18 +333,18 @@ sliderHandle.noUiSlider.on('update', () => {
 
 // Обработчик событий (addEventListener) передаст значения выбранного эффекта (evt.target.value) в написанные ранее функции (1- Переключение значений слайдера; 2- Наложение эфффекта на фотографию)
 
-const onSelectedEffect = (evt) => {
+const onEffectsToSelectedEffect = (evt) => {
   evt.preventDefault();
   toUpdateHandle(evt.target.value);
   toAddEffects(evt.target.value, sliderHandle.noUiSlider.get());
 };
 
 function toEffectsPhotoEventListenersCreate() {
-  effects.addEventListener('change', onSelectedEffect);
+  effects.addEventListener('change', onEffectsToSelectedEffect);
 }
 
 function toEffectsPhotoEventListenersDelete() {
-  effects.removeEventListener('change', onSelectedEffect);
+  effects.removeEventListener('change', onEffectsToSelectedEffect);
 }
 
 // Сброс/Обнуление эффекта
@@ -407,22 +407,22 @@ pristine.addValidator(hashtagsField, isHashtagsLength, errorMessageHashtagLength
 pristine.addValidator(commentsField, isCommentsLength, errorMessageComments);
 
 // Вызываем проверку
-const onIsFieldsValidate = () => pristine.validate();
+const onInputFieldIsToValidate = () => pristine.validate();
 
 // Создание обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersCreate() {
-  hashtagsField.addEventListener('keyup', onIsFieldsValidate);
-  commentsField.addEventListener('keyup', onIsFieldsValidate);
+  hashtagsField.addEventListener('keyup', onInputFieldIsToValidate);
+  commentsField.addEventListener('keyup', onInputFieldIsToValidate);
 }
 
 // Удаление обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersDelete() {
-  hashtagsField.removeEventListener('keyup', onIsFieldsValidate);
-  commentsField.removeEventListener('keyup', onIsFieldsValidate);
+  hashtagsField.removeEventListener('keyup', onInputFieldIsToValidate);
+  commentsField.removeEventListener('keyup', onInputFieldIsToValidate);
 }
 
 // Отправка формы
-const onSubmitForm = (evt) => {
+const onFormToSubmit = (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
@@ -435,7 +435,7 @@ const onSubmitForm = (evt) => {
     const formData = new FormData(form);
     submitDataFormToServer(formData);
 
-    onCloseForm();
+    onCloseToCloseForm();
   } else {
     evt.stopPropagation();
   }
@@ -443,12 +443,12 @@ const onSubmitForm = (evt) => {
 
 // Создание обработчиков отправки формы
 function toFormSubmitEventListenerCreate() {
-  form.addEventListener('submit', onSubmitForm);
+  form.addEventListener('submit', onFormToSubmit);
 }
 
 // Удаление обработчиков отправки формы
 function toFormSubmitEventListenerDelete() {
-  form.addEventListener('submit', onSubmitForm);
+  form.addEventListener('submit', onFormToSubmit);
 }
 
-export {onCloseForm};
+export {onCloseToCloseForm};
