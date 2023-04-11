@@ -3,18 +3,18 @@ import {isEscKeydown} from './utils.js';
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
 
-const body = document.querySelector('body');
-const fullsizePhoto = document.querySelector('.big-picture');
-const arrayComments = fullsizePhoto.querySelector('.social__comments');
-const countComments = fullsizePhoto.querySelector('.current-comments-count');
-const loadingComments = fullsizePhoto.querySelector('.comments-loader');
-const close = fullsizePhoto.querySelector('#picture-cancel');
+const bodyElement = document.querySelector('body');
+const fullsizePhotoElement = document.querySelector('.big-picture');
+const arrayCommentsElement = fullsizePhotoElement.querySelector('.social__comments');
+const countCommentsElement = fullsizePhotoElement.querySelector('.current-comments-count');
+const loadingCommentsElement = fullsizePhotoElement.querySelector('.comments-loader');
+const closeElement = fullsizePhotoElement.querySelector('#picture-cancel');
 
 
 // ФУНКЦИИ ПО ПОДСТАНОВКЕ В DOM-ЭЛЕМЕНТЫ ЗНАЧЕНИЙ/ДАННЫХ, ВЗЯТЫХ ИЗ МАССИВА
 
 // Функция по отрисовке/подстановке одного комментария
-const DrawComment = (object) => {
+const drawComment = (object) => {
   const newComment = document.createElement('li');
   newComment.classList.add('social__comment');
 
@@ -35,80 +35,80 @@ const DrawComment = (object) => {
 };
 
 //Функция по отрисовке части комментариев
-const CreatingPartComments = (comments) => {
+const creatingPartComments = (comments) => {
   const documentFragment = document.createDocumentFragment();
   for (let i = 0; i < comments.length; i++) {
-    const newComment = DrawComment(comments[i]);
+    const newComment = drawComment(comments[i]);
     documentFragment.appendChild(newComment);
   }
   return documentFragment;
 };
 
-const SlicePartComments = (comments, start, end) => {
+const slicePartComments = (comments, start, end) => {
   const partComments = comments.slice(start, end);
-  arrayComments.appendChild(CreatingPartComments(partComments));
+  arrayCommentsElement.appendChild(creatingPartComments(partComments));
 };
 
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
-const DrawArrayComments = (comments) => {
-  arrayComments.textContent = '';
+const drawArrayComments = (comments) => {
+  arrayCommentsElement.textContent = '';
   let number = 0;
   const N = 5;
   const maxNumber = comments.length;
 
-  const SliceSmallPart = () => {
-    SlicePartComments(comments, number, maxNumber);
-    countComments.textContent = maxNumber;
-    loadingComments.classList.add('hidden');
+  const sliceSmallPart = () => {
+    slicePartComments(comments, number, maxNumber);
+    countCommentsElement.textContent = maxNumber;
+    loadingCommentsElement.classList.add('hidden');
   };
 
-  const SliceNextPart = () => {
-    SlicePartComments(comments, number, (number + N));
+  const sliceNextPart = () => {
+    slicePartComments(comments, number, (number + N));
     number = number + N;
-    countComments.textContent = number;
+    countCommentsElement.textContent = number;
   };
 
-  const showFirstComments = () => (maxNumber <= N) ? SliceSmallPart() : SliceNextPart();
+  const showFirstComments = () => (maxNumber <= N) ? sliceSmallPart() : sliceNextPart();
   showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const onLoadingCommentsToShowMore = () => ((maxNumber - number) <= N) ? SliceSmallPart() : SliceNextPart();
+  const onLoadingCommentsElementToShowMore = () => ((maxNumber - number) <= N) ? sliceSmallPart() : sliceNextPart();
 
-  loadingComments.addEventListener('click', onLoadingCommentsToShowMore);
+  loadingCommentsElement.addEventListener('click', onLoadingCommentsElementToShowMore);
 
   // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
-  fullsizePhoto.querySelector('#picture-cancel').onclick = function () {
-    loadingComments.removeEventListener('click', onLoadingCommentsToShowMore);
+  fullsizePhotoElement.querySelector('#picture-cancel').onclick = function () {
+    loadingCommentsElement.removeEventListener('click', onLoadingCommentsElementToShowMore);
   };
 
   // Удаляю обработчик Esc, чтобы удалять то что запоминает колбэк-функция при нажатии на кнопку "Загрузить еще"
   document.onkeydown = function (evt) {
     if (isEscKeydown(evt)) {
       evt.preventDefault();
-      loadingComments.removeEventListener('click', onLoadingCommentsToShowMore);
+      loadingCommentsElement.removeEventListener('click', onLoadingCommentsElementToShowMore);
     }
   };
 
-  return arrayComments;
+  return arrayCommentsElement;
 };
 
 // Функция по отрисовке полноэкранного фото
-const DrawFullsizePhoto = (photo) => {
-  fullsizePhoto.classList.remove('hidden');
+const drawFullsizePhoto = (photo) => {
+  fullsizePhotoElement.classList.remove('hidden');
 
-  fullsizePhoto.querySelector('.big-picture__img img').src = photo.url;
+  fullsizePhotoElement.querySelector('.big-picture__img img').src = photo.url;
 
-  fullsizePhoto.querySelector('.social__caption').textContent = photo.description;
+  fullsizePhotoElement.querySelector('.social__caption').textContent = photo.description;
 
-  fullsizePhoto.querySelector('.likes-count').textContent = '';
-  fullsizePhoto.querySelector('.likes-count').textContent = photo.likes;
+  fullsizePhotoElement.querySelector('.likes-count').textContent = '';
+  fullsizePhotoElement.querySelector('.likes-count').textContent = photo.likes;
 
-  fullsizePhoto.querySelector('.comments-count').textContent = photo.comments.length;
+  fullsizePhotoElement.querySelector('.comments-count').textContent = photo.comments.length;
 
-  DrawArrayComments(photo.comments);
-  fullsizePhoto.querySelector('.social__comments').replaceWith(arrayComments);
+  drawArrayComments(photo.comments);
+  fullsizePhotoElement.querySelector('.social__comments').replaceWith(arrayCommentsElement);
 
-  body.classList.add('.modal-open');
+  bodyElement.classList.add('.modal-open');
 };
 
 
@@ -120,8 +120,8 @@ const initPictures = (data) => {
 
   photos.forEach((photo) => {
     photo.addEventListener('click', (evt) => {
-      DrawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
-      onCloseToCloseFullsizePhotoEvventListenersCreate(); // Создаю обработчики полноэкранного фото
+      drawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
+      onCloseElementToCloseFullsizePhotoEventListenersCreate(); // Создаю обработчики полноэкранного фото
     });
   });
 };
@@ -130,21 +130,21 @@ const initPictures = (data) => {
 // Закрываю окно полноэкранного отображения картинки
 
 const closePhoto = () => {
-  body.classList.remove('.modal-open');
-  fullsizePhoto.classList.add('hidden');
-  arrayComments.textContent = '';
-  countComments.textContent = '0';
-  loadingComments.classList.remove('hidden');
-  onCloseToCloseFullsizePhotoEvventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
+  bodyElement.classList.remove('.modal-open');
+  fullsizePhotoElement.classList.add('hidden');
+  arrayCommentsElement.textContent = '';
+  countCommentsElement.textContent = '0';
+  loadingCommentsElement.classList.remove('hidden');
+  onCloseElementToCloseFullsizePhotoEventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
   document.onkeydown = null;
 };
 
-const onCloseToCloseFullsizePhoto = (evt) => {
+const onCloseElementToCloseFullsizePhoto = (evt) => {
   evt.preventDefault();
   closePhoto();
 };
 
-const onDocumentToEscCloseFullScreen = (evt) => {
+const onDocumentToEscCloseFullsizePhoto = (evt) => {
   if (isEscKeydown(evt)) {
     evt.preventDefault();
     closePhoto();
@@ -152,15 +152,15 @@ const onDocumentToEscCloseFullScreen = (evt) => {
 };
 
 // Создаю обработчики закрытия полноэкранного изображения
-function onCloseToCloseFullsizePhotoEvventListenersCreate() {
-  close.addEventListener('click', onCloseToCloseFullsizePhoto);
-  document.addEventListener('keydown', onDocumentToEscCloseFullScreen);
+function onCloseElementToCloseFullsizePhotoEventListenersCreate() {
+  closeElement.addEventListener('click', onCloseElementToCloseFullsizePhoto);
+  document.addEventListener('keydown', onDocumentToEscCloseFullsizePhoto);
 }
 
 // Удаляю обработчики закрытия полноэкранного изображения
-function onCloseToCloseFullsizePhotoEvventListenersDelete() {
-  close.removeEventListener('click', onCloseToCloseFullsizePhoto);
-  document.removeEventListener('keydown', onDocumentToEscCloseFullScreen);
+function onCloseElementToCloseFullsizePhotoEventListenersDelete() {
+  closeElement.removeEventListener('click', onCloseElementToCloseFullsizePhoto);
+  document.removeEventListener('keydown', onDocumentToEscCloseFullsizePhoto);
 }
 
 export {initPictures};

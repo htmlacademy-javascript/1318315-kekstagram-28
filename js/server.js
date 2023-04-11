@@ -1,15 +1,15 @@
-import {CreatePictures} from './rendering-photo.js';
+import {createPictures} from './rendering-photo.js';
 import {initPictures} from './fullsize-photo.js';
 import {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupErrorLoad} from './popups.js';
 import {onCloseToCloseForm} from './form-upload-img.js';
 import {hideFilters, showTimeoutFilters} from './filters.js';
 
-const body = document.querySelector('body');
+const bodyElement = document.querySelector('body');
 
 fetch('https://28.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
-    CreatePictures(miniatures);
+    createPictures(miniatures);
     initPictures(miniatures);
   })
   .then(() => {
@@ -19,7 +19,7 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
   })
   .catch(() => {
     // Показ окна про ошибку загрузки страницы с миниатюрами с сервера на 5 сек.
-    body.append(createPopupErrorLoad());
+    bodyElement.append(createPopupErrorLoad());
     showTimeoutPopupErrorLoad();
     hideFilters(); // Скрываю кнопки фильтров
   });
@@ -33,13 +33,13 @@ const submitDataFormToServer = (data) => {
       body: data,
     })
     .then(() => {
-      body.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
-      body.append(createPopupSuccess()); // Показывается окно из template #success
+      bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
+      bodyElement.append(createPopupSuccess()); // Показывается окно из template #success
       onCloseToCloseForm(); // Закрытие формы
     })
     .catch(() => {
-      body.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
-      body.append(createPopupError()); // Показывается окно из template #error
+      bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
+      bodyElement.append(createPopupError()); // Показывается окно из template #error
     });
 };
 
