@@ -1,12 +1,14 @@
-// import {isEscKeydown} from './utils.js';
-import {SHOW_TIME, isEscKeydown} from './utils.js';
+import {isEscKeydown} from './utils.js';
+
+const SHOW_TIME = 5000;
 
 const textPopupErrorHead = 'Ошибка загрузки файла';
 const textPopupErrorButton = 'Попробовать ещё раз';
 const textPopupSuccessHead = 'Изображение успешно загружено';
 const textPopupSuccessButton = 'Круто!';
 const textPopupLoadForm = 'Загружаем...';
-const textErrorLoad = 'Произошла ошибка загрузки страницы с сервера. Проверьте соединение с интернетом и перезагрузите страницу.';
+const textPopupErrorLoad = 'Произошла ошибка загрузки страницы с сервера. Проверьте соединение с интернетом и перезагрузите страницу.';
+const textPopupErrorFile = 'Данный файл не может быть открыт, выберите, пожалуйста, другой!';
 
 const body = document.querySelector('body');
 
@@ -121,7 +123,7 @@ const createPopupErrorLoad = () => {
 
   const popupText = document.createElement('h2');
   popupText.classList.add('error-load__title');
-  popupText.textContent = textErrorLoad;
+  popupText.textContent = textPopupErrorLoad;
 
   documentFragment.appendChild(popup);
   popup.appendChild(popupInside);
@@ -130,11 +132,42 @@ const createPopupErrorLoad = () => {
   return documentFragment;
 };
 
-//  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
-const showTimeoutPopupErrorLoad = () => {
+// Окно ошибки загрузки файла пользователя
+const createPopupErrorFile = () => {
+  const documentFragment = document.createDocumentFragment();
+
+  const popup = document.createElement('section');
+  popup.classList.add('error-file');
+
+  const popupInside = document.createElement('div');
+  popupInside.classList.add('error-file__inner');
+
+  const popupText = document.createElement('h2');
+  popupText.classList.add('error-file__title');
+  popupText.textContent = textPopupErrorFile;
+
+  documentFragment.appendChild(popup);
+  popup.appendChild(popupInside);
+  popupInside.appendChild(popupText);
+
+  return documentFragment;
+};
+
+// Функция-шаблон/конструктор, которая удаляет элементы DOM с задержкой по времени
+const ShowTimeoutResult = (className) => {
   setTimeout(() => {
-    body.querySelector('.error-load').remove();
+    body.querySelector(`${className}`).remove();
   }, SHOW_TIME);
 };
 
-export {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupLoadingForm, createPopupErrorLoad};
+//  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorLoad, спустя какое-то время, после его отрисовки/показа
+const showTimeoutPopupErrorLoad = () => {
+  ShowTimeoutResult('.error-load');
+};
+
+//  Функция, чтобы удалить отрисованное/показанное окно createPopupErrorFile, спустя какое-то время, после его отрисовки/показа
+const showTimeoutPopupErrorFile = () => {
+  ShowTimeoutResult('.error-file');
+};
+
+export {createPopupError, createPopupSuccess, createPopupLoadingForm, createPopupErrorLoad, createPopupErrorFile, showTimeoutPopupErrorLoad, showTimeoutPopupErrorFile};
