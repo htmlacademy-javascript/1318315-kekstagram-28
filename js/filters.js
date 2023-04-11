@@ -1,5 +1,6 @@
-import {SHOW_MIN_TIME, debounce} from './utils.js';
+import {getRandomOrder, Debounce} from './utils.js';
 
+const SHOW_MIN_TIME = 1750;
 const NUMBER_RANDOM = 10;
 const RERENDER_DELAY = 500;
 
@@ -16,6 +17,9 @@ const defaultArrayId = [];
 // Показываем кнопки фильтров на главной странице
 const showFilters = () => filters.classList.remove('img-filters--inactive');
 
+// Скрываем кнопки фильтров на главной странице, если произошла ошибка загрузки миниатюр
+const hideFilters = () => filters.classList.add('img-filters--inactive');
+
 // Отрисовка кнопок будет происходить с небольшой задержкой
 const showTimeoutFilters = () => {
   setTimeout(() => {
@@ -30,27 +34,22 @@ const showTimeoutFilters = () => {
 
 // ФИЛЬТРАЦИЯ МИНИАТЮР НА СТРАНИЦЕ
 
-// Удаляем кнопке активный класс (со стилями выделения кнопки другим цветом, например)  и назначаем его новой кнопке
-const updateButtonClass = (button) => {
+// Функция-шаблон/конструктор, Удаляем кнопке активный класс (со стилями выделения кнопки другим цветом, например)  и назначаем его новой кнопке
+const UpdateButtonClass = (button) => {
   filters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
   button.classList.add('img-filters__button--active');
 };
 
 // Обновление картинок на главной странице
-const updatePictures = (array) => {
+const UpdatePictures = (array) => {
   const pictures = picturesArray.querySelectorAll('.picture'); // Картинки, те, что в данный момент есть в DOM
   let lastPicture = pictures[pictures.length - 1]; //Последний элемент/миниатюра в DOM
 
   // Собственно сам процесс сортировки/перестроения миниатюр
   array.forEach((pictureId) => {
-    // Находим элемент минматюры по id
-    const picture = picturesArray.querySelector(`[id="${pictureId}"]`);
-
-    // Вставляем найденный элемент в конец
-    lastPicture.after(picture);
-
-    // Вставленный элемент становится последним
-    lastPicture = picture;
+    const picture = picturesArray.querySelector(`[id="${pictureId}"]`); // Находим элемент минматюры по id
+    lastPicture.after(picture); // Вставляем найденный элемент в конец
+    lastPicture = picture; // Вставленный элемент становится последним
   });
 };
 
@@ -64,26 +63,26 @@ const showPictures = () => {
 
 // Сортировка миниатюр "По умолчанию"
 const sortDefaultPictures = () => {
-  updateButtonClass(filterDefault); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке
-  updatePictures(defaultArrayId); // Перестраиваем миниатюры
+  UpdateButtonClass(filterDefault); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке
+  UpdatePictures(defaultArrayId); // Перестраиваем миниатюры
   showPictures(); // Показываем все картинки, т.к. ранее они могли быть скрыты
 };
 
-// Обработчик события клик на кнопку "По умолчанию"
-filterDefault.addEventListener('click', sortDefaultPictures);
-
-// Устранение дребезга при нажатии на кнопку
-filterDefault(debounce(
+// Устранение дребезга при нажатии на кнопку "По умолчанию"
+const filterDefaultHandleSort = Debounce(
   () => sortDefaultPictures(),
   RERENDER_DELAY,
-));
+);
+
+// Обработчик события клик на кнопку "По умолчанию"
+filterDefault.addEventListener('click', filterDefaultHandleSort);
 
 // Сортировка миниатюр по критерию "Случайные"
 const sortRandomPictures = () => {
-  updateButtonClass(filterRandom); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке - filterRandom
+  UpdateButtonClass(filterRandom); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке - filterRandom
   const cloneArrayId = [...defaultArrayId]; // Клонируем массив с id
-  cloneArrayId.sort(() => Math.random() - 0.5); // Сортируем новый массив в случайном порядке
-  updatePictures(cloneArrayId.slice(0, NUMBER_RANDOM - 1)); // Перестраиваем миниатюры по отсортированному склонированному массиву id
+  cloneArrayId.sort(() => getRandomOrder()); // Сортируем новый массив в случайном порядке
+  UpdatePictures(cloneArrayId.slice(0, NUMBER_RANDOM - 1)); // Перестраиваем миниатюры по отсортированному склонированному массиву id
   const hiddenPicturesId = cloneArrayId.slice(NUMBER_RANDOM); // Остаток id от id миниатюр, которые надо спрятать
   showPictures(); // Показываем все картинки
 
@@ -94,18 +93,18 @@ const sortRandomPictures = () => {
   });
 };
 
-// Обработчик события клик на кнопку "Случайные"
-filterRandom.addEventListener('click', sortRandomPictures);
-
-// Устранение дребезга при нажатии на кнопку
-filterRandom(debounce(
+// Устранение дребезга при нажатии на кнопку "Случайные"
+const filterRandomHandleSort = Debounce(
   () => sortRandomPictures(),
   RERENDER_DELAY,
-));
+);
+
+// Обработчик события клик на кнопку "Случайные"
+filterRandom.addEventListener('click', filterRandomHandleSort);
 
 // Сортировка миниатюр по критерию "Обсуждаемые"
 const sortDiscussedPictures = () => {
-  updateButtonClass(filterDiscussed); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке - filterDiscussed
+  UpdateButtonClass(filterDiscussed); // Удаляем у "ранее кликнутой" кнопки активный класс и назначаем его новой "кликнутой" кнопке - filterDiscussed
   const pictures = picturesArray.querySelectorAll('.picture'); // Находим все картинки
   const arrayCommentsCount = []; // Создаем пустой массив для записи количества комментариев в всязке с id
   pictures.forEach((picture) => {
@@ -115,19 +114,18 @@ const sortDiscussedPictures = () => {
   });
   arrayCommentsCount.sort().reverse(); // Сортируем количество комментариев .sort() ---> от меньшего к большему, а затем переворячиваем и записіваем в обратном порядке ---> .reverse()
   const newArrayCommentsCount = arrayCommentsCount.map((item) => item.split(',')[1]); // Создаем новый массив, в который попадают только вторые значения из ранее перевернутого в порядкуе убывания массива
-  updatePictures(newArrayCommentsCount); // Перестраиваем все картинки
+  UpdatePictures(newArrayCommentsCount); // Перестраиваем все картинки
   showPictures(); // Показываем все картинки
 };
 
-// Обработчик события клик на кнопку "Обсуждаемые"
-filterDiscussed.addEventListener('click', sortDiscussedPictures);
-
-
-// Устранение дребезга при нажатии на кнопку
-filterDiscussed(debounce(
+// Устранение дребезга при нажатии на кнопку "Обсуждаемые"
+const filterDiscussedHandleSort = Debounce(
   () => sortDiscussedPictures(),
   RERENDER_DELAY,
-));
+);
+
+// Обработчик события клик на кнопку "Обсуждаемые"
+filterDiscussed.addEventListener('click', filterDiscussedHandleSort);
 
 
-export {showTimeoutFilters};
+export {hideFilters, showTimeoutFilters};

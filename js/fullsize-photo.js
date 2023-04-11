@@ -14,7 +14,7 @@ const close = fullsizePhoto.querySelector('#picture-cancel');
 // ФУНКЦИИ ПО ПОДСТАНОВКЕ В DOM-ЭЛЕМЕНТЫ ЗНАЧЕНИЙ/ДАННЫХ, ВЗЯТЫХ ИЗ МАССИВА
 
 // Функция по отрисовке/подстановке одного комментария
-const drawComment = (object) => {
+const DrawComment = (object) => {
   const newComment = document.createElement('li');
   newComment.classList.add('social__comment');
 
@@ -35,44 +35,44 @@ const drawComment = (object) => {
 };
 
 //Функция по отрисовке части комментариев
-const creatingPartComments = (comments) => {
+const CreatingPartComments = (comments) => {
   const documentFragment = document.createDocumentFragment();
   for (let i = 0; i < comments.length; i++) {
-    const newComment = drawComment(comments[i]);
+    const newComment = DrawComment(comments[i]);
     documentFragment.appendChild(newComment);
   }
   return documentFragment;
 };
 
-const slicePartComments = (comments, start, end) => {
+const SlicePartComments = (comments, start, end) => {
   const partComments = comments.slice(start, end);
-  arrayComments.appendChild(creatingPartComments(partComments));
+  arrayComments.appendChild(CreatingPartComments(partComments));
 };
 
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
-const drawArrayComments = (comments) => {
+const DrawArrayComments = (comments) => {
   arrayComments.textContent = '';
   let number = 0;
   const N = 5;
   const maxNumber = comments.length;
 
-  const sliceSmallPart = () => {
-    slicePartComments(comments, number, maxNumber);
+  const SliceSmallPart = () => {
+    SlicePartComments(comments, number, maxNumber);
     countComments.textContent = maxNumber;
     loadingComments.classList.add('hidden');
   };
 
-  const sliceNextPart = () => {
-    slicePartComments(comments, number, (number + N));
+  const SliceNextPart = () => {
+    SlicePartComments(comments, number, (number + N));
     number = number + N;
     countComments.textContent = number;
   };
 
-  const showFirstComments = () => (maxNumber <= N) ? sliceSmallPart() : sliceNextPart();
+  const showFirstComments = () => (maxNumber <= N) ? SliceSmallPart() : SliceNextPart();
   showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const showMoreComments = () => ((maxNumber - number) <= N) ? sliceSmallPart() : sliceNextPart();
+  const showMoreComments = () => ((maxNumber - number) <= N) ? SliceSmallPart() : SliceNextPart();
 
   loadingComments.addEventListener('click', showMoreComments);
 
@@ -81,7 +81,7 @@ const drawArrayComments = (comments) => {
     loadingComments.removeEventListener('click', showMoreComments);
   };
 
-  // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
+  // Удаляю обработчик Esc, чтобы удалять то что запоминает колбэк-функция при нажатии на кнопку "Загрузить еще"
   document.onkeydown = function (evt) {
     if (isEscKeydown(evt)) {
       evt.preventDefault();
@@ -93,7 +93,7 @@ const drawArrayComments = (comments) => {
 };
 
 // Функция по отрисовке полноэкранного фото
-const drawFullsizePhoto = (photo) => {
+const DrawFullsizePhoto = (photo) => {
   fullsizePhoto.classList.remove('hidden');
 
   fullsizePhoto.querySelector('.big-picture__img img').src = photo.url;
@@ -105,14 +105,14 @@ const drawFullsizePhoto = (photo) => {
 
   fullsizePhoto.querySelector('.comments-count').textContent = photo.comments.length;
 
-  drawArrayComments(photo.comments);
+  DrawArrayComments(photo.comments);
   fullsizePhoto.querySelector('.social__comments').replaceWith(arrayComments);
 
   body.classList.add('.modal-open');
 };
 
 
-// Инициализация/настройка миниатюры для отображения полноэкранного изображения (навешивание обработчика событий)
+// Инициализация/настройка миниатюр для отображения полноэкранного изображения (навешивание обработчика событий)
 
 const initPictures = (data) => {
   // Поиск массива в DOM, чтобы его перебрать и навесить обработчик клика
@@ -120,8 +120,8 @@ const initPictures = (data) => {
 
   photos.forEach((photo) => {
     photo.addEventListener('click', (evt) => {
-      drawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
-      toCreateCloseFullsizePhotoEvventListener(); // Создаю обработчики полноэкранного фото
+      DrawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
+      toCloseFullsizePhotoEvventListenersCreate(); // Создаю обработчики полноэкранного фото
     });
   });
 };
@@ -135,7 +135,7 @@ const closePhoto = () => {
   arrayComments.textContent = '';
   countComments.textContent = '0';
   loadingComments.classList.remove('hidden');
-  toDeleteCloseFullsizePhotoEvventListener(); // Удаляю обработчики закрытия полноэкранного изображения
+  toCloseFullsizePhotoEvventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
   document.onkeydown = null;
 };
 
@@ -152,13 +152,13 @@ const toEscFullScreen = (evt) => {
 };
 
 // Создаю обработчики закрытия полноэкранного изображения
-function toCreateCloseFullsizePhotoEvventListener() {
+function toCloseFullsizePhotoEvventListenersCreate() {
   close.addEventListener('click', toCloseFullsizePhoto);
   document.addEventListener('keydown', toEscFullScreen);
 }
 
 // Удаляю обработчики закрытия полноэкранного изображения
-function toDeleteCloseFullsizePhotoEvventListener() {
+function toCloseFullsizePhotoEvventListenersDelete() {
   close.removeEventListener('click', toCloseFullsizePhoto);
   document.removeEventListener('keydown', toEscFullScreen);
 }

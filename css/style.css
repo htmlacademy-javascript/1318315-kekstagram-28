@@ -1422,70 +1422,147 @@ main {
 }
 
 /*
- * Экраны ошибки загрузки страницы с миниатюрами
+ * Экраны ошибки загрузки файла пользователя и страницы с миниатюрами
  */
+.error-file,
+.error-load {
+  position: fixed;
+  justify-content: center;
 
- .load {
-   position: fixed;
-   justify-content: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
 
-   left: 0;
-   top: 0;
-   right: 0;
-   bottom: 0;
-   z-index: 10;
+  background-color: rgba(0, 0, 0, 0.8);
+}
 
-   background-color: rgba(0, 0, 0, 0.8);
- }
+.error-file__inner,
+.error-load__inner {
+  position: relative;
+  width: 600px;
+  padding: 50px 20px;
+  padding-top: 150px;
+  margin: 200px auto;
 
- .load__inner {
-   position: relative;
-   width: 600px;
-   padding: 50px 20px;
-   padding-top: 150px;
-   margin: 200px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
+  font-family: "Open Sans", "Arial", sans-serif;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #ffe753;
 
-   font-family: "Open Sans", "Arial", sans-serif;
-   text-align: center;
-   font-weight: 700;
-   font-size: 20px;
-   color: #ffe753;
+  background-color: #3c3614;
+  border-radius: 10px;
+}
 
-   background-color: #3c3614;
-   border-radius: 10px;
- }
+.error-file__inner,
+.error-load__inner {
+  padding: 100px 20px;
+  padding-bottom: 75px;
+}
 
- .load__inner {
-   padding: 100px 20px;
-   padding-bottom: 75px;
- }
+.error-file__title,
+.error-load__title {
+  position: relative;
 
- .load__title {
-   position: relative;
+  margin: 50px;
 
-   margin: 50px;
+  font-size: 17px;
+}
 
-   font-size: 17px;
- }
+.error-file__title::before,
+.error-load__title::before {
+  content: "";
+  position: absolute;
 
- .load__title::before {
-   content: "";
-   position: absolute;
+  width: 59px;
+  height: 52px;
 
-   width: 59px;
-   height: 52px;
+  top: -100px;
+  left: 50%;
 
-   top: -100px;
-   left: 50%;
+  background-image: url("../img/icon-warning.svg");
 
-   background-image: url("../img/icon-warning.svg");
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
 
-   -webkit-transform: translateX(-50%);
-       -ms-transform: translateX(-50%);
-           transform: translateX(-50%);
- }
+/*
+ * Экраны ошибки загрузки файла пользователя и страницы с миниатюрами
+ */
+.error-file,
+.error-load {
+  position: fixed;
+  justify-content: center;
+
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.error-file__inner,
+.error-load__inner {
+  position: relative;
+  width: 600px;
+  padding: 50px 20px;
+  padding-top: 150px;
+  margin: 200px auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Open Sans", "Arial", sans-serif;
+  text-align: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #ffe753;
+
+  background-color: #3c3614;
+  border-radius: 10px;
+}
+
+.error-file__inner,
+.error-load__inner {
+  padding: 100px 20px;
+  padding-bottom: 75px;
+}
+
+.error-file__title,
+.error-load__title {
+  position: relative;
+
+  margin: 50px;
+
+  font-size: 17px;
+}
+
+.error-file__title::before,
+.error-load__title::before {
+  content: "";
+  position: absolute;
+
+  width: 59px;
+  height: 52px;
+
+  top: -100px;
+  left: 50%;
+
+  background-image: url("../img/icon-warning.svg");
+
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+}

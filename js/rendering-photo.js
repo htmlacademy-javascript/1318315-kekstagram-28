@@ -5,7 +5,7 @@ const templatePicture = templateFragment.querySelector('.picture');
 const picturesArray = document.querySelector('.pictures');
 
 // Создание одной картинки (фото + описание)
-const createPicture = (Object) => {
+const CreatePicture = (Object) => {
   const picture = templatePicture.cloneNode(true);
   picture.id = Object.id;
   picture.querySelector('.picture__img').src = Object.url;
@@ -16,11 +16,11 @@ const createPicture = (Object) => {
 };
 
 // Создание массива картинок
-const createArrayPicture = (objects) => {
+const CreatePictures = (objects) => {
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < objects.length; i++) {
-    const newPicture = createPicture(objects[i]);
+    const newPicture = CreatePicture(objects[i]);
     fragment.appendChild(newPicture);
   }
 
@@ -28,4 +28,4 @@ const createArrayPicture = (objects) => {
   return picturesArray;
 };
 
-export {createArrayPicture};
+export {CreatePictures};
