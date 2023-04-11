@@ -72,20 +72,20 @@ const DrawArrayComments = (comments) => {
   showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const showMoreComments = () => ((maxNumber - number) <= N) ? SliceSmallPart() : SliceNextPart();
+  const onShowMoreComments = () => ((maxNumber - number) <= N) ? SliceSmallPart() : SliceNextPart();
 
-  loadingComments.addEventListener('click', showMoreComments);
+  loadingComments.addEventListener('click', onShowMoreComments);
 
   // Удаляю обработчик клика на кнопку "Загрузить еще", чтобы удалять то что запоминает колбэк-функция
   fullsizePhoto.querySelector('#picture-cancel').onclick = function () {
-    loadingComments.removeEventListener('click', showMoreComments);
+    loadingComments.removeEventListener('click', onShowMoreComments);
   };
 
   // Удаляю обработчик Esc, чтобы удалять то что запоминает колбэк-функция при нажатии на кнопку "Загрузить еще"
   document.onkeydown = function (evt) {
     if (isEscKeydown(evt)) {
       evt.preventDefault();
-      loadingComments.removeEventListener('click', showMoreComments);
+      loadingComments.removeEventListener('click', onShowMoreComments);
     }
   };
 
@@ -121,7 +121,7 @@ const initPictures = (data) => {
   photos.forEach((photo) => {
     photo.addEventListener('click', (evt) => {
       DrawFullsizePhoto(data[evt.currentTarget.id]); // photo должно браться из массива photos, который мы находим на странице, после отрисовки данных с сервера
-      toCloseFullsizePhotoEvventListenersCreate(); // Создаю обработчики полноэкранного фото
+      onCloseFullsizePhotoEvventListenersCreate(); // Создаю обработчики полноэкранного фото
     });
   });
 };
@@ -135,16 +135,16 @@ const closePhoto = () => {
   arrayComments.textContent = '';
   countComments.textContent = '0';
   loadingComments.classList.remove('hidden');
-  toCloseFullsizePhotoEvventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
+  onCloseFullsizePhotoEvventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
   document.onkeydown = null;
 };
 
-const toCloseFullsizePhoto = (evt) => {
+const onCloseFullsizePhoto = (evt) => {
   evt.preventDefault();
   closePhoto();
 };
 
-const toEscFullScreen = (evt) => {
+const onEscFullScreen = (evt) => {
   if (isEscKeydown(evt)) {
     evt.preventDefault();
     closePhoto();
@@ -152,15 +152,15 @@ const toEscFullScreen = (evt) => {
 };
 
 // Создаю обработчики закрытия полноэкранного изображения
-function toCloseFullsizePhotoEvventListenersCreate() {
-  close.addEventListener('click', toCloseFullsizePhoto);
-  document.addEventListener('keydown', toEscFullScreen);
+function onCloseFullsizePhotoEvventListenersCreate() {
+  close.addEventListener('click', onCloseFullsizePhoto);
+  document.addEventListener('keydown', onEscFullScreen);
 }
 
 // Удаляю обработчики закрытия полноэкранного изображения
-function toCloseFullsizePhotoEvventListenersDelete() {
-  close.removeEventListener('click', toCloseFullsizePhoto);
-  document.removeEventListener('keydown', toEscFullScreen);
+function onCloseFullsizePhotoEvventListenersDelete() {
+  close.removeEventListener('click', onCloseFullsizePhoto);
+  document.removeEventListener('keydown', onEscFullScreen);
 }
 
 export {initPictures};
