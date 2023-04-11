@@ -69,13 +69,13 @@ const sortDefaultPictures = () => {
 };
 
 // Устранение дребезга при нажатии на кнопку "По умолчанию"
-const filterDefaultHandleSort = Debounce(
+const onFilterDefaultHandleSort = Debounce(
   () => sortDefaultPictures(),
   RERENDER_DELAY,
 );
 
 // Обработчик события клик на кнопку "По умолчанию"
-filterDefault.addEventListener('click', filterDefaultHandleSort);
+filterDefault.addEventListener('click', onFilterDefaultHandleSort);
 
 // Сортировка миниатюр по критерию "Случайные"
 const sortRandomPictures = () => {
@@ -94,13 +94,13 @@ const sortRandomPictures = () => {
 };
 
 // Устранение дребезга при нажатии на кнопку "Случайные"
-const filterRandomHandleSort = Debounce(
+const onFilterRandomHandleSort = Debounce(
   () => sortRandomPictures(),
   RERENDER_DELAY,
 );
 
 // Обработчик события клик на кнопку "Случайные"
-filterRandom.addEventListener('click', filterRandomHandleSort);
+filterRandom.addEventListener('click', onFilterRandomHandleSort);
 
 // Сортировка миниатюр по критерию "Обсуждаемые"
 const sortDiscussedPictures = () => {

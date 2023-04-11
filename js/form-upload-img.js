@@ -7,7 +7,6 @@ const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const STEP_STYLE_CONTROL = 0.25;
 const FILE_TYPES = ['jpeg', 'jpg', 'png', 'svg', 'gif', 'webp', 'avif', 'bmp', 'tif', 'tiff', 'ico'];
-const SHOW_MAX_TIME = 5250;
 
 const errorMessageHashtegUnique = 'Все #ХэшТеги должены быть разными';
 const errorMessageHashtagPattern = '#ХэшТега начинается с #, а затем используйте кириллицу, латиницу и цифры; Всего может быть oт 2 до 20 символов одного #ХэшТега';
@@ -44,11 +43,10 @@ const commentsField = form.querySelector('.text__description');
 // ОТКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
 // Открытие формы
-const toOpenForm = () => {
+const onOpenForm = () => {
   body.classList.add('modal-open');
   imageUpload.classList.remove('hidden');
   toCloseFormEventListenersCreate();
-  toChooseFileEventListenerCreate();
   toChangeSizePhotoEventListenersCreate();
   toEffectsPhotoEventListenersCreate();
   toResetEffects();
@@ -60,36 +58,28 @@ const toOpenForm = () => {
   // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
-openFile.addEventListener('click', toOpenForm);
-
 // Загрузка/подтягивание фортографии пользователя
-const toChooseFile = () => {
+const onChooseFile = () => {
   const file = openFile.files[0]; // Берем 1-й файл из массива файлов
   const fileName = file.name.toLowerCase(); // Приводим имя файла в нижний регистр
   const compareTypes = FILE_TYPES.some((item) => fileName.endsWith(item)); // Проверяем есть ли в указанном массиве расширений для file".js", то расширение файла, который выбрал пользователь
   if (compareTypes) { // Если верно (true), то
     imgPreview.src = URL.createObjectURL(file); // генерируем ссылку для локальной фотографии пользователя
+    onOpenForm();
   } else {
     // Показываю окно ошибки загрузки файла пользователя, которое скрывается через время
     body.append(createPopupErrorFile());
     showTimeoutPopupErrorFile();
-    // Закрываю форму с небольшой задержкой по времени
-    showTimeoutToCloseForm();
   }
 };
 
-function toChooseFileEventListenerCreate() {
-  openFile.addEventListener('change', toChooseFile);
-}
+openFile.addEventListener('change', onChooseFile);
 
-function toChooseFileEventListenerDelete() {
-  openFile.removeEventListener('change', toChooseFile);
-}
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
 // Закрытие формы
-const toCloseForm = () => {
+const onCloseForm = () => {
   body.classList.remove('modal-open');
   imageUpload.classList.add('hidden');
   openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
@@ -98,38 +88,30 @@ const toCloseForm = () => {
   commentsField.value = '';
   toEffectsPhotoEventListenersDelete();
   toChangeSizePhotoEventListenersDelete();
-  toChooseFileEventListenerDelete();
   toFormSubmitEventListenerDelete();
   toCloseFormEventListenersDelete();
   // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
-const toEscCloseForm = (evt) => {
+const onEscCloseForm = (evt) => {
   if (((hashtagsField === document.activeElement) || (commentsField === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
     evt.stopPropagation();
   } else {
     evt.preventDefault();
-    toCloseForm();
+    onCloseForm();
   }
 };
 
 // Создание обработчиков для закрытия формы
 function toCloseFormEventListenersCreate() {
-  close.addEventListener('click', toCloseForm);
-  document.addEventListener('keydown', toEscCloseForm);
+  close.addEventListener('click', onCloseForm);
+  document.addEventListener('keydown', onEscCloseForm);
 }
 
 // Удаление обработчиков для закрытия формы
 function toCloseFormEventListenersDelete() {
-  close.removeEventListener('click', toCloseForm);
-  document.removeEventListener('keydown', toEscCloseForm);
-}
-
-// Закрытие формы с небольшой задержкой по времени
-function showTimeoutToCloseForm() {
-  setTimeout(() => {
-    toCloseForm();
-  }, SHOW_MAX_TIME);
+  close.removeEventListener('click', onCloseForm);
+  document.removeEventListener('keydown', onEscCloseForm);
 }
 
 
@@ -139,7 +121,7 @@ function showTimeoutToCloseForm() {
 controlValue.value = `${defaultValueControl}%`;
 
 // Уменьшить фото, при клике на controlSmaller
-const toReducePhoto = (evt) => {
+const onReducePhoto = (evt) => {
   evt.preventDefault();
   if (defaultValueControl > MIN_VALUE) {
     controlValue.value = `${defaultValueControl -= STEP_VALUE}%`;
@@ -148,7 +130,7 @@ const toReducePhoto = (evt) => {
 };
 
 // Увеличить фото, при клике на controlBigger
-const toEnlargePhoto = (evt) => {
+const onEnlargePhoto = (evt) => {
   evt.preventDefault();
   if (defaultValueControl < MAX_VALUE) {
     controlValue.value = `${defaultValueControl += STEP_VALUE}%`;
@@ -158,14 +140,14 @@ const toEnlargePhoto = (evt) => {
 
 // Создаем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersCreate() {
-  controlSmaller.addEventListener('click', toReducePhoto);
-  controlBigger.addEventListener('click', toEnlargePhoto);
+  controlSmaller.addEventListener('click', onReducePhoto);
+  controlBigger.addEventListener('click', onEnlargePhoto);
 }
 
 // Удаляем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersDelete() {
-  controlSmaller.removeEventListener('click', toReducePhoto);
-  controlBigger.removeEventListener('click', toEnlargePhoto);
+  controlSmaller.removeEventListener('click', onReducePhoto);
+  controlBigger.removeEventListener('click', onEnlargePhoto);
 }
 
 
@@ -351,18 +333,18 @@ sliderHandle.noUiSlider.on('update', () => {
 
 // Обработчик событий (addEventListener) передаст значения выбранного эффекта (evt.target.value) в написанные ранее функции (1- Переключение значений слайдера; 2- Наложение эфффекта на фотографию)
 
-const selectedEffect = (evt) => {
+const onSelectedEffect = (evt) => {
   evt.preventDefault();
   toUpdateHandle(evt.target.value);
   toAddEffects(evt.target.value, sliderHandle.noUiSlider.get());
 };
 
 function toEffectsPhotoEventListenersCreate() {
-  effects.addEventListener('change', selectedEffect);
+  effects.addEventListener('change', onSelectedEffect);
 }
 
 function toEffectsPhotoEventListenersDelete() {
-  effects.removeEventListener('change', selectedEffect);
+  effects.removeEventListener('change', onSelectedEffect);
 }
 
 // Сброс/Обнуление эффекта
@@ -425,22 +407,22 @@ pristine.addValidator(hashtagsField, isHashtagsLength, errorMessageHashtagLength
 pristine.addValidator(commentsField, isCommentsLength, errorMessageComments);
 
 // Вызываем проверку
-const isFieldsValidate = () => pristine.validate();
+const onIsFieldsValidate = () => pristine.validate();
 
 // Создание обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersCreate() {
-  hashtagsField.addEventListener('keyup', isFieldsValidate);
-  commentsField.addEventListener('keyup', isFieldsValidate);
+  hashtagsField.addEventListener('keyup', onIsFieldsValidate);
+  commentsField.addEventListener('keyup', onIsFieldsValidate);
 }
 
 // Удаление обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersDelete() {
-  hashtagsField.removeEventListener('keyup', isFieldsValidate);
-  commentsField.removeEventListener('keyup', isFieldsValidate);
+  hashtagsField.removeEventListener('keyup', onIsFieldsValidate);
+  commentsField.removeEventListener('keyup', onIsFieldsValidate);
 }
 
 // Отправка формы
-const toSubmitForm = (evt) => {
+const onSubmitForm = (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
@@ -453,7 +435,7 @@ const toSubmitForm = (evt) => {
     const formData = new FormData(form);
     submitDataFormToServer(formData);
 
-    toCloseForm();
+    onCloseForm();
   } else {
     evt.stopPropagation();
   }
@@ -461,12 +443,12 @@ const toSubmitForm = (evt) => {
 
 // Создание обработчиков отправки формы
 function toFormSubmitEventListenerCreate() {
-  form.addEventListener('submit', toSubmitForm);
+  form.addEventListener('submit', onSubmitForm);
 }
 
 // Удаление обработчиков отправки формы
 function toFormSubmitEventListenerDelete() {
-  form.addEventListener('submit', toSubmitForm);
+  form.addEventListener('submit', onSubmitForm);
 }
 
-export {toCloseForm};
+export {onCloseForm};
