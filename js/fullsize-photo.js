@@ -51,10 +51,11 @@ const slicePartComments = (comments, start, end) => {
 
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
 const drawArrayComments = (comments) => {
-  arrayCommentsElement.textContent = '';
-  let valueCountComments = 0;
   const STEP_COUNT = 5;
+  let valueCountComments = 0;
   const maxValueCountComments = comments.length;
+
+  arrayCommentsElement.textContent = '';
 
   const sliceSmallPart = () => {
     slicePartComments(comments, valueCountComments, maxValueCountComments);
@@ -111,9 +112,7 @@ const drawFullsizePhoto = (photo) => {
   bodyElement.classList.add('modal-open');
 };
 
-
 // Инициализация/настройка миниатюр для отображения полноэкранного изображения (навешивание обработчика событий)
-
 const initPictures = (data) => {
   // Поиск массива в DOM, чтобы его перебрать и навесить обработчик клика
   const photos = document.querySelectorAll('.picture');
@@ -126,16 +125,16 @@ const initPictures = (data) => {
   });
 };
 
-
 // Закрываю окно полноэкранного отображения картинки
-
 const closePhoto = () => {
   bodyElement.classList.remove('modal-open');
   fullsizePhotoElement.classList.add('hidden');
   arrayCommentsElement.textContent = '';
   countCommentsElement.textContent = '0';
   loadingCommentsElement.classList.remove('hidden');
-  onCloseElementToCloseFullsizePhotoEventListenersDelete(); // Удаляю обработчики закрытия полноэкранного изображения
+
+  // Удаляю обработчики закрытия полноэкранного изображения
+  onCloseElementToCloseFullsizePhotoEventListenersDelete();
   document.onkeydown = null;
 };
 

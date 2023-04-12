@@ -1,7 +1,5 @@
 const templateFragmentElement = document.querySelector('#picture').content;
-
 const templatePictureElement = templateFragmentElement.querySelector('.picture');
-
 const picturesArrayElement = document.querySelector('.pictures');
 
 // Создание одной картинки (фото + описание)

@@ -6,6 +6,7 @@ import {hideFilters, showTimeoutFilters} from './filters.js';
 
 const bodyElement = document.querySelector('body');
 
+// Запрос к серверу для получения данных/миниатюр
 fetch('https://28.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((miniatures) => {
@@ -27,24 +28,23 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
 // Отправка данных формы на сервер
 const submitDataFormToServer = (data) => {
   fetch(
-    'https://28.javascript.pages.academy/kekstagram',
+    'https://28.javascript.pages.academy/kekstagram/',
     {
       method: 'POST',
       body: data,
     })
-    .then(() => {
-      console.log('отправка формы, then 1');
+    .then((response) => {
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
-      bodyElement.append(createPopupSuccess()); // Показывается окно из template #success
+      if (response.ok) { // Проверяем статус ответа сервера - Ок - значит
+        bodyElement.append(createPopupSuccess()); // показываем окно из template #success
+        onCloseElementToCloseForm(); // и закрываем форму
+      } else {
+        bodyElement.append(createPopupError()); // Показывается окно из template #error
+      }
     })
     .catch(() => {
-      console.log('отправка формы, catch');
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       bodyElement.append(createPopupError()); // Показывается окно из template #error
-    })
-    .then(() => {
-      console.log('отправка формы, then 2');
-      onCloseElementToCloseForm();
     });
 };
 

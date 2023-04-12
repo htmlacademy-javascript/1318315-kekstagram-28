@@ -143,9 +143,10 @@ const onControlBiggerElementToEnlargePhoto = (evt) => {
 
 // Сброс/Обнуление маштаба
 function toResetScale() {
-  // Восстанавливаем значения по-умолчанию и передаем их в соответствующие поля
+  // Восстанавливаем значения по-умолчанию
   defaultControlValue = 100;
   defaultTransformStyleValue = 1;
+  // и передаем их в соответствующие поля
   controlValueElement.value = `${defaultControlValue}%`;
   imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue})`;
 }
@@ -357,12 +358,12 @@ function toResetEffects() {
   hideSlider();
   imgPreviewElement.removeAttribute('class');
   imgPreviewElement.classList.add('effects__preview--none');
-  // imgPreviewElement.style.filter = '';
-  imgPreviewElement.setAttribute('style', '');
+  setTimeout(() => { // Меняем значение атрибута с задержкой по времени, т.к. элементы в DOM отрисовываются не моментально. Без этого отсроченного выполнения - на картинке остается ранее выбранний фильтр.
+    imgPreviewElement.style.filter = 'none';
+  }, 100);
   noneUpdateOptions();
-
-  // document.querySelector('input[name="effect"]:checked').setAttribute('checked', '');
-  // document.querySelector('input[id="effect-none"]').checked = true;
+  // Возвращаем "выбранной"(checked) изначальную радио-точку из списка визуальных эффектов
+  document.querySelector('input[id="effect-none"]').checked = 'checked';
 }
 
 // ВАЛИДАЦИЯ ПОЛЕЙ И ОТПРАВКА ФОРМЫ
