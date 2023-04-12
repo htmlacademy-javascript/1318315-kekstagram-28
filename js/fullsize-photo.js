@@ -52,27 +52,27 @@ const slicePartComments = (comments, start, end) => {
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
 const drawArrayComments = (comments) => {
   arrayCommentsElement.textContent = '';
-  let number = 0;
-  const N = 5;
-  const maxNumber = comments.length;
+  let valueCountComments = 0;
+  const STEP_COUNT = 5;
+  const maxValueCountComments = comments.length;
 
   const sliceSmallPart = () => {
-    slicePartComments(comments, number, maxNumber);
-    countCommentsElement.textContent = maxNumber;
+    slicePartComments(comments, valueCountComments, maxValueCountComments);
+    countCommentsElement.textContent = maxValueCountComments;
     loadingCommentsElement.classList.add('hidden');
   };
 
   const sliceNextPart = () => {
-    slicePartComments(comments, number, (number + N));
-    number = number + N;
-    countCommentsElement.textContent = number;
+    slicePartComments(comments, valueCountComments, (valueCountComments + STEP_COUNT));
+    valueCountComments = valueCountComments + STEP_COUNT;
+    countCommentsElement.textContent = valueCountComments;
   };
 
-  const showFirstComments = () => (maxNumber <= N) ? sliceSmallPart() : sliceNextPart();
+  const showFirstComments = () => (maxValueCountComments <= STEP_COUNT) ? sliceSmallPart() : sliceNextPart();
   showFirstComments();
 
   // Нажатие на кнопку "Загрузить еще"
-  const onLoadingCommentsElementToShowMore = () => ((maxNumber - number) <= N) ? sliceSmallPart() : sliceNextPart();
+  const onLoadingCommentsElementToShowMore = () => ((maxValueCountComments - valueCountComments) <= STEP_COUNT) ? sliceSmallPart() : sliceNextPart();
 
   loadingCommentsElement.addEventListener('click', onLoadingCommentsElementToShowMore);
 

@@ -266,54 +266,46 @@ const toUpdateHandle = (effect) => {
   }
 };
 
-// "Включение" слайдера === удаление "отключённого" состояния слайдера
-const removeDisabled = () => {
-  sliderElement.removeAttribute('disabled');
-  sliderHandleElement.removeAttribute('disabled');
-  levelEffectElement.removeAttribute('disabled');
-};
+// Показать слайдер
+const showSlider = () => sliderElement.classList.remove('visually-hidden');
 
-// Блокировка слайдера === установить "отключённое" состояние слайдера
-const setDisabled = () => {
-  sliderElement.setAttribute('disabled', '');
-  sliderHandleElement.setAttribute('disabled', '');
-  levelEffectElement.setAttribute('disabled', '');
-};
+// Спрятать слайдер
+const hideSlider = () => sliderElement.classList.add('visually-hidden');
 
 // Наложение/добавление эфффекта на фотографию
 const toAddEffects = (effect, value) => {
   switch (effect) {
     case 'none':
-      setDisabled();
+      hideSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.style.filter = '';
       break;
     case 'chrome':
-      removeDisabled();
+      showSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.classList.add('effects__preview--chrome');
       imgPreviewElement.style.filter = `grayscale(${value})`;
       break;
     case 'sepia':
-      removeDisabled();
+      showSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.classList.add('effects__preview--sepia');
       imgPreviewElement.style.filter = `sepia(${value})`;
       break;
     case 'marvin':
-      removeDisabled();
+      showSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.classList.add('effects__preview--marvin');
       imgPreviewElement.style.filter = `invert(${value}%)`;
       break;
     case 'phobos':
-      removeDisabled();
+      showSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.classList.add('effects__preview--phobos');
       imgPreviewElement.style.filter = `blur(${value}px)`;
       break;
     case 'heat':
-      removeDisabled();
+      showSlider();
       imgPreviewElement.removeAttribute('class');
       imgPreviewElement.classList.add('effects__preview--heat');
       imgPreviewElement.style.filter = `brightness(${value})`;
@@ -349,7 +341,7 @@ function toEffectsPhotoEventListenersDelete() {
 
 // Сброс/Обнуление эффекта
 function toResetEffects() {
-  setDisabled();
+  hideSlider();
   imgPreviewElement.removeAttribute('class');
   imgPreviewElement.style.filter = '';
   noneUpdateOptions();

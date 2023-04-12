@@ -1,7 +1,6 @@
 import {createPictures} from './rendering-photo.js';
 import {initPictures} from './fullsize-photo.js';
 import {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupErrorLoad} from './popups.js';
-import {onCloseToCloseForm} from './form-upload-img.js';
 import {hideFilters, showTimeoutFilters} from './filters.js';
 
 const bodyElement = document.querySelector('body');
@@ -35,7 +34,6 @@ const submitDataFormToServer = (data) => {
     .then(() => {
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       bodyElement.append(createPopupSuccess()); // Показывается окно из template #success
-      onCloseToCloseForm(); // Закрытие формы
     })
     .catch(() => {
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
