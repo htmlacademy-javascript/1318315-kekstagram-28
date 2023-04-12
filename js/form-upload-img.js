@@ -14,147 +14,166 @@ const errorMessageHashtagLength = 'Можно написать самое бол
 const errorMessageComments = 'Максимальная длина комментария - 140 символов';
 
 // Значения по-умолчанию, которые будут меняться/перезаписываться
-let defaultValueControl = 100;
-let defaultStyleControl = 1;
+let defaultControlValue = 100;
+let defaultTransformStyleValue = 1;
 
-const body = document.querySelector('body');
-const form = document.querySelector('.img-upload__form');
-const openFile = form.querySelector('#upload-file');
+const bodyElement = document.querySelector('body');
+const formElement = document.querySelector('.img-upload__form');
+const openFileElement = formElement.querySelector('#upload-file');
 
-const imageUpload = form.querySelector('.img-upload__overlay');
-const close = form.querySelector('#upload-cancel');
+const imageUploadElement = formElement.querySelector('.img-upload__overlay');
+const closeElement = formElement.querySelector('#upload-cancel');
 
-const controlSmaller = document.querySelector('.scale__control--smaller');
-const controlValue = document.querySelector('.scale__control--value');
-const controlBigger = document.querySelector('.scale__control--bigger');
+const controlSmallerElement = document.querySelector('.scale__control--smaller');
+const controlValueElement = document.querySelector('.scale__control--value');
+const controlBiggerElement = document.querySelector('.scale__control--bigger');
 
-const boxImgPreview = document.querySelector('.img-upload__preview'); // div - <div><img></div>
-const imgPreview = document.querySelector('.img-upload__preview img'); // img - <div><img></div>
+const imgPreviewElement = document.querySelector('.img-upload__preview img'); // img - <div><img></div>
 
-const effects = document.querySelector('.effects__list');
-const slider = document.querySelector('.img-upload__effect-level');
-const sliderHandle = document.querySelector('.effect-level__slider');
-const levelEffect = document.querySelector('.effect-level__value');
+const effectsElement = document.querySelector('.effects__list');
+const sliderElement = document.querySelector('.img-upload__effect-level');
+const sliderHandleElement = document.querySelector('.effect-level__slider');
+const levelEffectElement = document.querySelector('.effect-level__value');
 
-const hashtagsField = form.querySelector('.text__hashtags');
-const commentsField = form.querySelector('.text__description');
+const hashtagsFieldElement = formElement.querySelector('.text__hashtags');
+const commentsFieldElement = formElement.querySelector('.text__description');
 
 
 // ОТКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
 // Открытие формы
 const onOpenForm = () => {
-  body.classList.add('modal-open');
-  imageUpload.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  imageUploadElement.classList.remove('hidden');
+
+  // Сброс маштаба, эффектов и полей ввода хештегов и комментариев в дефотное состояние (по-умолчанию)
+  toResetScale();
+  toResetEffects();
+  toResetInputFields();
+
+  // Создаю обработчики событий // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
   toCloseFormEventListenersCreate();
   toChangeSizePhotoEventListenersCreate();
   toEffectsPhotoEventListenersCreate();
-  toResetEffects();
-  noneUpdateOptions();
-  controlValue.value = '100%';
-  boxImgPreview.style.transform = 'scale(1)';
   toFieldsValidateEventListenersCreate();
   toFormSubmitEventListenerCreate();
-  // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
 // Загрузка/подтягивание фортографии пользователя
-const onOpenFileToChooseFile = () => {
-  const file = openFile.files[0]; // Берем 1-й файл из массива файлов
+const onOpenFileElementToChooseFile = () => {
+  const file = openFileElement.files[0]; // Берем 1-й файл из массива файлов
   const fileName = file.name.toLowerCase(); // Приводим имя файла в нижний регистр
   const compareTypes = FILE_TYPES.some((item) => fileName.endsWith(item)); // Проверяем есть ли в указанном массиве расширений для file".js", то расширение файла, который выбрал пользователь
   if (compareTypes) { // Если верно (true), то
-    imgPreview.src = URL.createObjectURL(file); // генерируем ссылку для локальной фотографии пользователя
+    imgPreviewElement.src = URL.createObjectURL(file); // генерируем ссылку для локальной фотографии пользователя
     onOpenForm();
   } else {
     // Показываю окно ошибки загрузки файла пользователя, которое скрывается через время
-    body.append(createPopupErrorFile());
+    bodyElement.append(createPopupErrorFile());
     showTimeoutPopupErrorFile();
   }
 };
 
-openFile.addEventListener('change', onOpenFileToChooseFile);
+openFileElement.addEventListener('change', onOpenFileElementToChooseFile);
 
 
 // ЗАКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
 // Закрытие формы
-const onCloseToCloseForm = () => {
-  body.classList.remove('modal-open');
-  imageUpload.classList.add('hidden');
-  openFile.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
+const onCloseElementToCloseForm = () => {
+  bodyElement.classList.remove('modal-open');
+  imageUploadElement.classList.add('hidden');
+  openFileElement.value = ''; // Очищаю выбор загузки фото, чтобы можно было выбрать новое
+
+  // Удаляю обработчики событий // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
   toFieldsValidateEventListenersDelete();
-  hashtagsField.value = '';
-  commentsField.value = '';
   toEffectsPhotoEventListenersDelete();
   toChangeSizePhotoEventListenersDelete();
   toFormSubmitEventListenerDelete();
-  toCloseFormEventListenersDelete();
-  // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
+  toCloseElementFormEventListenersDelete();
 };
 
 const onDocumentToEscCloseForm = (evt) => {
-  if (((hashtagsField === document.activeElement) || (commentsField === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsField === document.activeElement) || (commentsField === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
+  if (((hashtagsFieldElement === document.activeElement) || (commentsFieldElement === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsFieldElement === document.activeElement) || (commentsFieldElement === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
     evt.stopPropagation();
   } else {
-    evt.preventDefault();
-    onCloseToCloseForm();
+    if (isEscKeydown(evt)) {
+      evt.preventDefault();
+      onCloseElementToCloseForm();
+    }
   }
 };
 
 // Создание обработчиков для закрытия формы
 function toCloseFormEventListenersCreate() {
-  close.addEventListener('click', onCloseToCloseForm);
+  closeElement.addEventListener('click', onCloseElementToCloseForm);
   document.addEventListener('keydown', onDocumentToEscCloseForm);
 }
 
 // Удаление обработчиков для закрытия формы
-function toCloseFormEventListenersDelete() {
-  close.removeEventListener('click', onCloseToCloseForm);
+function toCloseElementFormEventListenersDelete() {
+  closeElement.removeEventListener('click', onCloseElementToCloseForm);
   document.removeEventListener('keydown', onDocumentToEscCloseForm);
 }
 
 
 // ИЗМЕНЕНИЕ МАСШТАБА/РАЗМЕРА ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
-// Значения по-умолчанию
-controlValue.value = `${defaultValueControl}%`;
-
 // Уменьшить фото, при клике на controlSmaller
-const onControlSmallerToReducePhoto = (evt) => {
+const onControlSmallerElementToReducePhoto = (evt) => {
   evt.preventDefault();
-  if (defaultValueControl > MIN_VALUE) {
-    controlValue.value = `${defaultValueControl -= STEP_VALUE}%`;
-    boxImgPreview.style.transform = `scale(${defaultStyleControl -= STEP_STYLE_CONTROL})`;
+  if (defaultControlValue > MIN_VALUE) {
+    controlValueElement.value = `${defaultControlValue -= STEP_VALUE}%`;
+    imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue -= STEP_STYLE_CONTROL})`;
+  } else {
+    evt.stopPropagation();
   }
 };
 
 // Увеличить фото, при клике на controlBigger
-const onControlBiggerToEnlargePhoto = (evt) => {
+const onControlBiggerElementToEnlargePhoto = (evt) => {
   evt.preventDefault();
-  if (defaultValueControl < MAX_VALUE) {
-    controlValue.value = `${defaultValueControl += STEP_VALUE}%`;
-    boxImgPreview.style.transform = `scale(${defaultStyleControl += STEP_STYLE_CONTROL})`;
+  if (defaultControlValue < MAX_VALUE) {
+    controlValueElement.value = `${defaultControlValue += STEP_VALUE}%`;
+    imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue += STEP_STYLE_CONTROL})`;
+  } else {
+    evt.stopPropagation();
   }
 };
 
+// Сброс/Обнуление маштаба
+function toResetScale() {
+  // Восстанавливаем значения по-умолчанию
+  defaultControlValue = 100;
+  defaultTransformStyleValue = 1;
+  // и передаем их в соответствующие поля
+  controlValueElement.value = `${defaultControlValue}%`;
+  imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue})`;
+}
+
 // Создаем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersCreate() {
-  controlSmaller.addEventListener('click', onControlSmallerToReducePhoto);
-  controlBigger.addEventListener('click', onControlBiggerToEnlargePhoto);
+  controlSmallerElement.addEventListener('click', onControlSmallerElementToReducePhoto);
+  controlBiggerElement.addEventListener('click', onControlBiggerElementToEnlargePhoto);
 }
 
 // Удаляем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersDelete() {
-  controlSmaller.removeEventListener('click', onControlSmallerToReducePhoto);
-  controlBigger.removeEventListener('click', onControlBiggerToEnlargePhoto);
+  controlSmallerElement.removeEventListener('click', onControlSmallerElementToReducePhoto);
+  controlBiggerElement.removeEventListener('click', onControlBiggerElementToEnlargePhoto);
 }
 
 
 // НАЛОЖЕНИЕ ЭФФЕКТОВ НА ФОТОГРАФИЮ ПОЛЬЗОВАТЕЛЯ
 
+// Показать слайдер
+const showSlider = () => sliderElement.classList.remove('visually-hidden');
+
+// Спрятать слайдер
+const hideSlider = () => sliderElement.classList.add('visually-hidden');
+
 // Значение слайдера по-умолчанию
-noUiSlider.create(sliderHandle, {
+noUiSlider.create(sliderHandleElement, {
   range: {
     min: 0,
     max: 100,
@@ -177,7 +196,7 @@ noUiSlider.create(sliderHandle, {
 
 // Значения слайдера по каждому эффекту
 function noneUpdateOptions() {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 100,
@@ -188,7 +207,7 @@ function noneUpdateOptions() {
 }
 
 const chromeUpdateOptions = () => {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 1,
@@ -199,7 +218,7 @@ const chromeUpdateOptions = () => {
 };
 
 const sepiaUpdateOptions = () => {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 1,
@@ -210,7 +229,7 @@ const sepiaUpdateOptions = () => {
 };
 
 const marvinUpdateOptions = () => {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 100,
@@ -221,7 +240,7 @@ const marvinUpdateOptions = () => {
 };
 
 const phobosUpdateOptions = () => {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 0,
       max: 3,
@@ -232,7 +251,7 @@ const phobosUpdateOptions = () => {
 };
 
 const heatUpdateOptions = () => {
-  sliderHandle.noUiSlider.updateOptions({
+  sliderHandleElement.noUiSlider.updateOptions({
     range: {
       min: 1,
       max: 3,
@@ -266,99 +285,90 @@ const toUpdateHandle = (effect) => {
   }
 };
 
-// "Включение" слайдера === удаление "отключённого" состояния слайдера
-const removeDisabled = () => {
-  slider.removeAttribute('disabled');
-  sliderHandle.removeAttribute('disabled');
-  levelEffect.removeAttribute('disabled');
-};
-
-// Блокировка слайдера === установить "отключённое" состояние слайдера
-const setDisabled = () => {
-  slider.setAttribute('disabled', '');
-  sliderHandle.setAttribute('disabled', '');
-  levelEffect.setAttribute('disabled', '');
-};
-
 // Наложение/добавление эфффекта на фотографию
 const toAddEffects = (effect, value) => {
   switch (effect) {
     case 'none':
-      setDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.style.filter = '';
+      hideSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--none');
+      imgPreviewElement.style.filter = '';
       break;
     case 'chrome':
-      removeDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.classList.add('effects__preview--chrome');
-      imgPreview.style.filter = `grayscale(${value})`;
+      showSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--chrome');
+      imgPreviewElement.style.filter = `grayscale(${value})`;
       break;
     case 'sepia':
-      removeDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.classList.add('effects__preview--sepia');
-      imgPreview.style.filter = `sepia(${value})`;
+      showSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--sepia');
+      imgPreviewElement.style.filter = `sepia(${value})`;
       break;
     case 'marvin':
-      removeDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.classList.add('effects__preview--marvin');
-      imgPreview.style.filter = `invert(${value}%)`;
+      showSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--marvin');
+      imgPreviewElement.style.filter = `invert(${value}%)`;
       break;
     case 'phobos':
-      removeDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.classList.add('effects__preview--phobos');
-      imgPreview.style.filter = `blur(${value}px)`;
+      showSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--phobos');
+      imgPreviewElement.style.filter = `blur(${value}px)`;
       break;
     case 'heat':
-      removeDisabled();
-      imgPreview.removeAttribute('class');
-      imgPreview.classList.add('effects__preview--heat');
-      imgPreview.style.filter = `brightness(${value})`;
+      showSlider();
+      imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--heat');
+      imgPreviewElement.style.filter = `brightness(${value})`;
       break;
   }
 };
 
 // Получение значений с "ручки" слайдера и "выбранного(:checked)" эффекта при помощи встроенного обработчика событий библиотеки noUiSlider
-sliderHandle.noUiSlider.on('update', () => {
-  const value = sliderHandle.noUiSlider.get();
-  levelEffect.value = value;
+sliderHandleElement.noUiSlider.on('update', () => {
+  const value = sliderHandleElement.noUiSlider.get();
 
-  const effect = document.querySelector('input[name="effect"]:checked').value;
+  levelEffectElement.value = value;
+  const effectElement = document.querySelector('input[name="effect"]:checked').value;
 
-  toAddEffects(effect, value);
+  toAddEffects(effectElement, value);
 });
 
 // Обработчик событий (addEventListener) передаст значения выбранного эффекта (evt.target.value) в написанные ранее функции (1- Переключение значений слайдера; 2- Наложение эфффекта на фотографию)
 
-const onEffectsToSelectedEffect = (evt) => {
+const onEffectsElementToSelectedEffect = (evt) => {
   evt.preventDefault();
   toUpdateHandle(evt.target.value);
-  toAddEffects(evt.target.value, sliderHandle.noUiSlider.get());
+  toAddEffects(evt.target.value, sliderHandleElement.noUiSlider.get());
 };
 
 function toEffectsPhotoEventListenersCreate() {
-  effects.addEventListener('change', onEffectsToSelectedEffect);
+  effectsElement.addEventListener('change', onEffectsElementToSelectedEffect);
 }
 
 function toEffectsPhotoEventListenersDelete() {
-  effects.removeEventListener('change', onEffectsToSelectedEffect);
+  effectsElement.removeEventListener('change', onEffectsElementToSelectedEffect);
 }
 
 // Сброс/Обнуление эффекта
 function toResetEffects() {
-  setDisabled();
-  imgPreview.removeAttribute('class');
-  imgPreview.style.filter = '';
-  noneUpdateOptions();
+  imgPreviewElement.removeAttribute('class');
+  imgPreviewElement.classList.add('effects__preview--none');
+  setTimeout(() => { // Выполняем код ниже с задержкой по времени, т.к. элементы в DOM отрисовываются не моментально. Без этого отсроченного выполнения - на картинке остается ранее выбранний фильтр.
+    imgPreviewElement.style.filter = 'none';
+    noneUpdateOptions();
+    hideSlider();
+  }, 100);
+  // Возвращаем "выбранной"(checked) изначальную радио-точку из списка визуальных эффектов
+  document.querySelector('input[id="effect-none"]').checked = 'checked';
 }
-
 
 // ВАЛИДАЦИЯ ПОЛЕЙ И ОТПРАВКА ФОРМЫ
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__pristine',
   errorTextParent: 'img-upload__pristine',
   errorTextClass: 'img-upload__pristine--error-message',
@@ -372,8 +382,8 @@ const isHashtegUnique = (value) => {
   if (value.trim() === '') {
     return true;
   }
-  const hashtagArray = textToArray(value);
-  return hashtagArray.length === new Set(hashtagArray.map((arrayItem) => (arrayItem.toLowerCase()))).size;
+  const hashtagsArray = textToArray(value);
+  return hashtagsArray.length === new Set(hashtagsArray.map((arrayItem) => (arrayItem.toLowerCase()))).size;
 };
 
 // Проверка хеш-тега на соответствие шаблону
@@ -382,10 +392,10 @@ const isHashtagPattern = (value) => {
     return true;
   }
   const hashtaPattern = /^#[A-Za-zА-Яа-яЁё\d]{1,19}$/im;
-  const hashtagArray = textToArray(value);
+  const hashtagsArray = textToArray(value);
 
-  for (let i = 0; i < hashtagArray.length; i++) {
-    const currentHashtag = hashtagArray[i];
+  for (let i = 0; i < hashtagsArray.length; i++) {
+    const currentHashtag = hashtagsArray[i];
     if (!hashtaPattern.exec(currentHashtag)) {
       return false;
     }
@@ -401,24 +411,30 @@ const isHashtagsLength = (value) => (value.trim() === '') || (textToArray(value)
 const isCommentsLength = (value) => (value.trim() === '') || (value.length <= 140);
 
 // Схемы проверок
-pristine.addValidator(hashtagsField, isHashtegUnique, errorMessageHashtegUnique);
-pristine.addValidator(hashtagsField, isHashtagPattern, errorMessageHashtagPattern);
-pristine.addValidator(hashtagsField, isHashtagsLength, errorMessageHashtagLength);
-pristine.addValidator(commentsField, isCommentsLength, errorMessageComments);
+pristine.addValidator(hashtagsFieldElement, isHashtegUnique, errorMessageHashtegUnique);
+pristine.addValidator(hashtagsFieldElement, isHashtagPattern, errorMessageHashtagPattern);
+pristine.addValidator(hashtagsFieldElement, isHashtagsLength, errorMessageHashtagLength);
+pristine.addValidator(commentsFieldElement, isCommentsLength, errorMessageComments);
 
 // Вызываем проверку
 const onInputFieldIsToValidate = () => pristine.validate();
 
 // Создание обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersCreate() {
-  hashtagsField.addEventListener('keyup', onInputFieldIsToValidate);
-  commentsField.addEventListener('keyup', onInputFieldIsToValidate);
+  hashtagsFieldElement.addEventListener('keyup', onInputFieldIsToValidate);
+  commentsFieldElement.addEventListener('keyup', onInputFieldIsToValidate);
 }
 
 // Удаление обработчиков полей ввода данных (ХэшТегов и комментариев)
 function toFieldsValidateEventListenersDelete() {
-  hashtagsField.removeEventListener('keyup', onInputFieldIsToValidate);
-  commentsField.removeEventListener('keyup', onInputFieldIsToValidate);
+  hashtagsFieldElement.removeEventListener('keyup', onInputFieldIsToValidate);
+  commentsFieldElement.removeEventListener('keyup', onInputFieldIsToValidate);
+}
+
+// Сброс/Обнуление (очистка) полейй ввода хештегов и комментариев
+function toResetInputFields() {
+  hashtagsFieldElement.value = '';
+  commentsFieldElement.value = '';
 }
 
 // Отправка формы
@@ -429,13 +445,11 @@ const onFormToSubmit = (evt) => {
 
   if (isValid) {
     // Показать темплейт "Загружаем..."
-    body.append(createPopupLoadingForm());
+    bodyElement.append(createPopupLoadingForm());
 
     // Собираем и отправляем данные формы
-    const formData = new FormData(form);
+    const formData = new FormData(formElement);
     submitDataFormToServer(formData);
-
-    onCloseToCloseForm();
   } else {
     evt.stopPropagation();
   }
@@ -443,12 +457,12 @@ const onFormToSubmit = (evt) => {
 
 // Создание обработчиков отправки формы
 function toFormSubmitEventListenerCreate() {
-  form.addEventListener('submit', onFormToSubmit);
+  formElement.addEventListener('submit', onFormToSubmit);
 }
 
 // Удаление обработчиков отправки формы
 function toFormSubmitEventListenerDelete() {
-  form.addEventListener('submit', onFormToSubmit);
+  formElement.addEventListener('submit', onFormToSubmit);
 }
 
-export {onCloseToCloseForm};
+export {onCloseElementToCloseForm};

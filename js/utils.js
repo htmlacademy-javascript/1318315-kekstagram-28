@@ -1,11 +1,3 @@
-// // Получение случайного числа
-// const GetRandomNumber = (min, max) => {
-//   if ((0 <= min) && (min < max)) {
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-//   }
-//   return 'Ошибка при введении чисел';
-// };
-
 const isEscKeydown = (evt) => evt.code === 'Escape'; // Нужно обязательно передавать evt !!! "if (isEscKeydown(evt)) {...", т.к. именно evt проверяет есть ли нажатая клавиша Esc
 
 // Получение случайного порядка / Перемешивание
@@ -20,4 +12,4 @@ const Debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {/*GetRandomNumber, */isEscKeydown, getRandomOrder, Debounce};
+export {isEscKeydown, getRandomOrder, Debounce};

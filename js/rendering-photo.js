@@ -1,12 +1,10 @@
-const templateFragment = document.querySelector('#picture').content;
-
-const templatePicture = templateFragment.querySelector('.picture');
-
-const picturesArray = document.querySelector('.pictures');
+const templateFragmentElement = document.querySelector('#picture').content;
+const templatePictureElement = templateFragmentElement.querySelector('.picture');
+const picturesArrayElement = document.querySelector('.pictures');
 
 // Создание одной картинки (фото + описание)
-const CreatePicture = (Object) => {
-  const picture = templatePicture.cloneNode(true);
+const createPicture = (Object) => {
+  const picture = templatePictureElement.cloneNode(true);
   picture.id = Object.id;
   picture.querySelector('.picture__img').src = Object.url;
   picture.querySelector('.picture__likes').textContent = Object.likes;
@@ -16,16 +14,16 @@ const CreatePicture = (Object) => {
 };
 
 // Создание массива картинок
-const CreatePictures = (objects) => {
+const createPictures = (objects) => {
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < objects.length; i++) {
-    const newPicture = CreatePicture(objects[i]);
+    const newPicture = createPicture(objects[i]);
     fragment.appendChild(newPicture);
   }
 
-  picturesArray.appendChild(fragment);
-  return picturesArray;
+  picturesArrayElement.appendChild(fragment);
+  return picturesArrayElement;
 };
 
-export {CreatePictures};
+export {createPictures};
