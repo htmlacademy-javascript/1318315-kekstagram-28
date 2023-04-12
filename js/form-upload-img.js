@@ -355,13 +355,13 @@ function toEffectsPhotoEventListenersDelete() {
 
 // Сброс/Обнуление эффекта
 function toResetEffects() {
-  hideSlider();
   imgPreviewElement.removeAttribute('class');
   imgPreviewElement.classList.add('effects__preview--none');
-  setTimeout(() => { // Меняем значение атрибута с задержкой по времени, т.к. элементы в DOM отрисовываются не моментально. Без этого отсроченного выполнения - на картинке остается ранее выбранний фильтр.
+  setTimeout(() => { // Выполняем код ниже с задержкой по времени, т.к. элементы в DOM отрисовываются не моментально. Без этого отсроченного выполнения - на картинке остается ранее выбранний фильтр.
     imgPreviewElement.style.filter = 'none';
+    noneUpdateOptions();
+    hideSlider();
   }, 100);
-  noneUpdateOptions();
   // Возвращаем "выбранной"(checked) изначальную радио-точку из списка визуальных эффектов
   document.querySelector('input[id="effect-none"]').checked = 'checked';
 }
