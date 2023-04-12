@@ -108,7 +108,7 @@ const drawFullsizePhoto = (photo) => {
   drawArrayComments(photo.comments);
   fullsizePhotoElement.querySelector('.social__comments').replaceWith(arrayCommentsElement);
 
-  bodyElement.classList.add('.modal-open');
+  bodyElement.classList.add('modal-open');
 };
 
 
@@ -130,7 +130,7 @@ const initPictures = (data) => {
 // Закрываю окно полноэкранного отображения картинки
 
 const closePhoto = () => {
-  bodyElement.classList.remove('.modal-open');
+  bodyElement.classList.remove('modal-open');
   fullsizePhotoElement.classList.add('hidden');
   arrayCommentsElement.textContent = '';
   countCommentsElement.textContent = '0';

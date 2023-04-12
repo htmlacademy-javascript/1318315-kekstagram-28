@@ -1,5 +1,6 @@
 import {createPictures} from './rendering-photo.js';
 import {initPictures} from './fullsize-photo.js';
+import {onCloseElementToCloseForm} from './form-upload-img.js';
 import {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createPopupErrorLoad} from './popups.js';
 import {hideFilters, showTimeoutFilters} from './filters.js';
 
@@ -32,12 +33,18 @@ const submitDataFormToServer = (data) => {
       body: data,
     })
     .then(() => {
+      console.log('отправка формы, then 1');
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       bodyElement.append(createPopupSuccess()); // Показывается окно из template #success
     })
     .catch(() => {
+      console.log('отправка формы, catch');
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       bodyElement.append(createPopupError()); // Показывается окно из template #error
+    })
+    .then(() => {
+      console.log('отправка формы, then 2');
+      onCloseElementToCloseForm();
     });
 };
 

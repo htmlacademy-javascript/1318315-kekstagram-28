@@ -14,8 +14,8 @@ const errorMessageHashtagLength = 'Можно написать самое бол
 const errorMessageComments = 'Максимальная длина комментария - 140 символов';
 
 // Значения по-умолчанию, которые будут меняться/перезаписываться
-let defaultValueControl = 100;
-let defaultStyleControl = 1;
+let defaultControlValue = 100;
+let defaultTransformStyleValue = 1;
 
 const bodyElement = document.querySelector('body');
 const formElement = document.querySelector('.img-upload__form');
@@ -28,7 +28,6 @@ const controlSmallerElement = document.querySelector('.scale__control--smaller')
 const controlValueElement = document.querySelector('.scale__control--value');
 const controlBiggerElement = document.querySelector('.scale__control--bigger');
 
-const boxImgPreviewElement = document.querySelector('.img-upload__preview'); // div - <div><img></div>
 const imgPreviewElement = document.querySelector('.img-upload__preview img'); // img - <div><img></div>
 
 const effectsElement = document.querySelector('.effects__list');
@@ -46,16 +45,18 @@ const commentsFieldElement = formElement.querySelector('.text__description');
 const onOpenForm = () => {
   bodyElement.classList.add('modal-open');
   imageUploadElement.classList.remove('hidden');
+
+  // Сброс маштаба, эффектов и полей ввода хештегов и комментариев в дефотное состояние (по-умолчанию)
+  toResetScale();
+  toResetEffects();
+  toResetInputFields();
+
+  // Создаю обработчики событий // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
   toCloseFormEventListenersCreate();
   toChangeSizePhotoEventListenersCreate();
   toEffectsPhotoEventListenersCreate();
-  toResetEffects();
-  noneUpdateOptions();
-  controlValueElement.value = '100%';
-  boxImgPreviewElement.style.transform = 'scale(1)';
   toFieldsValidateEventListenersCreate();
   toFormSubmitEventListenerCreate();
-  // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
 // Загрузка/подтягивание фортографии пользователя
@@ -82,23 +83,24 @@ openFileElement.addEventListener('change', onOpenFileElementToChooseFile);
 const onCloseElementToCloseForm = () => {
   bodyElement.classList.remove('modal-open');
   imageUploadElement.classList.add('hidden');
-  openFileElement.value = ''; //Очищаю выбор загузки фото, чтобы можно было выбрать новое
+  openFileElement.value = ''; // Очищаю выбор загузки фото, чтобы можно было выбрать новое
+
+  // Удаляю обработчики событий // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
   toFieldsValidateEventListenersDelete();
-  hashtagsFieldElement.value = '';
-  commentsFieldElement.value = '';
   toEffectsPhotoEventListenersDelete();
   toChangeSizePhotoEventListenersDelete();
   toFormSubmitEventListenerDelete();
   toCloseElementFormEventListenersDelete();
-  // Создаем EventListener-ы в одном порядке, а удаляем - в обратном!!!
 };
 
 const onDocumentToEscCloseForm = (evt) => {
   if (((hashtagsFieldElement === document.activeElement) || (commentsFieldElement === document.activeElement)) || ((isEscKeydown(evt)) && ((hashtagsFieldElement === document.activeElement) || (commentsFieldElement === document.activeElement)))) { // Если курсор стоит в поле ХэшТега или Комментария (=== document.activeElement) (=== input:focus), то при нажатии на Esc форма не должна закрываться. Но при этом должна позволять нажимать на другие клавиши и не отправляться и не закрываться.
     evt.stopPropagation();
   } else {
-    evt.preventDefault();
-    onCloseElementToCloseForm();
+    if (isEscKeydown(evt)) {
+      evt.preventDefault();
+      onCloseElementToCloseForm();
+    }
   }
 };
 
@@ -117,26 +119,36 @@ function toCloseElementFormEventListenersDelete() {
 
 // ИЗМЕНЕНИЕ МАСШТАБА/РАЗМЕРА ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
-// Значения по-умолчанию
-controlValueElement.value = `${defaultValueControl}%`;
-
 // Уменьшить фото, при клике на controlSmaller
 const onControlSmallerElementToReducePhoto = (evt) => {
   evt.preventDefault();
-  if (defaultValueControl > MIN_VALUE) {
-    controlValueElement.value = `${defaultValueControl -= STEP_VALUE}%`;
-    boxImgPreviewElement.style.transform = `scale(${defaultStyleControl -= STEP_STYLE_CONTROL})`;
+  if (defaultControlValue > MIN_VALUE) {
+    controlValueElement.value = `${defaultControlValue -= STEP_VALUE}%`;
+    imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue -= STEP_STYLE_CONTROL})`;
+  } else {
+    evt.stopPropagation();
   }
 };
 
 // Увеличить фото, при клике на controlBigger
 const onControlBiggerElementToEnlargePhoto = (evt) => {
   evt.preventDefault();
-  if (defaultValueControl < MAX_VALUE) {
-    controlValueElement.value = `${defaultValueControl += STEP_VALUE}%`;
-    boxImgPreviewElement.style.transform = `scale(${defaultStyleControl += STEP_STYLE_CONTROL})`;
+  if (defaultControlValue < MAX_VALUE) {
+    controlValueElement.value = `${defaultControlValue += STEP_VALUE}%`;
+    imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue += STEP_STYLE_CONTROL})`;
+  } else {
+    evt.stopPropagation();
   }
 };
+
+// Сброс/Обнуление маштаба
+function toResetScale() {
+  // Восстанавливаем значения по-умолчанию и передаем их в соответствующие поля
+  defaultControlValue = 100;
+  defaultTransformStyleValue = 1;
+  controlValueElement.value = `${defaultControlValue}%`;
+  imgPreviewElement.style.transform = `scale(${defaultTransformStyleValue})`;
+}
 
 // Создаем обработчики клика по кнопкам "+"" и "-"
 function toChangeSizePhotoEventListenersCreate() {
@@ -152,6 +164,12 @@ function toChangeSizePhotoEventListenersDelete() {
 
 
 // НАЛОЖЕНИЕ ЭФФЕКТОВ НА ФОТОГРАФИЮ ПОЛЬЗОВАТЕЛЯ
+
+// Показать слайдер
+const showSlider = () => sliderElement.classList.remove('visually-hidden');
+
+// Спрятать слайдер
+const hideSlider = () => sliderElement.classList.add('visually-hidden');
 
 // Значение слайдера по-умолчанию
 noUiSlider.create(sliderHandleElement, {
@@ -266,18 +284,13 @@ const toUpdateHandle = (effect) => {
   }
 };
 
-// Показать слайдер
-const showSlider = () => sliderElement.classList.remove('visually-hidden');
-
-// Спрятать слайдер
-const hideSlider = () => sliderElement.classList.add('visually-hidden');
-
 // Наложение/добавление эфффекта на фотографию
 const toAddEffects = (effect, value) => {
   switch (effect) {
     case 'none':
       hideSlider();
       imgPreviewElement.removeAttribute('class');
+      imgPreviewElement.classList.add('effects__preview--none');
       imgPreviewElement.style.filter = '';
       break;
     case 'chrome':
@@ -316,8 +329,8 @@ const toAddEffects = (effect, value) => {
 // Получение значений с "ручки" слайдера и "выбранного(:checked)" эффекта при помощи встроенного обработчика событий библиотеки noUiSlider
 sliderHandleElement.noUiSlider.on('update', () => {
   const value = sliderHandleElement.noUiSlider.get();
-  levelEffectElement.value = value;
 
+  levelEffectElement.value = value;
   const effectElement = document.querySelector('input[name="effect"]:checked').value;
 
   toAddEffects(effectElement, value);
@@ -343,10 +356,14 @@ function toEffectsPhotoEventListenersDelete() {
 function toResetEffects() {
   hideSlider();
   imgPreviewElement.removeAttribute('class');
-  imgPreviewElement.style.filter = '';
+  imgPreviewElement.classList.add('effects__preview--none');
+  // imgPreviewElement.style.filter = '';
+  imgPreviewElement.setAttribute('style', '');
   noneUpdateOptions();
-}
 
+  // document.querySelector('input[name="effect"]:checked').setAttribute('checked', '');
+  // document.querySelector('input[id="effect-none"]').checked = true;
+}
 
 // ВАЛИДАЦИЯ ПОЛЕЙ И ОТПРАВКА ФОРМЫ
 
@@ -413,6 +430,12 @@ function toFieldsValidateEventListenersDelete() {
   commentsFieldElement.removeEventListener('keyup', onInputFieldIsToValidate);
 }
 
+// Сброс/Обнуление (очистка) полейй ввода хештегов и комментариев
+function toResetInputFields() {
+  hashtagsFieldElement.value = '';
+  commentsFieldElement.value = '';
+}
+
 // Отправка формы
 const onFormToSubmit = (evt) => {
   evt.preventDefault();
@@ -426,8 +449,6 @@ const onFormToSubmit = (evt) => {
     // Собираем и отправляем данные формы
     const formData = new FormData(formElement);
     submitDataFormToServer(formData);
-
-    onCloseElementToCloseForm();
   } else {
     evt.stopPropagation();
   }
