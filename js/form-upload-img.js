@@ -38,6 +38,8 @@ const levelEffectElement = document.querySelector('.effect-level__value');
 const hashtagsFieldElement = formElement.querySelector('.text__hashtags');
 const commentsFieldElement = formElement.querySelector('.text__description');
 
+const buttonSubmitFormElement = formElement.querySelector('.img-upload__submit');
+
 
 // ОТКРЫТИЕ ФОРМЫ ПО ЗАГРУЗКЕ ФОТОГРАФИИ ПОЛЬЗОВАТЕЛЯ
 
@@ -450,6 +452,9 @@ const onFormToSubmit = (evt) => {
     // Собираем и отправляем данные формы
     const formData = new FormData(formElement);
     submitDataFormToServer(formData);
+
+    // Блокируем кнопку отправки формы "Опубликовать"
+    buttonSubmitFormElement.setAttribute('disabled', 'disabled');
   } else {
     evt.stopPropagation();
   }
