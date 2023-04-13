@@ -2,6 +2,7 @@ import {isEscKeydown} from './utils.js';
 
 const IMG_WIDTH = 35;
 const IMG_HEIGHT = 35;
+const STEP_COUNT = 5;
 
 const bodyElement = document.querySelector('body');
 const fullsizePhotoElement = document.querySelector('.big-picture');
@@ -51,7 +52,6 @@ const slicePartComments = (comments, start, end) => {
 
 // Функция по отрисовке/подстановке массива комментариев для одного изображения
 const drawArrayComments = (comments) => {
-  const STEP_COUNT = 5;
   let valueCountComments = 0;
   const maxValueCountComments = comments.length;
 

@@ -28,7 +28,7 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
 // Отправка данных формы на сервер
 const submitDataFormToServer = (data) => {
   fetch(
-    'https://28.javascript.pages.academy/kekstagram/',
+    'https://28.javascript.pages.academy/kekstagram/2232r3',
     {
       method: 'POST',
       body: data,
