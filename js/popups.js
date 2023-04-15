@@ -43,8 +43,8 @@ const createPopupError = () => {
     popup.remove();
   };
 
-  bodyElement.onkeydown = function (evt) { // Для того чтобы закрывалось только верхнее информационное окно (а форма оставалась открытой) нужно проверить на чем происходит нажатие на Esc, и добавить это в условие. Если условие верно (true), то - браузер ничего не делай только закрой информационное окно
-    if (isEscKeydown(evt) && evt.target.classList.contains('img-upload__submit')) {
+  bodyElement.onkeydown = function (evt) {
+    if (isEscKeydown(evt) && bodyElement.querySelectorAll('.error').length) {
       evt.stopPropagation();
       popup.remove();
     }
