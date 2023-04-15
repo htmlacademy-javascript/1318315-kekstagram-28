@@ -44,7 +44,7 @@ const createPopupError = () => {
   };
 
   bodyElement.onkeydown = function (evt) {
-    if (isEscKeydown(evt) && bodyElement.querySelectorAll('.error').length) {
+    if (isEscKeydown(evt) && bodyElement.querySelectorAll('.error').length) { // Проверяем отрисован ли в разметке DOM - этот кусок кода с классом error (складывем в псевдомассив - если он есть, то длинна коллекции = 1, т.е. true ===> условиие выполнится, если нет, то длинна массива 0 = false ===> условие не выполниться)
       evt.stopPropagation();
       popup.remove();
     }
