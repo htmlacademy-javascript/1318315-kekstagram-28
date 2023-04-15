@@ -5,6 +5,8 @@ import {showTimeoutPopupErrorLoad, createPopupError, createPopupSuccess, createP
 import {hideFilters, showTimeoutFilters} from './filters.js';
 
 const bodyElement = document.querySelector('body');
+const formElement = document.querySelector('.img-upload__form');
+const buttonSubmitFormElement = formElement.querySelector('.img-upload__submit');
 
 // Запрос к серверу для получения данных/миниатюр
 fetch('https://28.javascript.pages.academy/kekstagram/data')
@@ -28,12 +30,13 @@ fetch('https://28.javascript.pages.academy/kekstagram/data')
 // Отправка данных формы на сервер
 const submitDataFormToServer = (data) => {
   fetch(
-    'https://28.javascript.pages.academy/kekstagram/',
+    'https://28.javascript.pages.academy/kekstagram',
     {
       method: 'POST',
       body: data,
     })
     .then((response) => {
+      buttonSubmitFormElement.removeAttribute('disabled'); // Разблокируем кнопку отправки формы "Опубликовать" - делаем ее активной
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       if (response.ok) { // Проверяем статус ответа сервера - Ок - значит
         bodyElement.append(createPopupSuccess()); // показываем окно из template #success
@@ -43,6 +46,7 @@ const submitDataFormToServer = (data) => {
       }
     })
     .catch(() => {
+      buttonSubmitFormElement.removeAttribute('disabled'); // Разблокируем кнопку отправки формы "Опубликовать" - делаем ее активной
       bodyElement.querySelector('.img-upload__message').remove(); // Скрыть "Загружаем..."
       bodyElement.append(createPopupError()); // Показывается окно из template #error
     });

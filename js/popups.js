@@ -10,7 +10,7 @@ const textPopupLoadForm = 'Загружаем...';
 const textPopupErrorLoad = 'Произошла ошибка загрузки страницы с сервера. Проверьте соединение с интернетом и перезагрузите страницу.';
 const textPopupErrorFile = 'Данный файл не может быть открыт, выберите, пожалуйста, другой!';
 
-const body = document.querySelector('body');
+const bodyElement = document.querySelector('body');
 
 
 // СОЗДАНИЕ ИНФОРМАЦИОННЫХ ОКОН, В ПРОЦЕССЕ СВЯЗИ С СЕРВЕРОМ И РЕЗУЛЬТАТ СВЯЗИ С СЕРВЕРОМ
@@ -43,13 +43,14 @@ const createPopupError = () => {
     popup.remove();
   };
 
-  document.body.onkeydown = function (evt) {
-    if (isEscKeydown(evt)) {
+  bodyElement.onkeydown = function (evt) {
+    if (isEscKeydown(evt) && bodyElement.querySelectorAll('.error').length) { // Проверяем отрисован ли в разметке DOM - этот кусок кода с классом error (складывем в псевдомассив - если он есть, то длинна коллекции = 1, т.е. true ===> условиие выполнится, если нет, то длинна массива 0 = false ===> условие не выполниться)
+      evt.stopPropagation();
       popup.remove();
     }
   };
 
-  document.body.onclick = function () {
+  bodyElement.onclick = function () {
     popup.remove();
   };
 
@@ -84,13 +85,13 @@ const createPopupSuccess = () => {
     popup.remove();
   };
 
-  document.body.onkeydown = function (evt) {
+  bodyElement.onkeydown = function (evt) {
     if (isEscKeydown(evt)) {
       popup.remove();
     }
   };
 
-  document.body.onclick = function () {
+  bodyElement.onclick = function () {
     popup.remove();
   };
 
@@ -156,7 +157,7 @@ const createPopupErrorFile = () => {
 // Функция-шаблон/конструктор, которая удаляет элементы DOM с задержкой по времени
 const ShowTimeoutResult = (className) => {
   setTimeout(() => {
-    body.querySelector(`${className}`).remove();
+    bodyElement.querySelector(`${className}`).remove();
   }, SHOW_TIME);
 };
 
